@@ -4,8 +4,8 @@ import { Comparison } from "@/components/comparison";
 import { FeatureBookkeeping } from "@/components/feature-bookkeeping";
 import { FeatureReporting } from "@/components/feature-reporting";
 import { FeatureCompliance } from "@/components/feature-compliance";
-import { BuiltForSMBs } from "@/components/built-for-smbs";
 import { Testimonial } from "@/components/testimonial";
+import { FAQ } from "@/components/faq";
 import { FinalCTA } from "@/components/final-cta";
 import { Footer } from "@/components/footer";
 
@@ -19,8 +19,8 @@ export default function Home() {
         <FeatureBookkeeping />
         <FeatureReporting />
         <FeatureCompliance />
-        <BuiltForSMBs />
         <Testimonial />
+        <FAQ />
         <FinalCTA />
       </main>
       <Footer />

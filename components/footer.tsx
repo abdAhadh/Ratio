@@ -19,10 +19,10 @@ export function Footer() {
             <p className="text-sm font-medium text-navy mb-3">Company</p>
             <ul className="space-y-2">
               {[
-                { label: "How we compare", href: "#how-we-compare" },
+                { label: "Why us", href: "#how-we-compare" },
                 { label: "How it works", href: "#how-it-works" },
-                { label: "Why us", href: "#why-us" },
                 { label: "Testimonials", href: "#testimonials" },
+                { label: "FAQs", href: "#faqs" },
               ].map((link) => (
                 <li key={link.label}>
                   <a
