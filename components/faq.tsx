@@ -6,19 +6,29 @@ import { FadeIn } from "./motion-wrapper";
 
 const faqs = [
   {
+    question: "Is Ratio a service or a software?",
+    answer:
+      "Both. We're an AI-native services firm. You care about outcomes like reconciled books, staying compliant, and filing taxes on time. We deliver that. A large chunk of the work is handled by our AI agents, with our in-house CAs stepping in for accuracy and oversight. You interact with our software for things like expense filing and reports, while a dedicated CA from our team keeps a tab on your finances.",
+  },
+  {
     question: "Do I need to replace my existing accounting software?",
     answer:
-      "No. Ratio integrates with Tally, Zoho Books, and other tools you already use. We sit on top of your existing stack. No migration, no rip-and-replace.",
+      "No. Ratio integrates with Tally, Zoho Books, and other tools you already use. That said, most customers find themselves interacting with our AI agents and software far more than their old accounting system. We recommend keeping your existing setup as a data backup, while our AI agents and accounting layer, synced with your system, handle the heavy lifting.",
+  },
+  {
+    question: "Can you integrate with our systems?",
+    answer:
+      "Yes. We're built to add integrations fast, usually under a week. If API access is available, we plug right in. If not, our AI agents use Computer Use to access your tools directly through the browser, just like a human would. Either way, we figure this out on the first discovery call so there are no surprises.",
   },
   {
     question: "How quickly can we get started?",
     answer:
-      "Most teams are fully onboarded within a week. We handle the integrations, import your historical data, and start reconciling from day one.",
+      "Regardless of where your integrations stand, we fully onboard you and start handling your books within 1 week. We're working hard to bring that down even further.",
   },
   {
-    question: "What happens to my data? Is it secure?",
+    question: "Is my financial data secure?",
     answer:
-      "All financial data is encrypted and stored on Indian servers in compliance with RBI data localization norms. We follow CERT-In guidelines and are fully compliant with the DPDP Act 2023.",
+      "Yes. All data is encrypted and stored on Indian servers, fully compliant with RBI data localization norms, CERT-In guidelines, and the DPDP Act 2023. We treat your financial data with the same seriousness a bank would.",
   },
 ];
 
