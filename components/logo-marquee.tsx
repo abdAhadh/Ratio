@@ -31,12 +31,13 @@ export function LogoMarquee() {
       >
         {/* Double the logos for seamless loop */}
         {[...logos, ...logos].map((logo, i) => (
-          <img
-            key={`${logo.alt}-${i}`}
-            src={logo.src}
-            alt={logo.alt}
-            className={`${logo.height} w-auto shrink-0`}
-          />
+          <div key={`${logo.alt}-${i}`} className="shrink-0 flex items-center justify-center" style={{ minWidth: 120 }}>
+            <img
+              src={logo.src}
+              alt={logo.alt}
+              className={`${logo.height} w-auto`}
+            />
+          </div>
         ))}
       </motion.div>
     </div>
