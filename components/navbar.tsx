@@ -35,7 +35,7 @@ export function Navbar() {
         }}
         style={{ width: "100%" }}
       >
-        <a href="#" className="flex items-center gap-2 shrink-0">
+        <a href="/" className="flex items-center gap-2 shrink-0">
           <motion.img
             src="/logo.svg"
             alt="Ratio"

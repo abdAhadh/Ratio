@@ -4,7 +4,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div className="md:col-span-2">
-            <a href="#" className="flex items-center gap-2">
+            <a href="/" className="flex items-center gap-2">
               <img src="/logo.svg" alt="Ratio" className="w-8 h-8" />
               <span className="text-xl font-bold text-navy tracking-tight">
                 Ratio
