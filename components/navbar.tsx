@@ -1,10 +1,18 @@
 "use client";
 
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { Menu, X } from "lucide-react";
+
+const navLinks = [
+  { label: "Why us", href: "#how-we-compare" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "FAQs", href: "#faqs" },
+];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -42,12 +50,9 @@ export function Navbar() {
           </span>
         </a>
 
+        {/* Desktop nav links */}
         <div className="hidden md:flex items-center gap-6 text-sm text-text-secondary">
-          {[
-            { label: "Why us", href: "#how-we-compare" },
-            { label: "How it works", href: "#how-it-works" },
-            { label: "FAQs", href: "#faqs" },
-          ].map((link) => (
+          {navLinks.map((link) => (
             <a
               key={link.label}
               href={link.href}
@@ -58,13 +63,60 @@ export function Navbar() {
           ))}
         </div>
 
+        {/* Desktop CTA */}
         <a
           href="#contact"
-          className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-navy text-white text-base font-medium rounded-full whitespace-nowrap shrink-0 hover:bg-navy-light transition-colors"
+          className="hidden md:inline-flex items-center gap-1.5 px-5 py-2.5 bg-navy text-white text-base font-medium rounded-full whitespace-nowrap shrink-0 hover:bg-navy-light transition-colors"
         >
           Request Demo
         </a>
+
+        {/* Mobile hamburger */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden flex items-center justify-center w-10 h-10 text-navy"
+          aria-label="Toggle menu"
+        >
+          {mobileMenuOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
+        </button>
       </motion.nav>
+
+      {/* Mobile menu overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-x-0 top-[72px] md:hidden bg-cream/95 backdrop-blur-lg border-t border-border z-40"
+          >
+            <div className="flex flex-col px-6 py-6 gap-1">
+              {navLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-lg font-medium text-navy py-3 border-b border-border/50 last:border-0"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <a
+                href="#contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="mt-4 inline-flex items-center justify-center px-6 py-3.5 bg-navy text-white text-base font-medium rounded-full hover:bg-navy-light transition-colors"
+              >
+                Request Demo
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

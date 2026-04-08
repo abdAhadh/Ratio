@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
 import { FadeIn } from "./motion-wrapper";
 
@@ -74,9 +74,17 @@ function TestimonialCard({
 
 function MarqueeTrack() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const isPaused = hoveredIndex !== null;
+  const [isMobile, setIsMobile] = useState(false);
+  const isPaused = !isMobile && hoveredIndex !== null;
   const x = useMotionValue(0);
   const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useAnimationFrame((_, delta) => {
     if (isPaused) return;
@@ -102,8 +110,8 @@ function MarqueeTrack() {
         <TestimonialCard
           key={`${t.name}-${i}`}
           {...t}
-          isHovered={hoveredIndex === i}
-          onHover={() => setHoveredIndex(i)}
+          isHovered={!isMobile && hoveredIndex === i}
+          onHover={() => !isMobile && setHoveredIndex(i)}
           onLeave={() => setHoveredIndex(null)}
         />
       ))}

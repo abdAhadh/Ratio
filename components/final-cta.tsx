@@ -13,7 +13,9 @@ export function FinalCTA() {
               Stay on top of your finances, finally.
             </h2>
             <p className="text-white/60 mb-12 max-w-xl mx-auto">
-              Stop chasing your CAs to close your books and compliance. Let Ratio handle it proactively.
+              Stop chasing your CAs to close your books and compliance.
+              <br />
+              Let Ratio handle it proactively.
             </p>
             <a
               href="#"
