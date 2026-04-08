@@ -7,6 +7,7 @@ import {
   Clock,
 } from "lucide-react";
 import { FadeIn, ScaleIn } from "./motion-wrapper";
+import { LogoMarquee } from "./logo-marquee";
 
 export function Hero() {
   return (
@@ -140,15 +141,9 @@ export function Hero() {
         <FadeIn delay={0.8}>
           <div className="mt-28 text-center">
             <p className="text-xs text-text-secondary uppercase tracking-widest mb-6">
-              Trusted by leading Indian MSMEs
+              Trusted by growing Indian MSMEs
             </p>
-            <div className="flex items-center justify-center gap-10 sm:gap-14 opacity-50 flex-wrap">
-              <img src="/logo-calry.svg" alt="Calry by Onseason" className="h-8 w-auto" />
-              <img src="/logo-soulathome.svg" alt="Soul At Home" className="h-5 w-auto" />
-              <img src="/logo-decawork.svg" alt="Decawork" className="h-5 w-auto" />
-              <img src="/logo-interact.svg" alt="Interact AI" className="h-5 w-auto" />
-              <img src="/logo-toonz.svg" alt="Toonz" className="h-6 w-auto" />
-            </div>
+            <LogoMarquee />
           </div>
         </FadeIn>
       </div>

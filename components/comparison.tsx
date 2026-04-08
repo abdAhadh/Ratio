@@ -102,7 +102,7 @@ export function Comparison() {
                     desc: "Books reconciled in real-time, proactively.",
                   },
                   {
-                    title: "Real-time P&L, always current",
+                    title: "Real-time P&L, a message away",
                     desc: "Ask in natural language. Always know where you stand.",
                   },
                   {
