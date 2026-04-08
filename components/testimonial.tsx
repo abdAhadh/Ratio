@@ -58,8 +58,8 @@ function TestimonialCard({
       onMouseLeave={onLeave}
       className={`bg-white rounded-xl p-7 w-[340px] shrink-0 flex flex-col justify-between transition-all duration-300 cursor-default ${
         isHovered
-          ? "shadow-[0_8px_30px_rgba(0,0,0,0.12)] scale-[1.02] border border-navy/10"
-          : "shadow-[0_1px_3px_rgba(0,0,0,0.08)] scale-100 border border-transparent"
+          ? "shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-navy/10"
+          : "shadow-[0_1px_3px_rgba(0,0,0,0.08)] border border-transparent"
       }`}
       style={{ minHeight: 200 }}
     >
@@ -129,7 +129,7 @@ export function Testimonial() {
       </div>
 
       {/* Sliding testimonial cards */}
-      <div className="relative overflow-hidden w-full">
+      <div className="relative overflow-x-clip w-full py-4">
         <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-cream to-transparent z-10" />
         <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-cream to-transparent z-10" />
 
