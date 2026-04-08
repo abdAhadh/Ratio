@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Use — Ratio",
+  title: "Terms of Use - Ratio",
   description:
     "Terms of Use for Ratio, the AI-native bookkeeping, reporting, and compliance platform by TidalPeak Labs Private Limited.",
 };
@@ -40,11 +40,17 @@ export default function TermsOfUse() {
                 1. Service Description
               </h2>
               <p className="mb-3">
-                Ratio is an AI-native bookkeeping, reporting, and compliance
-                platform designed for Indian Micro, Small, and Medium
-                Enterprises (MSMEs). We operate a hybrid model that combines
-                software platform access with managed services delivered by our
-                team of qualified Chartered Accountants (CAs).
+                TidalPeak Labs Private Limited, operating under the brand name
+                Ratio, provides an AI-native bookkeeping, reporting, and
+                compliance platform designed for Indian Micro, Small, and Medium
+                Enterprises (MSMEs). In the course of providing these services,
+                Ratio collects, processes, and stores financial and banking data
+                on behalf of its clients, including but not limited to banking
+                transaction records, payment gateway data, marketplace
+                transaction data, and related financial information. We operate
+                a hybrid model that combines software platform access with
+                managed services delivered by our team of qualified Chartered
+                Accountants (CAs).
               </p>
               <p className="mb-3">
                 1.1. <strong>Software Access.</strong> Depending on your plan,
@@ -65,11 +71,16 @@ export default function TermsOfUse() {
                 TDS compliance, and other regulatory compliance services as
                 described in your service agreement or plan.
               </p>
-              <p>
+              <p className="mb-3">
                 1.4. <strong>Managed Services.</strong> Where applicable, our
                 team of CAs will review, prepare, and file returns on your
                 behalf. All filings are reviewed for accuracy by qualified
                 professionals before submission.
+              </p>
+              <p>
+                1.5. <strong>Communication Channels.</strong> Ratio may
+                communicate with clients and collect expense data via WhatsApp
+                Business API, Slack, and email integrations.
               </p>
             </section>
 
@@ -311,6 +322,9 @@ export default function TermsOfUse() {
                 9.4. <strong>Data Deletion.</strong> After the thirty (30) day
                 export window, all Client data will be permanently deleted from
                 Ratio&apos;s servers. This deletion is irreversible.
+                Notwithstanding the above, certain financial and tax records may
+                be retained for up to 7 years as required under the Income Tax
+                Act, 1961.
               </p>
               <p className="mb-3">
                 9.5. <strong>Termination by Ratio.</strong> Ratio may suspend or
@@ -447,6 +461,25 @@ export default function TermsOfUse() {
                   >
                     tryratio.io
                   </a>
+                </p>
+              </div>
+              <div className="bg-cream-dark rounded-xl p-6 space-y-2 text-sm mt-4">
+                <p>
+                  <strong>Grievance Officer</strong>
+                </p>
+                <p>Abdul Ahadh, Director and Co-founder</p>
+                <p>
+                  Email:{" "}
+                  <a
+                    href="mailto:support@tryratio.io"
+                    className="text-accent underline"
+                  >
+                    support@tryratio.io
+                  </a>
+                </p>
+                <p className="mt-2 text-text-secondary">
+                  Grievances will be acknowledged within 30 days and resolved
+                  within 30 days of acknowledgment.
                 </p>
               </div>
             </section>

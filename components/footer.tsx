@@ -39,7 +39,7 @@ export function Footer() {
             <p className="text-sm font-medium text-navy mb-3">Legal</p>
             <ul className="space-y-2">
               {[
-                { label: "Privacy Policy", href: "#" },
+                { label: "Privacy Policy", href: "/privacy" },
                 { label: "Terms of Use", href: "/terms" },
               ].map((link) => (
                 <li key={link.label}>
