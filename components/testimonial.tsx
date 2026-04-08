@@ -24,7 +24,7 @@ const testimonials = [
   },
   {
     quote:
-      "Switched from a full-time bookkeeper to Ratio. Better accuracy, real-time P&L visibility, and I stopped chasing people for updates. Everything is just there when I need it.",
+      "Switched from a full-time bookkeeper to Ratio for our Indian entity. Better accuracy, real-time P&L visibility, and I stopped chasing people for updates. Everything is just there when I need it.",
     name: "Boris Pavlov",
     role: "CEO, Calry",
   },
