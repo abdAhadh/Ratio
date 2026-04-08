@@ -305,6 +305,13 @@ export default function TermsOfUse() {
                 >
                   support@tryratio.io
                 </a>
+                {" or "}
+                <a
+                  href="mailto:info@tidalpeaklabs.com"
+                  className="text-accent underline"
+                >
+                  info@tidalpeaklabs.com
+                </a>
                 .
               </p>
               <p className="mb-3">
@@ -342,6 +349,13 @@ export default function TermsOfUse() {
                   className="text-accent underline"
                 >
                   support@tryratio.io
+                </a>
+                {" or "}
+                <a
+                  href="mailto:info@tidalpeaklabs.com"
+                  className="text-accent underline"
+                >
+                  info@tidalpeaklabs.com
                 </a>
                 .
               </p>
@@ -444,6 +458,8 @@ export default function TermsOfUse() {
                   Collab Space, Near Babai Tiffins, 19th Main Rd, 4th Sector,
                   HSR Layout, Bengaluru, Karnataka 560102
                 </p>
+                <p>CIN: U62099KA2024PTC186394</p>
+                <p>GSTIN: 29AAKCT8575C1ZT</p>
                 <p>
                   Email:{" "}
                   <a
@@ -451,6 +467,13 @@ export default function TermsOfUse() {
                     className="text-accent underline"
                   >
                     support@tryratio.io
+                  </a>
+                  {" / "}
+                  <a
+                    href="mailto:info@tidalpeaklabs.com"
+                    className="text-accent underline"
+                  >
+                    info@tidalpeaklabs.com
                   </a>
                 </p>
                 <p>
@@ -475,6 +498,13 @@ export default function TermsOfUse() {
                     className="text-accent underline"
                   >
                     support@tryratio.io
+                  </a>
+                  {" / "}
+                  <a
+                    href="mailto:info@tidalpeaklabs.com"
+                    className="text-accent underline"
+                  >
+                    info@tidalpeaklabs.com
                   </a>
                 </p>
                 <p className="mt-2 text-text-secondary">
