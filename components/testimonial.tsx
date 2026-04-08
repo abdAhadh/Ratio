@@ -129,11 +129,13 @@ export function Testimonial() {
       </div>
 
       {/* Sliding testimonial cards */}
-      <div className="relative overflow-x-clip w-full py-4">
+      <div className="relative w-full overflow-y-visible" style={{ overflowX: "clip" }}>
         <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-cream to-transparent z-10" />
         <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-cream to-transparent z-10" />
 
-        <MarqueeTrack />
+        <div className="py-8">
+          <MarqueeTrack />
+        </div>
       </div>
     </section>
   );
