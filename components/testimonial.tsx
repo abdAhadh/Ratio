@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
 import { FadeIn } from "./motion-wrapper";
 
 const testimonials = [
@@ -36,21 +37,77 @@ const testimonials = [
   },
 ];
 
-function TestimonialCard({ quote, name, role }: {
+function TestimonialCard({
+  quote,
+  name,
+  role,
+  isHovered,
+  onHover,
+  onLeave,
+}: {
   quote: string;
   name: string;
   role: string;
+  isHovered: boolean;
+  onHover: () => void;
+  onLeave: () => void;
 }) {
   return (
-    <div className="bg-white rounded-xl p-7 shadow-[0_1px_3px_rgba(0,0,0,0.08)] w-[340px] shrink-0 flex flex-col justify-between" style={{ minHeight: 200 }}>
-      <p className="text-[15px] text-navy leading-relaxed mb-8">
-        {quote}
-      </p>
+    <div
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      className={`bg-white rounded-xl p-7 w-[340px] shrink-0 flex flex-col justify-between transition-all duration-300 cursor-default ${
+        isHovered
+          ? "shadow-[0_8px_30px_rgba(0,0,0,0.12)] scale-[1.02] border border-navy/10"
+          : "shadow-[0_1px_3px_rgba(0,0,0,0.08)] scale-100 border border-transparent"
+      }`}
+      style={{ minHeight: 200 }}
+    >
+      <p className="text-[15px] text-navy leading-relaxed mb-8">{quote}</p>
       <div>
         <p className="text-sm font-semibold text-navy">{name}</p>
         <p className="text-xs text-text-secondary">{role}</p>
       </div>
     </div>
+  );
+}
+
+function MarqueeTrack() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const isPaused = hoveredIndex !== null;
+  const x = useMotionValue(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useAnimationFrame((_, delta) => {
+    if (isPaused) return;
+    const speed = 0.05; // pixels per ms
+    let newX = x.get() - delta * speed;
+
+    // Reset when first set is fully scrolled
+    if (trackRef.current) {
+      const halfWidth = trackRef.current.scrollWidth / 2;
+      if (Math.abs(newX) >= halfWidth) {
+        newX += halfWidth;
+      }
+    }
+
+    x.set(newX);
+  });
+
+  const allCards = [...testimonials, ...testimonials];
+
+  return (
+    <motion.div ref={trackRef} className="flex gap-6 w-max" style={{ x }}>
+      {allCards.map((t, i) => (
+        <TestimonialCard
+          key={`${t.name}-${i}`}
+          {...t}
+          isHovered={hoveredIndex === i}
+          onHover={() => setHoveredIndex(i)}
+          onLeave={() => setHoveredIndex(null)}
+        />
+      ))}
+    </motion.div>
   );
 }
 
@@ -76,22 +133,7 @@ export function Testimonial() {
         <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-cream to-transparent z-10" />
         <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-cream to-transparent z-10" />
 
-        <motion.div
-          className="flex gap-6 w-max"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{
-            x: {
-              repeat: Infinity,
-              repeatType: "loop",
-              duration: 30,
-              ease: "linear",
-            },
-          }}
-        >
-          {[...testimonials, ...testimonials].map((t, i) => (
-            <TestimonialCard key={`${t.name}-${i}`} {...t} />
-          ))}
-        </motion.div>
+        <MarqueeTrack />
       </div>
     </section>
   );
