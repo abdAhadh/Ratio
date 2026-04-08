@@ -6,67 +6,49 @@ import { FadeIn } from "./motion-wrapper";
 const testimonials = [
   {
     quote:
-      "Our GST filings used to be a last-minute scramble. Now they're done a week before the deadline.",
-    name: "Priya Sharma",
-    role: "Founder, DesignStack",
-    initials: "PS",
+      "I ran on gut-feel financials for a year because my old CA and Zoho setup couldn't even get basic compliance right. Ratio gave me reconciled books every single day and let me spot unnecessary expenses just by asking a question on WhatsApp.",
+    name: "Hersh Patel",
+    role: "CEO, Soul at Home",
   },
   {
     quote:
-      "The AI catches things our old bookkeeper missed. Duplicate entries, wrong HSN codes, you name it.",
-    name: "Amit Patel",
-    role: "Director, TradeMax Exports",
-    initials: "AP",
+      "Our CA firm took 10+ days to close books each month. I was flying blind on my finances. Ratio changed that completely. Never thought AI could be used in such a powerful way.",
+    name: "Aman Raj",
+    role: "CEO, DecaWork",
   },
   {
     quote:
-      "We switched from a full-time accountant to Ratio. Saving ₹4L/year and getting better accuracy.",
-    name: "Sneha Reddy",
-    role: "CEO, GrowthLabs",
-    initials: "SR",
+      "We were always scrambling before GST deadlines. Now filings are done a week early, and I actually trust the numbers. The compliance tracking alone made the switch worth it.",
+    name: "Suyash Karn",
+    role: "Co-founder, Interact AI",
   },
   {
     quote:
-      "Ratio gave us real-time visibility into our P&L. We no longer wait 15 days to know where we stand.",
-    name: "Vikram Desai",
-    role: "COO, FreshBasket",
-    initials: "VD",
+      "Switched from a full-time bookkeeper to Ratio. Better accuracy, real-time P&L visibility, and I stopped chasing people for updates. Everything is just there when I need it.",
+    name: "Boris Pavlov",
+    role: "CEO, Calry",
   },
   {
     quote:
-      "The compliance calendar alone is worth it. Every filing tracked, every deadline met. No more penalties.",
-    name: "Meera Iyer",
-    role: "Finance Head, UrbanCraft",
-    initials: "MI",
-  },
-  {
-    quote:
-      "Our bookkeeper used to take 10 days to reconcile. Ratio does it daily, automatically.",
-    name: "Rahul Menon",
-    role: "Founder, CloudKitchens Co.",
-    initials: "RM",
+      "Real-time reconciliation was a game changer for us. We went from waiting 15 days for a financial picture to having it updated daily, automatically. Discrepancies get flagged before they become problems.",
+    name: "Karthik Kumar",
+    role: "Director of Finance, Toonz",
   },
 ];
 
-function TestimonialCard({ quote, name, role, initials }: {
+function TestimonialCard({ quote, name, role }: {
   quote: string;
   name: string;
   role: string;
-  initials: string;
 }) {
   return (
     <div className="bg-white rounded-xl p-7 shadow-[0_1px_3px_rgba(0,0,0,0.08)] w-[340px] shrink-0 flex flex-col justify-between" style={{ minHeight: 200 }}>
       <p className="text-[15px] text-navy leading-relaxed mb-8">
         {quote}
       </p>
-      <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-full bg-navy/10 flex items-center justify-center">
-          <span className="text-xs font-bold text-navy">{initials}</span>
-        </div>
-        <div>
-          <p className="text-sm font-semibold text-navy">{name}</p>
-          <p className="text-xs text-text-secondary">{role}</p>
-        </div>
+      <div>
+        <p className="text-sm font-semibold text-navy">{name}</p>
+        <p className="text-xs text-text-secondary">{role}</p>
       </div>
     </div>
   );
