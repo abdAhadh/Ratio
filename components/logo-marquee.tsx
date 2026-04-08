@@ -3,11 +3,11 @@
 import { motion } from "framer-motion";
 
 const logos = [
-  { src: "/logo-calry.svg", alt: "Calry by Onseason", height: "h-8" },
-  { src: "/logo-soulathome.svg", alt: "Soul At Home", height: "h-5" },
-  { src: "/logo-decawork.svg", alt: "Decawork", height: "h-5" },
-  { src: "/logo-interact.svg", alt: "Interact AI", height: "h-5" },
-  { src: "/logo-toonz.svg", alt: "Toonz", height: "h-6" },
+  { src: "/logo-interact.svg", alt: "Interact AI", height: "h-5", width: "w-[110px]" },
+  { src: "/logo-toonz.svg", alt: "Toonz", height: "h-7", width: "w-[50px]" },
+  { src: "/logo-calry.svg", alt: "Calry by Onseason", height: "h-8", width: "w-[80px]" },
+  { src: "/logo-soulathome.svg", alt: "Soul At Home", height: "h-4", width: "w-[130px]" },
+  { src: "/logo-decawork.svg", alt: "Decawork", height: "h-4", width: "w-[110px]" },
 ];
 
 export function LogoMarquee() {
@@ -18,7 +18,7 @@ export function LogoMarquee() {
       <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-cream to-transparent z-10" />
 
       <motion.div
-        className="flex items-center gap-6 opacity-50 w-max"
+        className="flex items-center gap-14 opacity-50 w-max"
         animate={{ x: ["0%", "-50%"] }}
         transition={{
           x: {
@@ -31,13 +31,12 @@ export function LogoMarquee() {
       >
         {/* Double the logos for seamless loop */}
         {[...logos, ...logos].map((logo, i) => (
-          <div key={`${logo.alt}-${i}`} className="shrink-0 flex items-center justify-center w-[140px]">
-            <img
-              src={logo.src}
-              alt={logo.alt}
-              className={`${logo.height} w-auto max-w-[130px] object-contain`}
-            />
-          </div>
+          <img
+            key={`${logo.alt}-${i}`}
+            src={logo.src}
+            alt={logo.alt}
+            className={`${logo.height} ${logo.width} object-contain shrink-0`}
+          />
         ))}
       </motion.div>
     </div>
