@@ -18,7 +18,7 @@ export function LogoMarquee() {
       <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-cream to-transparent z-10" />
 
       <motion.div
-        className="flex items-center gap-14 opacity-50 w-max"
+        className="flex items-center gap-10 opacity-50 w-max"
         animate={{ x: ["0%", "-50%"] }}
         transition={{
           x: {
