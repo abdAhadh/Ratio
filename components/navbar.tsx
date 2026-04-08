@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -13,11 +13,22 @@ const navLinks = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { scrollY } = useScroll();
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 50);
   });
+
+  // On mobile: always static. On desktop: animate on scroll.
+  const shouldAnimate = !isMobile && scrolled;
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-center">
@@ -25,20 +36,20 @@ export function Navbar() {
         className="flex items-center justify-between bg-cream/80 backdrop-blur-md"
         initial={{ y: -80, opacity: 0 }}
         animate={{
-          y: scrolled ? 12 : 0,
+          y: shouldAnimate ? 12 : 0,
           opacity: 1,
-          maxWidth: scrolled ? 720 : 1440,
-          borderRadius: scrolled ? 9999 : 0,
-          paddingTop: scrolled ? 12 : 16,
-          paddingBottom: scrolled ? 12 : 16,
-          paddingLeft: scrolled ? 24 : 40,
-          paddingRight: scrolled ? 24 : 40,
-          boxShadow: scrolled
+          maxWidth: shouldAnimate ? 720 : 1440,
+          borderRadius: shouldAnimate ? 9999 : 0,
+          paddingTop: isMobile ? 14 : shouldAnimate ? 12 : 16,
+          paddingBottom: isMobile ? 14 : shouldAnimate ? 12 : 16,
+          paddingLeft: isMobile ? 20 : shouldAnimate ? 24 : 40,
+          paddingRight: isMobile ? 20 : shouldAnimate ? 24 : 40,
+          boxShadow: shouldAnimate
             ? "0 4px 24px rgba(0,0,0,0.08)"
             : "0 1px 0 rgba(0,0,0,0.04)",
         }}
         transition={{
-          duration: 0.5,
+          duration: isMobile ? 0 : 0.5,
           ease: [0.32, 0.72, 0, 1],
         }}
         style={{ width: "100%" }}
