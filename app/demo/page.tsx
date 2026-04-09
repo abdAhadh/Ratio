@@ -87,6 +87,7 @@ export default function DemoPage() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState(false);
+  const [company, setCompany] = useState("");
   const [message, setMessage] = useState("");
   const [revenueOpen, setRevenueOpen] = useState(false);
   const [revenue, setRevenue] = useState("");
@@ -100,6 +101,12 @@ export default function DemoPage() {
     }
     setPhoneError(false);
     setShowCal(true);
+
+    fetch("/api/demo-submission", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, phone, company, revenue, message }),
+    }).catch(() => {});
   }
 
   return (
@@ -214,6 +221,8 @@ export default function DemoPage() {
                         type="text"
                         required
                         placeholder="Your company"
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
                         className="w-full px-4 py-3 bg-cream rounded-lg border border-border text-sm text-navy placeholder:text-text-secondary/50 outline-none focus:border-navy/30 focus:ring-1 focus:ring-navy/10 transition-all"
                       />
                     </div>
