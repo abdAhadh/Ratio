@@ -18,7 +18,7 @@ export function FinalCTA() {
               Let Ratio handle it proactively.
             </p>
             <a
-              href="#"
+              href="/demo"
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-navy font-medium rounded-full hover:bg-white/90 transition-colors text-lg"
             >
               Request Demo

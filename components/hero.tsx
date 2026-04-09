@@ -37,7 +37,7 @@ export function Hero() {
             </FadeIn>
             <FadeIn delay={0.5}>
               <a
-                href="#"
+                href="/demo"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-navy text-white font-medium rounded-full hover:bg-navy-light transition-colors"
               >
                 Request Demo

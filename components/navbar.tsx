@@ -76,7 +76,7 @@ export function Navbar() {
 
         {/* Desktop CTA */}
         <a
-          href="#contact"
+          href="/demo"
           className="hidden md:inline-flex items-center gap-1.5 px-5 py-2.5 bg-navy text-white text-base font-medium rounded-full whitespace-nowrap shrink-0 hover:bg-navy-light transition-colors"
         >
           Request Demo
@@ -118,7 +118,7 @@ export function Navbar() {
                 </a>
               ))}
               <a
-                href="#contact"
+                href="/demo"
                 onClick={() => setMobileMenuOpen(false)}
                 className="mt-4 inline-flex items-center justify-center px-6 py-3.5 bg-navy text-white text-base font-medium rounded-full hover:bg-navy-light transition-colors"
               >
