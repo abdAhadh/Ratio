@@ -66,6 +66,13 @@ function BookkeepingCard() {
         ))}
       </div>
 
+      {/* Preload all tab logos so switching is instant */}
+      <div className="hidden">
+        {categories.flatMap((cat) => cat.logos).map((logo) => (
+          <img key={logo.src} src={logo.src} alt="" />
+        ))}
+      </div>
+
       {/* Integration logos */}
       <div className="flex items-center gap-4 px-2 py-2.5 mb-3 bg-cream/50 rounded-lg h-[36px]">
         {activeLogos.length > 0 ? (
