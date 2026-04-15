@@ -105,7 +105,7 @@ export default function DemoPage() {
       <main className="pt-28 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 lg:gap-28 items-start">
-            {/* Left — Copy */}
+            {/* Left: Copy */}
             <div className="md:sticky md:top-32">
               <p className="text-xs text-text-secondary uppercase tracking-widest mb-3">
                 Request Demo
@@ -162,7 +162,7 @@ export default function DemoPage() {
               </div>
             </div>
 
-            {/* Right — Form / Cal */}
+            {/* Right: Form / Cal */}
             <div>
               {showCal ? (
                 <div className="bg-white rounded-2xl border border-border shadow-[0_4px_20px_rgba(0,0,0,0.06)] overflow-hidden">

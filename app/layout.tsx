@@ -15,10 +15,27 @@ const dmSerif = DM_Serif_Display({
   weight: ["400"],
 });
 
+const siteUrl = "https://tryratio.io";
+const siteTitle = "Ratio: Upgrade your ERP with AI agents";
+const siteDescription =
+  "AI agents that sit on top of SAP, NetSuite, Tally or your existing ERP to automate finance ops at scale. Built for CFOs outgrowing their ERPs.";
+
 export const metadata: Metadata = {
-  title: "Ratio — AI-Native Bookkeeping, Reporting & Compliance",
-  description:
-    "From books to filing, fully handled. AI-native bookkeeping, reporting, and compliance for Indian SMBs — reviewed by CAs.",
+  metadataBase: new URL(siteUrl),
+  title: siteTitle,
+  description: siteDescription,
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName: "Ratio",
+    title: siteTitle,
+    description: siteDescription,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+  },
 };
 
 export default function RootLayout({

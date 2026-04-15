@@ -176,17 +176,19 @@ export default function D2CPage() {
             </FadeIn>
             <FadeIn delay={0.25}>
               <h1
-                className="font-bold text-navy leading-[1.05] tracking-tight mb-5"
-                style={{ fontSize: "clamp(1.75rem, 7.5vw, 4.5rem)" }}
+                className="font-bold text-navy leading-[1.1] md:leading-[1.05] tracking-tight mb-5"
+                style={{ fontSize: "clamp(2.375rem, 7.5vw, 4.5rem)" }}
               >
-                <span className="block md:whitespace-nowrap">Upgrade your ERP with</span>
-                <span className="block md:whitespace-nowrap">AI agents.</span>
+                <span className="block md:hidden">Upgrade your ERP</span>
+                <span className="block md:hidden">with AI agents.</span>
+                <span className="hidden md:block whitespace-nowrap">Upgrade your ERP with</span>
+                <span className="hidden md:block whitespace-nowrap">AI agents.</span>
               </h1>
             </FadeIn>
             <FadeIn delay={0.35}>
               <p
                 className="text-text-secondary leading-snug mb-8"
-                style={{ fontSize: "clamp(0.78rem, 2.35vw, 1.75rem)" }}
+                style={{ fontSize: "clamp(1rem, 2.35vw, 1.75rem)" }}
               >
                 <span className="block md:whitespace-nowrap">
                   AI agents that sit on top of your existing ERP to automate finance ops.
@@ -208,7 +210,7 @@ export default function D2CPage() {
               </div>
             </FadeIn>
             <FadeIn delay={0.55}>
-              <div className="mt-20 md:mt-28">
+              <div className="mt-32 md:mt-36">
                 <p className="text-xs text-text-secondary uppercase tracking-widest mb-6">
                   Works with ERP systems like
                 </p>

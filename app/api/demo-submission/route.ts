@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const { name, email, phone, company, revenue, message } = await request.json();
+  const { name, email, phone, company, message } = await request.json();
 
   const webhookUrl = process.env.SLACK_WEBHOOK_URL;
   if (!webhookUrl) {
@@ -17,11 +17,10 @@ export async function POST(request: Request) {
       {
         type: "section",
         fields: [
-          { type: "mrkdwn", text: `*Name:*\n${name || "—"}` },
-          { type: "mrkdwn", text: `*Email:*\n${email || "—"}` },
-          { type: "mrkdwn", text: `*Phone:*\n+91 ${phone || "—"}` },
-          { type: "mrkdwn", text: `*Company:*\n${company || "—"}` },
-          { type: "mrkdwn", text: `*Revenue/Month:*\n${revenue || "—"}` },
+          { type: "mrkdwn", text: `*Name:*\n${name || "-"}` },
+          { type: "mrkdwn", text: `*Email:*\n${email || "-"}` },
+          { type: "mrkdwn", text: `*Phone:*\n+91 ${phone || "-"}` },
+          { type: "mrkdwn", text: `*Company:*\n${company || "-"}` },
         ],
       },
       ...(message

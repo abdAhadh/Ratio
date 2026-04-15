@@ -14,7 +14,7 @@ export function Hero() {
     <section className="pt-36 md:pt-40 pb-24 md:pb-32 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-[1.3fr_0.7fr] gap-8 md:gap-12 lg:gap-20 items-center">
-          {/* Left — Copy */}
+          {/* Left: Copy */}
           <div>
             <FadeIn delay={0.2}>
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-navy/5 text-navy text-xs font-medium rounded-full mb-6 border border-navy/10">
@@ -46,7 +46,7 @@ export function Hero() {
             </FadeIn>
           </div>
 
-          {/* Right — Dashboard mockup */}
+          {/* Right: Dashboard mockup */}
           <ScaleIn delay={0.4}>
             <div className="relative">
               <div className="bg-white rounded-2xl shadow-[0_8px_60px_rgba(0,0,0,0.08)] border border-border overflow-hidden">
