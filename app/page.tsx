@@ -435,8 +435,13 @@ export default function D2CPage() {
           <div className="max-w-5xl mx-auto">
             <FadeIn>
               <div className="bg-navy rounded-3xl px-6 py-12 sm:px-8 sm:py-16 md:px-16 md:py-20 text-center">
-                <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4">
-                  Your next finance hire<br />shouldn&apos;t be a human.
+                <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-4 leading-[1.15] sm:leading-tight">
+                  <span className="sm:hidden">
+                    Your next finance<br />hire shouldn&apos;t be<br />a human.
+                  </span>
+                  <span className="hidden sm:inline">
+                    Your next finance hire<br />shouldn&apos;t be a human.
+                  </span>
                 </h2>
                 <p className="text-white/60 mb-12 max-w-xl mx-auto">
                   30 minutes with our team. See Ratio running on a company your size,
