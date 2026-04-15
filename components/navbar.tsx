@@ -5,9 +5,9 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { label: "Why us", href: "#how-we-compare" },
-  { label: "How it works", href: "#how-it-works" },
-  { label: "FAQs", href: "#faqs" },
+  { label: "Demo", href: "/#demo" },
+  { label: "Features", href: "/#features" },
+  { label: "FAQs", href: "/#faq" },
 ];
 
 export function Navbar() {

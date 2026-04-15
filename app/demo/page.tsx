@@ -1,19 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { CheckCircle2, ChevronDown } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import Cal, { getCalApi } from "@calcom/embed-react";
-
-const revenueRanges = [
-  "\u20B90 \u2013 \u20B950L",
-  "\u20B950L \u2013 \u20B92Cr",
-  "\u20B92Cr \u2013 \u20B910Cr",
-  "\u20B910Cr \u2013 \u20B950Cr",
-  "\u20B950Cr \u2013 \u20B9100Cr",
-  "\u20B9100Cr+",
-];
 
 function CalEmbed({ name, email, notes }: { name: string; email: string; notes: string }) {
   useEffect(() => {
@@ -89,8 +80,6 @@ export default function DemoPage() {
   const [phoneError, setPhoneError] = useState(false);
   const [company, setCompany] = useState("");
   const [message, setMessage] = useState("");
-  const [revenueOpen, setRevenueOpen] = useState(false);
-  const [revenue, setRevenue] = useState("");
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -105,7 +94,7 @@ export default function DemoPage() {
     fetch("/api/demo-submission", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, phone, company, revenue, message }),
+      body: JSON.stringify({ name, email, phone, company, message }),
     }).catch(() => {});
   }
 
@@ -122,14 +111,14 @@ export default function DemoPage() {
                 Request Demo
               </p>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-navy leading-[1.2] tracking-tight mb-4">
-                Talk to a finance expert at Ratio
+                Upgrade your ERP with AI agents
               </h1>
               <p className="text-text-secondary text-base sm:text-lg leading-relaxed mb-8">
-                See how Indian MSMEs completely offload bookkeeping, taxes, and
-                compliance to Ratio.
+                See how Ratio&apos;s AI agents sit on top of SAP, NetSuite,
+                Tally or your existing ERP to automate finance ops at scale.
                 <br />
-                In one call, we&apos;ll show you why no CA firm or software
-                can match what Ratio delivers.
+                In one call, we&apos;ll show you exactly how we&apos;d fit
+                into your stack.
               </p>
 
               <div className="mb-10">
@@ -138,9 +127,9 @@ export default function DemoPage() {
                 </p>
                 <div className="space-y-3">
                   {[
-                    "We understand how your finance ops work today",
-                    "Identify gaps across bookkeeping, taxation, reporting, and compliance",
-                    "See a live walkthrough of how Ratio can fix your gaps",
+                    "We understand your current ERP and finance ops stack",
+                    "Identify the workflows where AI agents deliver the biggest impact",
+                    "Walk through how Ratio would deploy on your ERP and stack",
                   ].map((item) => (
                     <div key={item} className="flex items-start gap-2.5">
                       <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
@@ -252,43 +241,6 @@ export default function DemoPage() {
                       )}
                     </div>
 
-                    <div className="relative">
-                      <label className="block text-xs font-medium text-text-secondary mb-1.5">
-                        Revenue per Month
-                      </label>
-                      <button
-                        type="button"
-                        onClick={() => setRevenueOpen(!revenueOpen)}
-                        className="w-full px-4 py-3 bg-cream rounded-lg border border-border text-sm text-left outline-none focus:border-navy/30 focus:ring-1 focus:ring-navy/10 transition-all flex items-center justify-between"
-                      >
-                        <span className={revenue ? "text-navy" : "text-text-secondary/50"}>
-                          {revenue || "Select..."}
-                        </span>
-                        <ChevronDown className={`w-4 h-4 text-text-secondary transition-transform ${revenueOpen ? "rotate-180" : ""}`} />
-                      </button>
-                      {revenueOpen && (
-                        <div className="absolute z-10 mt-1 w-full bg-white rounded-lg border border-border shadow-[0_8px_24px_rgba(0,0,0,0.1)] overflow-hidden">
-                          {revenueRanges.map((range) => (
-                            <button
-                              key={range}
-                              type="button"
-                              onClick={() => {
-                                setRevenue(range);
-                                setRevenueOpen(false);
-                              }}
-                              className={`w-full px-4 py-2.5 text-sm text-left transition-colors ${
-                                revenue === range
-                                  ? "bg-cream text-navy font-medium"
-                                  : "text-navy hover:bg-cream/60"
-                              }`}
-                            >
-                              {range}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
                     <div>
                       <label className="block text-xs font-medium text-text-secondary mb-1.5">
                         Message{" "}
@@ -296,7 +248,7 @@ export default function DemoPage() {
                       </label>
                       <textarea
                         rows={3}
-                        placeholder="Tell us about your current finance setup..."
+                        placeholder="Which ERP are you on? Which workflows are most broken today?"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         className="w-full px-4 py-3 bg-cream rounded-lg border border-border text-sm text-navy placeholder:text-text-secondary/50 outline-none focus:border-navy/30 focus:ring-1 focus:ring-navy/10 transition-all resize-none"

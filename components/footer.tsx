@@ -11,18 +11,17 @@ export function Footer() {
               </span>
             </a>
             <p className="text-sm text-text-secondary mt-2 max-w-xs">
-              AI-native bookkeeping, reporting, and compliance for Indian MSMEs.
-              From books to filing, fully handled.
+              AI agents that sit on top of your ERP to automate finance ops.
+              Built for India&apos;s growing firms.
             </p>
           </div>
           <div>
             <p className="text-sm font-medium text-navy mb-3">Company</p>
             <ul className="space-y-2">
               {[
-                { label: "Why us", href: "#how-we-compare" },
-                { label: "How it works", href: "#how-it-works" },
-                { label: "Testimonials", href: "#testimonials" },
-                { label: "FAQs", href: "#faqs" },
+                { label: "Demo", href: "/#demo" },
+                { label: "Features", href: "/#features" },
+                { label: "FAQs", href: "/#faq" },
               ].map((link) => (
                 <li key={link.label}>
                   <a
