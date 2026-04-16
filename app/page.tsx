@@ -437,15 +437,15 @@ export default function D2CPage() {
               <div className="bg-navy rounded-3xl px-6 py-12 sm:px-8 sm:py-16 md:px-16 md:py-20 text-center">
                 <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-4 leading-[1.15] sm:leading-tight">
                   <span className="sm:hidden">
-                    Your next finance<br />hire shouldn&apos;t be<br />a human.
+                    Your next finance<br />hire should be<br />an AI agent.
                   </span>
                   <span className="hidden sm:inline">
-                    Your next finance hire<br />shouldn&apos;t be a human.
+                    Your next finance hire<br />should be an AI agent.
                   </span>
                 </h2>
                 <p className="text-white/60 mb-12 max-w-xl mx-auto">
                   30 minutes with our team. See Ratio running on a company your size,
-                  and what your close cycle and headcount plan look like 60 days in.
+                  and what your close cycle and headcount plan look like 30 days in.
                 </p>
                 <a
                   href="/demo"
