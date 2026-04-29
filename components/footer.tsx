@@ -19,7 +19,7 @@ export function Footer() {
             <p className="text-sm font-medium text-navy mb-3">Company</p>
             <ul className="space-y-2">
               {[
-                { label: "Demo", href: "/#demo" },
+                { label: "Demo", href: "/#demo/sales" },
                 { label: "Features", href: "/#features" },
                 { label: "FAQs", href: "/#faq" },
               ].map((link) => (

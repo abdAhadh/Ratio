@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
+import { usePostHog } from "posthog-js/react";
 import {
   ArrowRight,
   Sparkles,
@@ -142,9 +143,9 @@ function FAQItem({ q, a, open, onClick }: { q: string; a: string; open: boolean;
 }
 
 const demoTabs = [
-  { label: "Sales reconciliation", available: true },
-  { label: "AR agents", available: false },
-  { label: "AP agents", available: false },
+  { label: "Sales reconciliation", slug: "sales", available: true, type: "youtube" as const },
+  { label: "AR agents", slug: "ar", available: true, type: "iframe" as const },
+  { label: "AP agents", slug: "ap", available: false, type: "youtube" as const },
 ];
 
 export default function D2CPage() {
@@ -154,6 +155,61 @@ export default function D2CPage() {
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [videoPlaying, setVideoPlaying] = useState(false);
   const tabsWrapRef = useRef<HTMLDivElement>(null);
+  const demoSectionRef = useRef<HTMLElement>(null);
+  const posthog = usePostHog();
+
+  // Hash → tab routing: #demo, #demo/sales, #demo/ar
+  useEffect(() => {
+    function handleHash() {
+      const hash = window.location.hash.replace("#", "");
+      if (hash === "demo") {
+        // Backwards compat: #demo scrolls to section, keeps current tab
+        demoSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+      const match = hash.match(/^demo\/(\w+)$/);
+      if (match) {
+        const slug = match[1];
+        const idx = demoTabs.findIndex((t) => t.slug === slug && t.available);
+        if (idx !== -1) {
+          setActiveDemoTab(idx);
+          setVideoPlaying(false);
+          setTimeout(() => {
+            demoSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+          }, 50);
+        }
+      }
+    }
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, []);
+
+  // Update URL hash when tab changes (without triggering scroll)
+  const switchTab = useCallback(
+    (i: number) => {
+      if (!demoTabs[i].available) return;
+      setActiveDemoTab(i);
+      setVideoPlaying(false);
+      const slug = demoTabs[i].slug;
+      window.history.replaceState(null, "", `#demo/${slug}`);
+      posthog?.capture("demo_tab_viewed", {
+        demo_tab: demoTabs[i].label,
+        demo_slug: slug,
+      });
+    },
+    [posthog],
+  );
+
+  // Track demo play
+  const handlePlay = useCallback(() => {
+    setVideoPlaying(true);
+    posthog?.capture("demo_played", {
+      demo_tab: demoTabs[activeDemoTab].label,
+      demo_slug: demoTabs[activeDemoTab].slug,
+      demo_type: demoTabs[activeDemoTab].type,
+    });
+  }, [activeDemoTab, posthog]);
 
   function handleMove(e: React.MouseEvent<HTMLDivElement>) {
     const rect = tabsWrapRef.current?.getBoundingClientRect();
@@ -221,7 +277,7 @@ export default function D2CPage() {
         </section>
 
         {/* ───────── 2. DEMO VIDEO ───────── */}
-        <section id="demo" className="pt-10 md:pt-16 pb-20 md:pb-28 px-6">
+        <section id="demo" ref={demoSectionRef} className="pt-10 md:pt-16 pb-20 md:pb-28 px-6">
           <div className="max-w-5xl mx-auto">
             <FadeIn>
               <p className="text-xs text-text-secondary uppercase tracking-widest mb-3 text-center">
@@ -245,7 +301,7 @@ export default function D2CPage() {
                   return (
                     <button
                       key={tab.label}
-                      onClick={() => !disabled && setActiveDemoTab(i)}
+                      onClick={() => switchTab(i)}
                       onMouseEnter={() => disabled && setHoverTab(i)}
                       onMouseLeave={() => disabled && setHoverTab(null)}
                       className={`shrink-0 px-4 py-2 rounded-full text-xs sm:text-sm font-medium border transition-all ${
@@ -279,82 +335,163 @@ export default function D2CPage() {
 
             <ScaleIn>
               <div className="relative rounded-2xl border border-border bg-white shadow-[0_8px_60px_rgba(0,0,0,0.08)] overflow-hidden">
-                <div
-                  className="relative w-full"
-                  style={{ aspectRatio: "1788 / 1080" }}
-                >
-                  {videoPlaying ? (
-                    <iframe
-                      className="absolute inset-0 w-full h-full"
-                      src="https://www.youtube.com/embed/4npyiWgzit0?autoplay=1&rel=0&modestbranding=1&playsinline=1&vq=hd1080&hd=1"
-                      title="Ratio product demo"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                      allowFullScreen
-                    />
-                  ) : (
-                    <button
-                      onClick={() => setVideoPlaying(true)}
-                      aria-label="Play Ratio demo"
-                      className="group absolute inset-0 w-full h-full overflow-hidden text-left"
-                    >
-                      {/* Navy gradient base */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy to-navy-light" />
-
-                      {/* Soft radial glow */}
-                      <div
-                        className="absolute inset-0 opacity-60"
-                        style={{
-                          background:
-                            "radial-gradient(900px 500px at 30% 20%, rgba(255,255,255,0.12), transparent 60%), radial-gradient(700px 500px at 80% 100%, rgba(196,149,106,0.18), transparent 60%)",
-                        }}
+                {activeDemoTab === 0 && (
+                  <div
+                    className="relative w-full"
+                    style={{ aspectRatio: "1788 / 1080" }}
+                  >
+                    {videoPlaying ? (
+                      <iframe
+                        className="absolute inset-0 w-full h-full"
+                        src="https://www.youtube.com/embed/4npyiWgzit0?autoplay=1&rel=0&modestbranding=1&playsinline=1&vq=hd1080&hd=1"
+                        title="Ratio product demo"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                        allowFullScreen
                       />
+                    ) : (
+                      <button
+                        onClick={handlePlay}
+                        aria-label="Play Ratio demo"
+                        className="group absolute inset-0 w-full h-full overflow-hidden text-left"
+                      >
+                        {/* Navy gradient base */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy to-navy-light" />
 
-                      {/* Subtle grid */}
-                      <div
-                        className="absolute inset-0 opacity-[0.07]"
-                        style={{
-                          backgroundImage:
-                            "linear-gradient(rgba(255,255,255,0.9) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.9) 1px, transparent 1px)",
-                          backgroundSize: "48px 48px",
-                        }}
-                      />
+                        {/* Soft radial glow */}
+                        <div
+                          className="absolute inset-0 opacity-60"
+                          style={{
+                            background:
+                              "radial-gradient(900px 500px at 30% 20%, rgba(255,255,255,0.12), transparent 60%), radial-gradient(700px 500px at 80% 100%, rgba(196,149,106,0.18), transparent 60%)",
+                          }}
+                        />
 
-                      {/* Content */}
-                      <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 text-center">
-                        <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-0.5 sm:py-1 bg-white/10 backdrop-blur border border-white/15 rounded-full mb-2 sm:mb-6">
-                          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                          <span className="text-[9px] sm:text-[11px] font-medium text-white/80 uppercase tracking-widest">
-                            Product walkthrough · 2 min
-                          </span>
-                        </div>
+                        {/* Subtle grid */}
+                        <div
+                          className="absolute inset-0 opacity-[0.07]"
+                          style={{
+                            backgroundImage:
+                              "linear-gradient(rgba(255,255,255,0.9) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.9) 1px, transparent 1px)",
+                            backgroundSize: "48px 48px",
+                          }}
+                        />
 
-                        <h3 className="text-white text-base sm:text-3xl md:text-5xl font-bold tracking-tight leading-[1.15] max-w-2xl">
-                          Watch AI agents reconcile<br />a D2C brand&apos;s books.
-                        </h3>
-                        <p className="text-white/60 text-[10px] sm:text-sm md:text-base mt-1.5 sm:mt-4 max-w-xl px-4 sm:px-0">
-                          Every order, refund and payout reconciled in real time and posted to ERP.
-                        </p>
+                        {/* Content */}
+                        <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 text-center">
+                          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-0.5 sm:py-1 bg-white/10 backdrop-blur border border-white/15 rounded-full mb-2 sm:mb-6">
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                            <span className="text-[9px] sm:text-[11px] font-medium text-white/80 uppercase tracking-widest">
+                              Product walkthrough · 2 min
+                            </span>
+                          </div>
 
-                        {/* Play button */}
-                        <div className="mt-3 sm:mt-8 relative">
-                          <span className="absolute inset-0 rounded-full bg-white/20 blur-xl group-hover:bg-white/30 transition-all" />
-                          <div className="relative w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center shadow-2xl group-hover:scale-105 transition-transform">
-                            <Play className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 text-navy fill-navy ml-0.5 sm:ml-1" />
+                          <h3 className="text-white text-base sm:text-3xl md:text-5xl font-bold tracking-tight leading-[1.15] max-w-2xl">
+                            Watch AI agents reconcile<br />a D2C brand&apos;s books.
+                          </h3>
+                          <p className="text-white/60 text-[10px] sm:text-sm md:text-base mt-1.5 sm:mt-4 max-w-xl px-4 sm:px-0">
+                            Every order, refund and payout reconciled in real time and posted to ERP.
+                          </p>
+
+                          {/* Play button */}
+                          <div className="mt-3 sm:mt-8 relative">
+                            <span className="absolute inset-0 rounded-full bg-white/20 blur-xl group-hover:bg-white/30 transition-all" />
+                            <div className="relative w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center shadow-2xl group-hover:scale-105 transition-transform">
+                              <Play className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 text-navy fill-navy ml-0.5 sm:ml-1" />
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Bottom branding strip */}
-                      <div className="absolute bottom-0 inset-x-0 px-5 py-3 flex items-center justify-between text-[11px] text-white/50 bg-gradient-to-t from-black/40 to-transparent">
-                        <div className="flex items-center gap-2">
-                          <img src="/logo.svg" alt="Ratio" className="w-4 h-4 opacity-80" />
-                          <span className="font-medium">Ratio · tryratio.io</span>
+                        {/* Bottom branding strip */}
+                        <div className="absolute bottom-0 inset-x-0 px-5 py-3 flex items-center justify-between text-[11px] text-white/50 bg-gradient-to-t from-black/40 to-transparent">
+                          <div className="flex items-center gap-2">
+                            <img src="/logo.svg" alt="Ratio" className="w-4 h-4 opacity-80" />
+                            <span className="font-medium">Ratio · tryratio.io</span>
+                          </div>
+                          <span className="hidden sm:inline">Daily reconciliation for D2C brands</span>
                         </div>
-                        <span className="hidden sm:inline">Daily reconciliation for D2C brands</span>
-                      </div>
-                    </button>
-                  )}
-                </div>
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {activeDemoTab === 1 && (
+                  <div
+                    className="relative w-full"
+                    style={{ aspectRatio: "1280 / 768" }}
+                  >
+                    {videoPlaying ? (
+                      <iframe
+                        className="absolute inset-0 w-full h-full"
+                        src="/demos/ar/index.html"
+                        title="Ratio AR agents demo"
+                        allow="autoplay"
+                        style={{ border: "none" }}
+                      />
+                    ) : (
+                      <button
+                        onClick={handlePlay}
+                        aria-label="Play AR agents demo"
+                        className="group absolute inset-0 w-full h-full overflow-hidden text-left"
+                      >
+                        {/* Navy gradient base */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy to-navy-light" />
+
+                        {/* Soft radial glow */}
+                        <div
+                          className="absolute inset-0 opacity-60"
+                          style={{
+                            background:
+                              "radial-gradient(900px 500px at 70% 20%, rgba(255,255,255,0.12), transparent 60%), radial-gradient(700px 500px at 20% 100%, rgba(196,149,106,0.18), transparent 60%)",
+                          }}
+                        />
+
+                        {/* Subtle grid */}
+                        <div
+                          className="absolute inset-0 opacity-[0.07]"
+                          style={{
+                            backgroundImage:
+                              "linear-gradient(rgba(255,255,255,0.9) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.9) 1px, transparent 1px)",
+                            backgroundSize: "48px 48px",
+                          }}
+                        />
+
+                        {/* Content */}
+                        <div className="absolute inset-0 flex flex-col items-center justify-center px-4 sm:px-6 text-center">
+                          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-0.5 sm:py-1 bg-white/10 backdrop-blur border border-white/15 rounded-full mb-2 sm:mb-6">
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                            <span className="text-[9px] sm:text-[11px] font-medium text-white/80 uppercase tracking-widest">
+                              Interactive walkthrough · 2 min
+                            </span>
+                          </div>
+
+                          <h3 className="text-white text-base sm:text-3xl md:text-5xl font-bold tracking-tight leading-[1.15] max-w-2xl">
+                            Watch AI agents collect<br />your receivables.
+                          </h3>
+                          <p className="text-white/60 text-[10px] sm:text-sm md:text-base mt-1.5 sm:mt-4 max-w-xl px-4 sm:px-0">
+                            Automated follow-ups across WhatsApp, email and voice. Every payment tracked and matched.
+                          </p>
+
+                          {/* Play button */}
+                          <div className="mt-3 sm:mt-8 relative">
+                            <span className="absolute inset-0 rounded-full bg-white/20 blur-xl group-hover:bg-white/30 transition-all" />
+                            <div className="relative w-10 h-10 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center shadow-2xl group-hover:scale-105 transition-transform">
+                              <Play className="w-4 h-4 sm:w-6 sm:h-6 md:w-8 md:h-8 text-navy fill-navy ml-0.5 sm:ml-1" />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Bottom branding strip */}
+                        <div className="absolute bottom-0 inset-x-0 px-5 py-3 flex items-center justify-between text-[11px] text-white/50 bg-gradient-to-t from-black/40 to-transparent">
+                          <div className="flex items-center gap-2">
+                            <img src="/logo.svg" alt="Ratio" className="w-4 h-4 opacity-80" />
+                            <span className="font-medium">Ratio · tryratio.io</span>
+                          </div>
+                          <span className="hidden sm:inline">AI-powered accounts receivable automation</span>
+                        </div>
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </ScaleIn>
           </div>
