@@ -162,9 +162,14 @@ export default function D2CPage() {
   useEffect(() => {
     function handleHash() {
       const hash = window.location.hash.replace("#", "");
-      if (hash === "demo") {
-        // Backwards compat: #demo scrolls to section, keeps current tab
-        demoSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+      if (hash === "demo" || hash === "demo/") {
+        // Backwards compat: #demo and #demo/ → activate Sales tab
+        setActiveDemoTab(0);
+        setVideoPlaying(false);
+        window.history.replaceState(null, "", "#demo/sales");
+        setTimeout(() => {
+          demoSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, 50);
         return;
       }
       const match = hash.match(/^demo\/(\w+)$/);
