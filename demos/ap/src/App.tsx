@@ -44,68 +44,56 @@ function sceneAtTime(t: number): number {
   return SCENE_TIMELINE[SCENE_TIMELINE.length - 1].id;
 }
 
-// ── Subtitles - keyed to synthetic clock ─────────────────────────────────────
+// ── Subtitles - cues map to spoken VO timestamps in /public/vo.mp3 ───────────
 const SUBTITLE_CUES: { start: number; end: number; text: string }[] = [
-  // Scene 1 - Intro (0-5)
-  { start: 0.4,  end: 4.5,   text: 'This is Ratio. Your AI Accounts Payable Agent, built for the UAE.' },
+  // Scene 1 - Intro
+  { start: 0.6,   end: 7.4,   text: 'This is Ratio. Your AI Agent for Accounts Payable — purpose-built for companies in the UAE.' },
 
-  // Scene 2 - Vendor Onboarding via WhatsApp (5-26)
-  { start: 5.0,  end: 8.5,   text: 'Add a new vendor with just their WhatsApp number.' },
-  { start: 8.7,  end: 12.0,  text: "Ratio's AI agent reaches out, collects the trade licence and IBAN certificate." },
-  { start: 12.2, end: 15.5,  text: 'The moment they land. TRN verified, IBAN matched, sanctions screened.' },
-  { start: 15.7, end: 19.0,  text: 'Reviewed and accepted. Live in seconds, continuously monitored after.' },
-  { start: 19.5, end: 22.0,  text: 'Onboarding complete. The vendor is verified.' },
-  { start: 22.5, end: 25.5,  text: 'And right on cue, the first invoice arrives.' },
+  // Scene 2 - Vendor Onboarding
+  { start: 7.5,   end: 12.0,  text: 'You can onboard a new vendor with just their WhatsApp number or email address.' },
+  { start: 12.1,  end: 20.1,  text: "Ratio's AI agent reaches out and collects the trade licence and IBAN certificate." },
+  { start: 20.2,  end: 30.2,  text: 'It verifies and validates the documents, schedules continuous monitoring, and completes the onboarding.' },
 
-  // Scene 3 - Invoice Intake (26-40)
-  { start: 26.4, end: 30.5,  text: 'Ratio reads the invoice. Bilingual extraction in English and Arabic.' },
-  { start: 30.7, end: 35.0,  text: 'Every line item, the TRN, the AED amount, the VAT.' },
-  { start: 35.2, end: 39.7,  text: 'PDF on the right. Clean structured data on the left. Accuracy that beats OCR.' },
+  // Scene 3 - Invoice Intake
+  { start: 30.3,  end: 33.7,  text: 'Vendors send the invoice to Ratio on WhatsApp.' },
+  { start: 34.2,  end: 41.5,  text: "Ratio's extraction model is trained on thousands of UAE invoices — both in English and Arabic." },
+  { start: 41.9,  end: 51.9,  text: 'It beats legacy OCR — extracting every line item, TRN, AED amount, and VAT.' },
 
-  // Scene 4 - Validate, Match & Surface Insights (40-57)
-  { start: 40.4, end: 44.0,  text: 'Tax-invoice format checked against FTA rules. Duplicates flagged.' },
-  { start: 44.2, end: 48.6,  text: 'Ratio fetches the matching purchase order and goods-received note straight from your ERP.' },
-  { start: 48.8, end: 52.0,  text: 'Then surfaces what your team would have missed.' },
-  { start: 52.2, end: 56.5,  text: 'Pricing drift. Possible duplicate. Vendor risk. Caught before approval.' },
+  // Scene 4 - Validate, Match & Surface Insights
+  { start: 52.1,  end: 58.4,  text: 'Tax-invoice format checked against FTA rules. Duplicates flagged.' },
+  { start: 58.5,  end: 64.6,  text: "Ratio's AI also fetches the matching purchase order and GRN from your ERP." },
+  { start: 64.7,  end: 69.5,  text: 'For every invoice, it surfaces smart insights your team would have missed.' },
+  { start: 69.6,  end: 77.7,  text: 'Pricing drift. Possible duplicate. Vendor risk. Caught before approval.' },
 
-  // Scene 6 - Approval (57-71)
-  { start: 57.3, end: 61.5,  text: 'Routed via your Delegation of Authority matrix to the right approver.' },
-  { start: 61.7, end: 66.0,  text: 'They open it on their phone. In Singapore, between flights.' },
-  { start: 66.2, end: 70.7,  text: 'Full context. Audit trail. One tap. Approved.' },
+  // Scene 6 - Approval
+  { start: 77.8,  end: 85.2,  text: 'Approval workflow routes the right invoice to the right approver — payments made on time.' },
+  { start: 85.3,  end: 93.4,  text: "The approver can approve in one click — in Ratio's mobile app or WhatsApp." },
+  { start: 93.8,  end: 96.1,  text: 'Full context of the invoice, with the audit trail.' },
 
-  // Scene 7 - Payment & PDC (71-89)
-  { start: 71.4, end: 76.0,  text: 'Pay via UAEFTS, IPP for instant transfers, or SWIFT for cross-border.' },
-  { start: 76.2, end: 81.5,  text: 'Or issue a post-dated cheque. Ratio tracks the full lifecycle.' },
-  { start: 81.7, end: 88.7,  text: 'Issued. Deposited. Cleared. All visible. All on time. Bounce-handling built in.' },
+  // Scene 7 - Payment & PDC
+  { start: 96.2,  end: 105.1, text: 'Pay via UAEFTS, IPP for instant transfers, or SWIFT for cross-border.' },
+  { start: 105.2, end: 110.6, text: 'Or issue a post-dated cheque. Ratio tracks the full lifecycle.' },
 
-  // Scene 8 - Sync & Reconcile (89-113)
-  { start: 89.4,  end: 98.0,  text: 'Sync reconciled entries with one click — to the ERP your team already uses.' },
-  { start: 98.3,  end: 106.5, text: 'Every entry already has its bank match, journal lines, and the right Chart of Accounts.' },
-  { start: 106.8, end: 112.5, text: 'Select all, sync — and your ledger is up to date in seconds.' },
+  // Scene 8 - Sync & Reconcile
+  { start: 110.7, end: 116.0, text: 'Ratio integrates with your ERP — sync reconciled entries with one click.' },
+  { start: 116.6, end: 126.3, text: 'Bank match, journal lines, and the right Chart of Accounts — your ledger always up to date.' },
 
-  // Scene 9 - Closing (113-119)
-  { start: 113.3, end: 118.5, text: 'Every invoice handled. Every record reconciled. Built for the UAE.' },
+  // Scene 9 - Closing
+  { start: 126.4, end: 131.8, text: 'Every invoice handled. Every payment reconciled. Built for the UAE.' },
 ];
 
 function SubtitleOverlay({ time }: { time: number }) {
   const cue = SUBTITLE_CUES.find(c => time >= c.start && time < c.end);
+  if (!cue) return null;
   return (
-    <AnimatePresence mode="wait">
-      {cue && (
-        <motion.div
-          key={cue.start}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -4 }}
-          transition={{ duration: 0.25 }}
-          className="absolute bottom-10 left-0 right-0 z-40 flex justify-center px-6 pointer-events-none"
-        >
-          <div className="bg-black/65 text-white text-[15px] font-medium px-4 py-2 rounded-lg leading-relaxed backdrop-blur-sm text-center max-w-2xl">
-            {cue.text}
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div className="absolute bottom-10 left-0 right-0 z-40 flex justify-center px-6 pointer-events-none">
+      <div
+        key={cue.start}
+        className="bg-black/65 text-white text-[15px] font-medium px-4 py-2 rounded-lg leading-relaxed backdrop-blur-sm text-center max-w-2xl"
+      >
+        {cue.text}
+      </div>
+    </div>
   );
 }
 
@@ -177,8 +165,6 @@ export default function App() {
   const [hasStarted, setHasStarted] = useState(false);
   const [time, setTime] = useState(0);
   const [hovered, setHovered] = useState(false);
-  const lastTickRef = useRef<number>(0);
-  const rafRef = useRef<number | null>(null);
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Scenes 3 and 4 share a single mounted component so the bill-detail
@@ -204,6 +190,7 @@ export default function App() {
   }, []);
 
   const bgmRef = useRef<HTMLAudioElement>(null);
+  const voRef = useRef<HTMLAudioElement>(null);
 
   const reset = useCallback(() => {
     setIsPlaying(false);
@@ -213,6 +200,10 @@ export default function App() {
     if (bgmRef.current) {
       bgmRef.current.pause();
       bgmRef.current.currentTime = 0;
+    }
+    if (voRef.current) {
+      voRef.current.pause();
+      voRef.current.currentTime = 0;
     }
   }, []);
 
@@ -230,33 +221,20 @@ export default function App() {
     }
   }, [hasStarted, start]);
 
-  // Synthetic clock - drives time forward when playing
+  // Audio-driven clock - VO playback drives `time`. Subtitles and scene
+  // keyframes therefore stay locked to the recorded voiceover.
   useEffect(() => {
-    if (!isPlaying) {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
-      lastTickRef.current = 0;
-      return;
-    }
-    const tick = (now: number) => {
-      if (lastTickRef.current === 0) lastTickRef.current = now;
-      const dt = (now - lastTickRef.current) / 1000;
-      lastTickRef.current = now;
-      setTime(t => {
-        const next = t + dt;
-        if (next >= TOTAL_DURATION) {
-          // Loop or stop; we stop and reset cleanly
-          setTimeout(() => reset(), 200);
-          return TOTAL_DURATION;
-        }
-        return next;
-      });
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
+    const vo = voRef.current;
+    if (!vo) return;
+    const onTime = () => setTime(vo.currentTime);
+    const onEnded = () => { setTimeout(() => reset(), 200); };
+    vo.addEventListener('timeupdate', onTime);
+    vo.addEventListener('ended', onEnded);
     return () => {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      vo.removeEventListener('timeupdate', onTime);
+      vo.removeEventListener('ended', onEnded);
     };
-  }, [isPlaying, reset]);
+  }, [reset]);
 
   // Drive currentScene from time
   useEffect(() => {
@@ -265,12 +243,17 @@ export default function App() {
     setCurrentScene(prev => (prev !== next ? next : prev));
   }, [time, hasStarted]);
 
-  // BGM control
+  // BGM + VO playback control
   useEffect(() => {
     const bgm = bgmRef.current;
-    if (!bgm) return;
-    if (isPlaying) bgm.play().catch(() => {});
-    else bgm.pause();
+    const vo = voRef.current;
+    if (isPlaying) {
+      bgm?.play().catch(() => {});
+      vo?.play().catch(() => {});
+    } else {
+      bgm?.pause();
+      vo?.pause();
+    }
   }, [isPlaying]);
 
   const togglePlay = useCallback(() => {
@@ -285,6 +268,7 @@ export default function App() {
   }, []);
 
   const handleSeek = useCallback((t: number) => {
+    if (voRef.current) voRef.current.currentTime = t;
     setTime(t);
     setCurrentScene(sceneAtTime(t));
     if (!isPlaying && hasStarted) setIsPlaying(true);
@@ -325,7 +309,9 @@ export default function App() {
         }}
       >
         <audio ref={bgmRef} src="/bgm.mp3" preload="auto" loop
-          onCanPlay={() => { if (bgmRef.current) bgmRef.current.volume = 0.14; }} />
+          onCanPlay={() => { if (bgmRef.current) bgmRef.current.volume = 0.06; }} />
+        <audio ref={voRef} src="/vo.mp3" preload="auto"
+          onCanPlay={() => { if (voRef.current) voRef.current.volume = 1.0; }} />
 
         <TopBar currentScene={currentScene} />
 
