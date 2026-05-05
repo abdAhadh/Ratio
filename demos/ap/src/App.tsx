@@ -47,7 +47,7 @@ function sceneAtTime(t: number): number {
 // ── Subtitles - cues map to spoken VO timestamps in /public/vo.mp3 ───────────
 const SUBTITLE_CUES: { start: number; end: number; text: string }[] = [
   // Scene 1 - Intro
-  { start: 0.6,   end: 7.4,   text: 'This is Ratio. Your AI Agent for Accounts Payable — purpose-built for companies in the UAE.' },
+  { start: 0.6,   end: 7.4,   text: 'This is Ratio. Your AI Agent for Accounts Payable, purpose-built for companies in the UAE.' },
 
   // Scene 2 - Vendor Onboarding
   { start: 7.5,   end: 12.0,  text: 'You can onboard a new vendor with just their WhatsApp number or email address.' },
@@ -56,8 +56,8 @@ const SUBTITLE_CUES: { start: number; end: number; text: string }[] = [
 
   // Scene 3 - Invoice Intake
   { start: 30.3,  end: 33.7,  text: 'Vendors send the invoice to Ratio on WhatsApp.' },
-  { start: 34.2,  end: 41.5,  text: "Ratio's extraction model is trained on thousands of UAE invoices — both in English and Arabic." },
-  { start: 41.9,  end: 51.9,  text: 'It beats legacy OCR — extracting every line item, TRN, AED amount, and VAT.' },
+  { start: 34.2,  end: 41.5,  text: "Ratio's extraction model is trained on thousands of UAE invoices, both in English and Arabic." },
+  { start: 41.9,  end: 51.9,  text: 'It beats legacy OCR, extracting every line item, TRN, AED amount, and VAT.' },
 
   // Scene 4 - Validate, Match & Surface Insights
   { start: 52.1,  end: 58.4,  text: 'Tax-invoice format checked against FTA rules. Duplicates flagged.' },
@@ -66,8 +66,8 @@ const SUBTITLE_CUES: { start: number; end: number; text: string }[] = [
   { start: 69.6,  end: 77.7,  text: 'Pricing drift. Possible duplicate. Vendor risk. Caught before approval.' },
 
   // Scene 6 - Approval
-  { start: 77.8,  end: 85.2,  text: 'Approval workflow routes the right invoice to the right approver — payments made on time.' },
-  { start: 85.3,  end: 93.4,  text: "The approver can approve in one click — in Ratio's mobile app or WhatsApp." },
+  { start: 77.8,  end: 85.2,  text: 'Approval workflow routes the right invoice to the right approver. Payments made on time.' },
+  { start: 85.3,  end: 93.4,  text: "The approver can approve in one click, in Ratio's mobile app or WhatsApp." },
   { start: 93.8,  end: 96.1,  text: 'Full context of the invoice, with the audit trail.' },
 
   // Scene 7 - Payment & PDC
@@ -75,8 +75,8 @@ const SUBTITLE_CUES: { start: number; end: number; text: string }[] = [
   { start: 105.2, end: 110.6, text: 'Or issue a post-dated cheque. Ratio tracks the full lifecycle.' },
 
   // Scene 8 - Sync & Reconcile
-  { start: 110.7, end: 116.0, text: 'Ratio integrates with your ERP — sync reconciled entries with one click.' },
-  { start: 116.6, end: 126.3, text: 'Bank match, journal lines, and the right Chart of Accounts — your ledger always up to date.' },
+  { start: 110.7, end: 116.0, text: 'Ratio integrates with your ERP. Sync reconciled entries with one click.' },
+  { start: 116.6, end: 126.3, text: 'Bank match, journal lines, and the right Chart of Accounts. Your ledger, always up to date.' },
 
   // Scene 9 - Closing
   { start: 126.4, end: 131.8, text: 'Every invoice handled. Every payment reconciled. Built for the UAE.' },

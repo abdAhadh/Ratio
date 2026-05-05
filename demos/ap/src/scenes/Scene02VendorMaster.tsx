@@ -768,7 +768,7 @@ export default function Scene02VendorMaster({ t }: { t: number }) {
                           className="self-start max-w-[88%] rounded-xl rounded-tl-sm bg-white px-2.5 py-2 shadow-sm"
                         >
                           <p className="text-[10.5px] text-gray-800 leading-relaxed">
-                            ✓ You're verified, <strong>Ahmed</strong>. Send all invoices for Sahara Holdings to this number — they'll be routed straight for payment. You can share your first invoice whenever you're ready.
+                            ✓ You're verified, <strong>Ahmed</strong>. Send all invoices for Sahara Holdings to this number. They'll be routed straight for payment. You can share your first invoice whenever you're ready.
                           </p>
                           <div className="flex justify-end mt-0.5"><span className="text-[8.5px] text-gray-400">10:17 AM</span></div>
                         </motion.div>
