@@ -38,7 +38,7 @@ export default function Scene09Result() {
           transition={{ duration: 0.6, delay: 0.45 }}
           className="text-base text-[#6B6B80] max-w-md leading-relaxed"
         >
-          Built for the UAE. WhatsApp-native intake, FTA-aware validation, PDC lifecycle, and your existing ERP.
+          Built for the UAE. WhatsApp-native intake, FTA-aware validation, track PDC lifecycle, and integrate with your existing ERP.
         </motion.p>
 
         <motion.a
