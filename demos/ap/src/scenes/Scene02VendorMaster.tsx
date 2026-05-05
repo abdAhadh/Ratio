@@ -431,9 +431,9 @@ export default function Scene02VendorMaster({ t }: { t: number }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.96 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"
+            className="absolute inset-0 z-50 flex items-center justify-center pb-20 pointer-events-none"
           >
-              <div className="rounded-[40px] bg-[#1A1A2E] p-2.5 shadow-2xl" style={{ width: 320, height: 620 }}>
+              <div className="rounded-[40px] bg-[#1A1A2E] p-2.5 shadow-2xl" style={{ width: 290, height: 560 }}>
                 <div className="rounded-[32px] bg-white h-full overflow-hidden flex flex-col relative">
                   {/* Status bar */}
                   <div className="h-7 px-5 flex items-center justify-between text-[10.5px] font-semibold text-[#1A1A2E] flex-shrink-0" style={{ background: '#FBF7F1' }}>
@@ -720,14 +720,14 @@ export default function Scene02VendorMaster({ t }: { t: number }) {
             {/* Phone — left side (outer wrapper handles centering, inner motion handles entry) */}
             <div
               className="absolute"
-              style={{ left: 180, top: '50%', transform: 'translateY(-50%)' }}
+              style={{ left: 180, top: 'calc(50% - 40px)', transform: 'translateY(-50%)' }}
             >
             <motion.div
               initial={{ x: -30, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="rounded-[40px] bg-[#1A1A2E] p-2.5 shadow-2xl" style={{ width: 320, height: 620 }}>
+              <div className="rounded-[40px] bg-[#1A1A2E] p-2.5 shadow-2xl" style={{ width: 290, height: 560 }}>
                 <div className="rounded-[32px] bg-white h-full overflow-hidden flex flex-col relative">
                   {/* Status bar */}
                   <div className="h-7 px-5 flex items-center justify-between text-[10.5px] font-semibold text-[#1A1A2E] flex-shrink-0" style={{ background: '#FBF7F1' }}>

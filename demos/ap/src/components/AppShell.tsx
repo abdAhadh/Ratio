@@ -37,10 +37,6 @@ export default function AppShell({
     <div className="flex-1 flex relative bg-[#FBF7F1]">
       {/* Left dark sidebar */}
       <div className="w-[52px] flex-shrink-0 bg-[#1A1A2E] flex flex-col items-center py-3 gap-1">
-        <div className="w-7 h-7 rounded-md flex items-center justify-center mb-3"
-          style={{ background: '#A87C28' }}>
-          <span className="text-[10px] font-bold text-white">R</span>
-        </div>
         {NAV_ITEMS.map(n => (
           <div key={n.id} className={`w-9 h-9 rounded-md flex items-center justify-center ${
             n.id === activeNav ? 'bg-[#2D2D44] text-white' : 'text-[#7777AA]'
