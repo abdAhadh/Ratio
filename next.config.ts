@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         source: "/demos/ar",
         destination: "/demos/ar/index.html",
       },
+      {
+        source: "/demos/ap",
+        destination: "/demos/ap/index.html",
+      },
     ];
   },
 };
