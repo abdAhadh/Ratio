@@ -304,7 +304,7 @@ export default function Scene06Approval({ t }: { t: number }) {
               }}
             />
             {/* Phone, centered */}
-            <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
+            <div className="absolute inset-0 z-50 flex items-center justify-center pb-20 pointer-events-none">
               <motion.div
                 initial={{ opacity: 0, y: 18, scale: 0.94 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -313,7 +313,7 @@ export default function Scene06Approval({ t }: { t: number }) {
               >
                 <div
                   className="rounded-[40px] bg-[#1A1A2E] p-[10px] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)]"
-                  style={{ width: 300, height: 600 }}
+                  style={{ width: 290, height: 560 }}
                 >
                   <div className="rounded-[30px] h-full overflow-hidden flex flex-col relative">
                     {past(T.APPROVAL_VIEW) ? (
@@ -336,7 +336,7 @@ export default function Scene06Approval({ t }: { t: number }) {
             {/* Notification tap ripple — fires on home screen */}
             <AnimatePresence>
               {past(T.NOTIF_TAP) && t < T.NOTIF_TAP + 600 && (
-                <div className="absolute inset-0 z-[51] flex items-start justify-center pointer-events-none" style={{ paddingTop: 168 }}>
+                <div className="absolute inset-0 z-[51] flex items-start justify-center pointer-events-none" style={{ paddingTop: 148 }}>
                   <motion.div
                     initial={{ scale: 0, opacity: 0.45 }}
                     animate={{ scale: 2.6, opacity: 0 }}
@@ -351,7 +351,7 @@ export default function Scene06Approval({ t }: { t: number }) {
             {/* Approve tap ripple — fires inside the approval screen */}
             <AnimatePresence>
               {past(T.TAP) && t < T.APPROVED + 400 && (
-                <div className="absolute inset-0 z-[51] flex items-end justify-center pointer-events-none" style={{ paddingBottom: 86 }}>
+                <div className="absolute inset-0 z-[51] flex items-end justify-center pointer-events-none" style={{ paddingBottom: 146 }}>
                   <motion.div
                     initial={{ scale: 0, opacity: 0.5 }}
                     animate={{ scale: 2.4, opacity: 0 }}

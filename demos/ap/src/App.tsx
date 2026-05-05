@@ -13,14 +13,14 @@ import Scene07PaymentPDC from './scenes/Scene07PaymentPDC';
 import Scene08SyncReconcile from './scenes/Scene08SyncReconcile';
 import Scene09Result from './scenes/Scene09Result';
 
-// Scene transitions feel like SPA route changes (no big "fade up from below"
-// reload feel). The transition from the bill-detail (Scene 3+4) to the
-// approval list (Scene 6) is treated as BACK navigation — Scene 4 slides off
-// to the right as if the bill detail is closing, revealing the list.
+// Pure opacity crossfade between scenes. Position-based variants used to
+// conflict with each scene's own internal entry animations (right panel
+// slide, list-row staggers, cursor moves) and read as a "shake" while the
+// layout settled.
 const SCENE_VARIANTS = {
-  enter:  (dir: 'forward' | 'back') => dir === 'back' ? { opacity: 0, x: -12 } : { opacity: 0, y: 8 },
-  center: { opacity: 1, x: 0, y: 0 },
-  exit:   (dir: 'forward' | 'back') => dir === 'back' ? { opacity: 0, x: 80 }  : { opacity: 0, y: -8 },
+  enter:  { opacity: 0 },
+  center: { opacity: 1 },
+  exit:   { opacity: 0 },
 };
 
 const isEmbedded = typeof window !== 'undefined' && window.self !== window.top;
@@ -181,13 +181,9 @@ export default function App() {
   const rafRef = useRef<number | null>(null);
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Track previous scene group so we can render the transition from Scene 4
-  // (bill detail) to Scene 6 (approval list) as a BACK navigation.
-  const prevSceneGroupRef = useRef<string | number>('1');
+  // Scenes 3 and 4 share a single mounted component so the bill-detail
+  // doesn't remount when we move from intake to validate.
   const sceneGroupKey: string | number = (currentScene === 3 || currentScene === 4) ? 'group-3-4' : currentScene;
-  // Back nav happens when the bill detail (3/4) closes back into Approval (6).
-  const isBackNav = prevSceneGroupRef.current === 'group-3-4' && sceneGroupKey === 6;
-  useEffect(() => { prevSceneGroupRef.current = sceneGroupKey; }, [sceneGroupKey]);
 
   // Contain-scale (always render at 1280×768)
   const [viewScale, setViewScale] = useState({ scale: 1, offsetX: 0, offsetY: 0 });
@@ -334,18 +330,14 @@ export default function App() {
         <TopBar currentScene={currentScene} />
 
         <div className="flex-1 mt-12 flex flex-col overflow-hidden relative">
-          <AnimatePresence mode="wait" custom={isBackNav ? 'back' : 'forward'}>
+          <AnimatePresence mode="wait">
             <motion.div
               key={sceneGroupKey}
-              custom={isBackNav ? 'back' : 'forward'}
               variants={SCENE_VARIANTS}
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{
-                duration: isBackNav ? 0.45 : 0.22,
-                ease: isBackNav ? [0.32, 0.72, 0.26, 1] : [0.22, 1, 0.36, 1],
-              }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0 flex flex-col"
             >
               <SceneRenderer scene={currentScene} time={time} />
