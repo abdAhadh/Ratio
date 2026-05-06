@@ -160,20 +160,25 @@ export default function D2CPage() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const demoContainerRef = useRef<HTMLDivElement>(null);
 
-  // Track native fullscreen state
+  // CSS-based fullscreen (works on iOS where the Fullscreen API is video-only)
   useEffect(() => {
-    const handler = () => setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener("fullscreenchange", handler);
-    return () => document.removeEventListener("fullscreenchange", handler);
-  }, []);
+    if (!isFullscreen) {
+      document.body.style.overflow = "";
+      return;
+    }
+    document.body.style.overflow = "hidden";
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsFullscreen(false);
+    };
+    window.addEventListener("keydown", handler);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handler);
+    };
+  }, [isFullscreen]);
 
   const toggleFullscreen = useCallback(() => {
-    if (!demoContainerRef.current) return;
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
-    } else {
-      demoContainerRef.current.requestFullscreen();
-    }
+    setIsFullscreen((f) => !f);
   }, []);
   const tabsWrapRef = useRef<HTMLDivElement>(null);
   const demoSectionRef = useRef<HTMLElement>(null);
@@ -360,11 +365,14 @@ export default function D2CPage() {
               </div>
             </FadeIn>
 
-            <ScaleIn>
-              <div
-                ref={demoContainerRef}
-                className="relative bg-white rounded-2xl border border-border shadow-[0_8px_60px_rgba(0,0,0,0.08)] overflow-hidden"
-              >
+            <div
+              ref={demoContainerRef}
+              className={`bg-white shadow-[0_8px_60px_rgba(0,0,0,0.08)] overflow-hidden ${
+                isFullscreen && activeDemoTab === 1
+                  ? "fixed inset-0 z-[100] rounded-none border-0"
+                  : "relative rounded-2xl border border-border"
+              }`}
+            >
                 {activeDemoTab === 0 && (
                   <div
                     className="relative w-full"
@@ -446,8 +454,8 @@ export default function D2CPage() {
 
                 {activeDemoTab === 1 && (
                   <div
-                    className={`relative w-full ${isFullscreen ? "h-full" : ""}`}
-                    style={isFullscreen ? {} : { aspectRatio: "1280 / 768" }}
+                    className="relative w-full"
+                    style={isFullscreen ? { height: "100dvh" } : { aspectRatio: "1280 / 768" }}
                   >
                     {videoPlaying ? (
                       <>
@@ -532,7 +540,6 @@ export default function D2CPage() {
                   </div>
                 )}
               </div>
-            </ScaleIn>
           </div>
         </section>
 
