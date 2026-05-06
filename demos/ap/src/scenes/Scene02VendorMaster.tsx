@@ -37,7 +37,7 @@ const T = {
   CURSOR_AT:    14400,   // cursor lands on Accept (1.4s slow travel)
   CURSOR_CLICK: 14800,   // click happens
   ACCEPTED:     15100,   // button flips to Accepted
-  PHASE_D_START: 16000,    // WhatsApp + status panel screen begins
+  PHASE_D_START: 23000,    // (disabled) WhatsApp + status panel screen begins. Set past scene 2 duration so Phase C ("Vendor passed all checks. Accept to complete onboarding") stays on screen for the full L4 voiceover.
 
   WD_PHONE_IN:    16100,
   WD_PANEL_IN:    16300,
