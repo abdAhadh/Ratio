@@ -98,11 +98,11 @@ const faqs = [
   },
   {
     q: "How does invoice intake work?",
-    a: "Vendors send invoices however they already do: WhatsApp, email, Outlook, Slack, or a supplier portal. Ratio picks them up from every channel, reads them bilingually in English and Arabic, extracts every field, and runs FTA validation automatically. No portal login required for your vendors.",
+    a: "Vendors send invoices however they already do: WhatsApp, email, Outlook, Slack, or a supplier portal. Ratio picks them up from every channel, reads them bilingually in English and Arabic, extracts every field, and runs FTA validation automatically.",
   },
   {
     q: "How does Ratio handle UAE VAT and FTA compliance?",
-    a: "TRN is verified live on the FTA portal during vendor onboarding. Every invoice is checked against FTA tax-invoice format rules. VAT is extracted and matched per line item. Ratio is being built ahead of the UAE's mandatory e-invoicing rollout (FTA 5-corner Peppol, January 2027).",
+    a: "TRN is verified live on the FTA portal during vendor onboarding. Every invoice is checked against FTA tax-invoice format rules and VAT is extracted and matched per line item. Post-mandate e-invoice clearance verification (confirming an invoice was accepted by the FTA portal) is on the roadmap.",
   },
   {
     q: "How accurate are the agents, and what's the audit trail?",
@@ -173,7 +173,7 @@ export default function UAEPage() {
       <Navbar />
       <main className="overflow-x-hidden bg-cream">
         {/* ───────── 1. HERO ───────── */}
-        <section className="pt-36 md:pt-40 pb-32 md:pb-48 px-6">
+        <section className="pt-28 md:pt-40 pb-16 md:pb-48 px-6">
           <div className="max-w-5xl mx-auto text-center">
             <FadeIn delay={0.15}>
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-navy/5 text-navy text-xs font-medium rounded-full mb-6 border border-navy/10">
@@ -215,7 +215,7 @@ export default function UAEPage() {
               </div>
             </FadeIn>
             <FadeIn delay={0.55}>
-              <div className="mt-32 md:mt-36">
+              <div className="mt-12 md:mt-36">
                 <p className="text-xs text-text-secondary uppercase tracking-widest mb-6">
                   Works with ERP systems like
                 </p>
@@ -246,7 +246,7 @@ export default function UAEPage() {
                   {videoPlaying ? (
                     <iframe
                       className="absolute inset-0 w-full h-full"
-                      src="/demos/ap/index.html"
+                      src="https://tryratio.io/ap-demo"
                       title="Ratio UAE AP agents demo"
                       allow="autoplay"
                       style={{ border: "none" }}
@@ -404,8 +404,7 @@ export default function UAEPage() {
                   </span>
                 </h2>
                 <p className="text-white/60 mb-12 max-w-xl mx-auto">
-                  30 minutes with our team. See Ratio running on a company your size,
-                  and what your AP close cycle looks like 30 days in.
+                  Find out how fast you can close your books when AP is fully automated.
                 </p>
                 <a
                   href="/demo"
@@ -419,7 +418,7 @@ export default function UAEPage() {
           </div>
         </section>
       </main>
-      <Footer />
+      <Footer market="ae" />
     </>
   );
 }

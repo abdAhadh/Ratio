@@ -1,19 +1,95 @@
 "use client";
 
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Menu, X, ChevronDown, Check } from "lucide-react";
+import { usePathname } from "next/navigation";
 
-const navLinks = [
-  { label: "Demo", href: "/#demo/sales" },
-  { label: "Features", href: "/#features" },
-  { label: "FAQs", href: "/#faq" },
+const markets = [
+  { id: "in", label: "India", flag: "🇮🇳", href: "/" },
+  { id: "ae", label: "UAE",   flag: "🇦🇪", href: "/ae" },
 ];
+
+function getNavLinks(isAE: boolean) {
+  return isAE
+    ? [
+        { label: "Demo",     href: "/ae#demo" },
+        { label: "Features", href: "/ae#features" },
+        { label: "FAQs",     href: "/ae#faq" },
+      ]
+    : [
+        { label: "Demo",     href: "/#demo/sales" },
+        { label: "Features", href: "/#features" },
+        { label: "FAQs",     href: "/#faq" },
+      ];
+}
+
+function setMarketCookie(market: string) {
+  document.cookie = `market_preference=${market}; path=/; max-age=${60 * 60 * 24 * 30}; samesite=lax`;
+}
+
+function MarketSwitcher({ isAE }: { isAE: boolean }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const current = markets.find((m) => m.id === (isAE ? "ae" : "in"))!;
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative hidden md:block">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="flex items-center gap-1.5 px-3 py-2 rounded-full border border-border bg-white/60 hover:bg-white transition-colors text-sm font-medium text-navy"
+      >
+        <span>{current.flag}</span>
+        <span>{current.label}</span>
+        <ChevronDown className={`w-3.5 h-3.5 text-text-secondary transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 6, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.97 }}
+            transition={{ duration: 0.15 }}
+            className="absolute right-0 mt-2 w-36 bg-white border border-border rounded-xl shadow-[0_8px_24px_rgba(0,0,0,0.1)] overflow-hidden z-50"
+          >
+            {markets.map((m) => (
+              <a
+                key={m.id}
+                href={m.href}
+                onClick={() => { setMarketCookie(m.id); setOpen(false); }}
+                className="flex items-center justify-between px-4 py-2.5 text-sm text-navy hover:bg-cream transition-colors"
+              >
+                <span className="flex items-center gap-2">
+                  <span>{m.flag}</span>
+                  <span>{m.label}</span>
+                </span>
+                {m.id === current.id && <Check className="w-3.5 h-3.5 text-navy" />}
+              </a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const pathname = usePathname();
+  const isAE = pathname === "/ae";
+  const navLinks = getNavLinks(isAE);
+  const current = markets.find((m) => m.id === (isAE ? "ae" : "in"))!;
   const { scrollY } = useScroll();
 
   useEffect(() => {
@@ -27,7 +103,6 @@ export function Navbar() {
     setScrolled(latest > 50);
   });
 
-  // On mobile: always static. On desktop: animate on scroll.
   const shouldAnimate = !isMobile && scrolled;
 
   return (
@@ -38,7 +113,7 @@ export function Navbar() {
         animate={{
           y: shouldAnimate ? 12 : 0,
           opacity: 1,
-          maxWidth: shouldAnimate ? 720 : 1440,
+          maxWidth: shouldAnimate ? 800 : 1440,
           borderRadius: shouldAnimate ? 9999 : 0,
           paddingTop: isMobile ? 14 : shouldAnimate ? 12 : 16,
           paddingBottom: isMobile ? 14 : shouldAnimate ? 12 : 16,
@@ -54,46 +129,42 @@ export function Navbar() {
         }}
         style={{ width: "100%" }}
       >
-        <a href="/" className="flex items-center gap-2 shrink-0">
+        <a href={isAE ? "/ae" : "/"} className="flex items-center gap-2 shrink-0">
           <img src="/logo.svg" alt="Ratio" className="w-8 h-8" />
-          <span className="text-xl font-bold text-navy tracking-tight">
-            Ratio
-          </span>
+          <span className="text-xl font-bold text-navy tracking-tight">Ratio</span>
         </a>
 
         {/* Desktop nav links */}
         <div className="hidden md:flex items-center gap-6 text-sm text-text-secondary">
           {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="hover:text-navy transition-colors whitespace-nowrap"
-            >
+            <a key={link.label} href={link.href} className="hover:text-navy transition-colors whitespace-nowrap">
               {link.label}
             </a>
           ))}
         </div>
 
-        {/* Desktop CTA */}
-        <a
-          href="/demo"
-          className="hidden md:inline-flex items-center gap-1.5 px-5 py-2.5 bg-navy text-white text-base font-medium rounded-full whitespace-nowrap shrink-0 hover:bg-navy-light transition-colors"
-        >
-          Request Demo
-        </a>
+        {/* Desktop right: market switcher + CTA */}
+        <div className="hidden md:flex items-center gap-3">
+          <MarketSwitcher isAE={isAE} />
+          <a
+            href="/demo"
+            className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-navy text-white text-base font-medium rounded-full whitespace-nowrap shrink-0 hover:bg-navy-light transition-colors"
+          >
+            Request Demo
+          </a>
+        </div>
 
-        {/* Mobile hamburger */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden flex items-center justify-center w-10 h-10 text-navy"
-          aria-label="Toggle menu"
-        >
-          {mobileMenuOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <Menu className="w-6 h-6" />
-          )}
-        </button>
+        {/* Mobile right: current market flag + hamburger */}
+        <div className="md:hidden flex items-center gap-3">
+          <span className="text-xl leading-none">{current.flag}</span>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="flex items-center justify-center w-9 h-9 text-navy"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </motion.nav>
 
       {/* Mobile menu overlay */}
@@ -104,23 +175,49 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-[68px] md:hidden bg-cream backdrop-blur-lg border-b border-border shadow-[0_8px_24px_rgba(0,0,0,0.08)] z-40"
+            className="fixed inset-x-0 top-[62px] md:hidden bg-cream backdrop-blur-lg border-b border-border shadow-[0_8px_24px_rgba(0,0,0,0.08)] z-40"
           >
-            <div className="flex flex-col px-6 py-5 gap-1">
+            <div className="flex flex-col px-6 py-5">
+              {/* Nav links */}
               {navLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-lg font-medium text-navy py-3 border-b border-border/50 last:border-0"
+                  className="text-base font-medium text-navy py-3 border-b border-border/50"
                 >
                   {link.label}
                 </a>
               ))}
+
+              {/* Region switcher */}
+              <div className="pt-4 pb-1">
+                <p className="text-xs text-text-secondary uppercase tracking-widest mb-3">Region</p>
+                <div className="flex gap-2">
+                  {markets.map((m) => (
+                    <a
+                      key={m.id}
+                      href={m.href}
+                      onClick={() => { setMarketCookie(m.id); setMobileMenuOpen(false); }}
+                      className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-full border text-sm font-medium transition-colors ${
+                        m.id === current.id
+                          ? "bg-navy text-white border-navy"
+                          : "bg-white text-navy border-border"
+                      }`}
+                    >
+                      <span>{m.flag}</span>
+                      <span>{m.label}</span>
+                      {m.id === current.id && <Check className="w-3 h-3" />}
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* CTA */}
               <a
                 href="/demo"
                 onClick={() => setMobileMenuOpen(false)}
-                className="mt-4 inline-flex items-center justify-center px-6 py-3.5 bg-navy text-white text-base font-medium rounded-full hover:bg-navy-light transition-colors"
+                className="mt-4 inline-flex items-center justify-center px-6 py-3 bg-navy text-white text-base font-medium rounded-full hover:bg-navy-light transition-colors"
               >
                 Request Demo
               </a>

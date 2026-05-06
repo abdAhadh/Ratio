@@ -19,6 +19,7 @@ import {
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { FadeIn, ScaleIn } from "@/components/motion-wrapper";
+import { GeoRedirect } from "@/components/geo-redirect";
 
 const erpSystems = [
   { src: "/erp-sap.svg", alt: "SAP", h: "h-10" },
@@ -224,6 +225,7 @@ export default function D2CPage() {
 
   return (
     <>
+      <GeoRedirect />
       <Navbar />
       <main className="overflow-x-hidden bg-cream">
         {/* ───────── 1. HERO ───────── */}
