@@ -145,6 +145,7 @@ export default function UAEPage() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const demoSectionRef = useRef<HTMLElement>(null);
   const demoContainerRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const posthog = usePostHog();
 
   // CSS-based fullscreen (works on iOS where the Fullscreen API is video-only)
@@ -170,6 +171,21 @@ export default function UAEPage() {
   }, []);
 
   const handlePlay = useCallback(() => {
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+    // Same-origin iframe: play its audio directly from the parent click so
+    // the user gesture chain reaches the audio play() call. This bypasses
+    // the iframe's autoplay restriction and the rAF throttling that follows.
+    try {
+      const idoc = iframe.contentDocument;
+      idoc?.querySelectorAll("audio").forEach((a) => {
+        a.play().catch(() => {});
+      });
+    } catch {
+      // cross-origin iframe — fall back to postMessage only
+    }
+    iframe.focus();
+    iframe.contentWindow?.postMessage({ type: "ratio:start" }, "*");
     setVideoPlaying(true);
     posthog?.capture("demo_played", {
       demo_tab: "AP agents",
@@ -275,24 +291,29 @@ export default function UAEPage() {
                 className="relative w-full"
                 style={isFullscreen ? { height: "100dvh" } : { aspectRatio: "1280 / 768" }}
               >
-                  {videoPlaying ? (
-                    <>
-                      <iframe
-                        className="absolute inset-0 w-full h-full"
-                        src="https://tryratio.io/ap-demo"
-                        title="Ratio UAE AP agents demo"
-                        allow="autoplay"
-                        style={{ border: "none" }}
-                      />
-                      <button
-                        onClick={toggleFullscreen}
-                        aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-                        className="absolute bottom-3 right-3 z-10 w-8 h-8 rounded-md bg-black/40 hover:bg-black/60 backdrop-blur flex items-center justify-center text-white transition-colors"
-                      >
-                        {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-                      </button>
-                    </>
-                  ) : (
+                  {/* Iframe is always rendered AND visible from the start so
+                      the browser doesn't throttle its rAF (Framer Motion + the
+                      synthetic clock both rely on rAF). The cover sits on top
+                      of it. When clicked, the cover is removed AND we send a
+                      postMessage to start the demo. */}
+                  <iframe
+                    ref={iframeRef}
+                    className="absolute inset-0 w-full h-full"
+                    src="/demos/ap/index.html"
+                    title="Ratio UAE AP agents demo"
+                    allow="autoplay"
+                    style={{ border: "none" }}
+                  />
+                  {videoPlaying && (
+                    <button
+                      onClick={toggleFullscreen}
+                      aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                      className="absolute bottom-3 right-3 z-10 w-8 h-8 rounded-md bg-black/40 hover:bg-black/60 backdrop-blur flex items-center justify-center text-white transition-colors"
+                    >
+                      {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                    </button>
+                  )}
+                  {!videoPlaying && (
                     <button
                       onClick={handlePlay}
                       aria-label="Play UAE AP agents demo"

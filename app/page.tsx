@@ -159,6 +159,7 @@ export default function D2CPage() {
   const [videoPlaying, setVideoPlaying] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const demoContainerRef = useRef<HTMLDivElement>(null);
+  const arIframeRef = useRef<HTMLIFrameElement>(null);
 
   // CSS-based fullscreen (works on iOS where the Fullscreen API is video-only)
   useEffect(() => {
@@ -234,6 +235,21 @@ export default function D2CPage() {
 
   // Track demo play
   const handlePlay = useCallback(() => {
+    if (demoTabs[activeDemoTab].slug === "ar") {
+      const iframe = arIframeRef.current;
+      // Same-origin iframe: play its audio directly from the parent's click so
+      // the user gesture chain reaches the audio play() call. This bypasses
+      // the iframe's autoplay restriction and the rAF throttling that follows.
+      try {
+        iframe?.contentDocument?.querySelectorAll("audio").forEach((a) => {
+          a.play().catch(() => {});
+        });
+      } catch {
+        // cross-origin
+      }
+      iframe?.focus();
+      iframe?.contentWindow?.postMessage({ type: "ratio:start" }, "*");
+    }
     setVideoPlaying(true);
     posthog?.capture("demo_played", {
       demo_tab: demoTabs[activeDemoTab].label,
@@ -457,24 +473,28 @@ export default function D2CPage() {
                     className="relative w-full"
                     style={isFullscreen ? { height: "100dvh" } : { aspectRatio: "1280 / 768" }}
                   >
-                    {videoPlaying ? (
-                      <>
-                        <iframe
-                          className="absolute inset-0 w-full h-full"
-                          src="/demos/ar/index.html"
-                          title="Ratio AR agents demo"
-                          allow="autoplay"
-                          style={{ border: "none" }}
-                        />
-                        <button
-                          onClick={toggleFullscreen}
-                          aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-                          className="absolute bottom-3 right-3 z-10 w-8 h-8 rounded-md bg-black/40 hover:bg-black/60 backdrop-blur flex items-center justify-center text-white transition-colors"
-                        >
-                          {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-                        </button>
-                      </>
-                    ) : (
+                    {/* Iframe is always rendered AND visible from the start so
+                        the browser doesn't throttle its rAF (Framer Motion + the
+                        synthetic clock both rely on rAF). The cover sits on top
+                        of it. */}
+                    <iframe
+                      ref={arIframeRef}
+                      className="absolute inset-0 w-full h-full"
+                      src="/demos/ar/index.html"
+                      title="Ratio AR agents demo"
+                      allow="autoplay"
+                      style={{ border: "none" }}
+                    />
+                    {videoPlaying && (
+                      <button
+                        onClick={toggleFullscreen}
+                        aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                        className="absolute bottom-3 right-3 z-10 w-8 h-8 rounded-md bg-black/40 hover:bg-black/60 backdrop-blur flex items-center justify-center text-white transition-colors"
+                      >
+                        {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                      </button>
+                    )}
+                    {!videoPlaying && (
                       <button
                         onClick={handlePlay}
                         aria-label="Play AR agents demo"

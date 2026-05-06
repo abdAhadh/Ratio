@@ -199,14 +199,19 @@ export default function App() {
     setIsPlaying(true);
   }, [hasStarted]);
 
-  // Auto-start when embedded in an iframe (user already clicked play on parent)
+  // When embedded, start on postMessage from parent. This propagates the
+  // user gesture from the parent click (so audio autoplay is allowed)
+  // and is more reliable than a blind auto-start.
   useEffect(() => {
-    if (isEmbedded && !hasStarted) {
-      // Small delay to let the iframe fully render
-      const t = setTimeout(() => startDemo(), 500);
-      return () => clearTimeout(t);
-    }
-  }, [isEmbedded, hasStarted, startDemo]);
+    if (!isEmbedded) return;
+    const handler = (e: MessageEvent) => {
+      if (e.data && e.data.type === 'ratio:start') {
+        startDemo();
+      }
+    };
+    window.addEventListener('message', handler);
+    return () => window.removeEventListener('message', handler);
+  }, [startDemo]);
 
   // Drive currentScene from audio time
   useEffect(() => {
@@ -236,6 +241,30 @@ export default function App() {
     vo.addEventListener('timeupdate', update);
     return () => vo.removeEventListener('timeupdate', update);
   }, []);
+
+  // Fallback clock: ticks via setInterval when audio isn't actually
+  // progressing (autoplay blocked, buffering, etc).
+  useEffect(() => {
+    if (!isPlaying) return;
+    let lastVoTime = -1;
+    let stalledCount = 0;
+    const id = setInterval(() => {
+      const vo = voRef.current;
+      if (vo && !vo.paused && !vo.ended && vo.currentTime !== lastVoTime) {
+        lastVoTime = vo.currentTime;
+        stalledCount = 0;
+        return;
+      }
+      stalledCount++;
+      if (stalledCount < 3) return;
+      setVoTime(t => {
+        const next = t + 0.1;
+        if (next >= TOTAL_DURATION) return TOTAL_DURATION;
+        return next;
+      });
+    }, 100);
+    return () => clearInterval(id);
+  }, [isPlaying]);
 
   // Broadcast time to parent (marketing site embed)
   useEffect(() => {
@@ -378,31 +407,19 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Click-to-start overlay */}
-      <AnimatePresence>
-        {!hasStarted && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-[60] flex items-center justify-center cursor-pointer"
-            style={{ background: 'rgba(250,249,246,0.70)' }}
-            onClick={startDemo}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="w-24 h-24 rounded-full bg-[#111111] flex items-center justify-center shadow-xl">
-                <svg width="28" height="34" viewBox="0 0 20 24" fill="none">
-                  <path d="M2 2L18 12L2 22V2Z" fill="white" />
-                </svg>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Click-to-start overlay (CSS transition, not Framer Motion, so it
+          works even when the iframe's rAF is throttled). */}
+      <div
+        className={`fixed inset-0 z-[60] flex items-center justify-center transition-opacity duration-300 ${hasStarted ? 'opacity-0 pointer-events-none' : 'opacity-100 cursor-pointer'}`}
+        style={{ background: 'rgba(250,249,246,0.70)' }}
+        onClick={startDemo}
+      >
+        <div className="w-24 h-24 rounded-full bg-[#111111] flex items-center justify-center shadow-xl">
+          <svg width="28" height="34" viewBox="0 0 20 24" fill="none">
+            <path d="M2 2L18 12L2 22V2Z" fill="white" />
+          </svg>
+        </div>
+      </div>
     </div>
 
     {/* Mobile-only "visit tryratio.io" pill — outside the scaled canvas,

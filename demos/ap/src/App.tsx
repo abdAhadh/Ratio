@@ -213,16 +213,24 @@ export default function App() {
     setIsPlaying(true);
   }, [hasStarted]);
 
-  // Auto-start when embedded
+  // When embedded, start on postMessage from parent. This propagates the
+  // user gesture from the parent click (so audio autoplay is allowed)
+  // and is more reliable than a blind auto-start.
   useEffect(() => {
-    if (isEmbedded && !hasStarted) {
-      const t = setTimeout(() => start(), 500);
-      return () => clearTimeout(t);
-    }
-  }, [hasStarted, start]);
+    if (!isEmbedded) return;
+    const handler = (e: MessageEvent) => {
+      if (e.data && e.data.type === 'ratio:start') {
+        start();
+      }
+    };
+    window.addEventListener('message', handler);
+    return () => window.removeEventListener('message', handler);
+  }, [start]);
 
-  // Audio-driven clock - VO playback drives `time`. Subtitles and scene
-  // keyframes therefore stay locked to the recorded voiceover.
+  // Audio-driven clock - VO playback drives `time` when audio is playing.
+  // Subtitles and scene keyframes stay locked to the recorded voiceover.
+  // When audio autoplay is blocked (cross-origin iframe without user gesture),
+  // we fall back to a setInterval-driven clock so the visual demo still runs.
   useEffect(() => {
     const vo = voRef.current;
     if (!vo) return;
@@ -235,6 +243,38 @@ export default function App() {
       vo.removeEventListener('ended', onEnded);
     };
   }, [reset]);
+
+  // Fallback clock: ticks via setInterval whenever the demo is playing but
+  // the audio isn't actually progressing (autoplay blocked, buffering, etc).
+  // setInterval is not throttled like requestAnimationFrame in non-interacted
+  // iframes, so this guarantees scenes advance even without audio.
+  useEffect(() => {
+    if (!isPlaying) return;
+    let lastVoTime = -1;
+    let stalledCount = 0;
+    const id = setInterval(() => {
+      const vo = voRef.current;
+      // Audio considered "actively progressing" if currentTime advanced since
+      // last tick. Otherwise assume autoplay was blocked or audio stalled and
+      // tick the clock manually.
+      if (vo && !vo.paused && !vo.ended && vo.currentTime !== lastVoTime) {
+        lastVoTime = vo.currentTime;
+        stalledCount = 0;
+        return;
+      }
+      stalledCount++;
+      if (stalledCount < 3) return; // wait ~300ms before assuming audio is dead
+      setTime(t => {
+        const next = t + 0.1;
+        if (next >= TOTAL_DURATION) {
+          setTimeout(() => reset(), 200);
+          return TOTAL_DURATION;
+        }
+        return next;
+      });
+    }, 100);
+    return () => clearInterval(id);
+  }, [isPlaying, reset]);
 
   // Drive currentScene from time
   useEffect(() => {
@@ -365,30 +405,19 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        <AnimatePresence>
-          {!hasStarted && (
-            <motion.div
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              className="absolute inset-0 z-[60] flex items-center justify-center cursor-pointer"
-              style={{ background: 'rgba(251,247,241,0.78)' }}
-              onClick={start}
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div className="w-24 h-24 rounded-full bg-[#1A1A2E] flex items-center justify-center shadow-xl">
-                  <svg width="28" height="34" viewBox="0 0 20 24" fill="none">
-                    <path d="M2 2L18 12L2 22V2Z" fill="white" />
-                  </svg>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* CSS-driven cover (uses compositor, not rAF, so it works
+            even when the iframe's rAF is throttled by the browser). */}
+        <div
+          className={`absolute inset-0 z-[60] flex items-center justify-center transition-opacity duration-300 ${hasStarted ? 'opacity-0 pointer-events-none' : 'opacity-100 cursor-pointer'}`}
+          style={{ background: 'rgba(251,247,241,0.78)' }}
+          onClick={start}
+        >
+          <div className="w-24 h-24 rounded-full bg-[#1A1A2E] flex items-center justify-center shadow-xl">
+            <svg width="28" height="34" viewBox="0 0 20 24" fill="none">
+              <path d="M2 2L18 12L2 22V2Z" fill="white" />
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   );
