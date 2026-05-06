@@ -8,8 +8,8 @@ export interface SceneDefinition {
 // 9 scenes mapped to the demo moments. Total ≈ 132s, matched to vo.mp3.
 export const SCENES: SceneDefinition[] = [
   { id: 1, duration: 7.5,  title: 'Welcome',          group: 'intro' },
-  { id: 2, duration: 22.8, title: 'Vendor Onboarding', group: 'setup' },
-  { id: 3, duration: 17.5, title: 'Invoice Intake',   group: 'invoice' },
+  { id: 2, duration: 26.7, title: 'Vendor Onboarding', group: 'setup' },
+  { id: 3, duration: 13.6, title: 'Invoice Intake',   group: 'invoice' },
   { id: 4, duration: 30.0, title: 'Validate & Match', group: 'invoice' },
   { id: 6, duration: 18.4, title: 'Approval',         group: 'approval' },
   { id: 7, duration: 14.5, title: 'Payment & PDC',    group: 'pay' },

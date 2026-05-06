@@ -41,15 +41,19 @@ const T = {
   CURSOR_AT:    17100,   // cursor lands on Accept (1.4s slow travel)
   CURSOR_CLICK: 17500,   // click happens
   ACCEPTED:     17800,   // button flips to Accepted
-  PHASE_D_START: 23000,    // (disabled) WhatsApp + status panel screen begins. Set past scene 2 duration so Phase C ("Vendor passed all checks. Accept to complete onboarding") stays on screen for the full L4 voiceover.
-
-  WD_PHONE_IN:    16100,
-  WD_PANEL_IN:    16300,
-  WD_RATIO_INTRO: 16700,   // Ratio: "✓ You're verified..." (in chat)
-  WD_VENDOR_TYPING: 17900, // Vendor "typing..." indicator
-  WD_VENDOR_PDF:  18800,   // Vendor sends INV-2025-00428.pdf
-  WD_INVOICE_DONE: 19500,  // Status panel "Invoice raised" flips to ✓
-  WD_RATIO_ACK:   20100,   // Ratio acknowledges in chat
+  // Phase D = the "vendor sends invoice on WhatsApp" split screen. Plays
+  // during the L5 voiceover ("Vendors can directly send the invoice to
+  // Ratio on WhatsApp"). Starts at scene-local 22800ms == global 30.3s
+  // (= L5 audio start). Scene 2 duration is 26.2s, giving Phase D a
+  // 3.4s window — keyframes are compressed accordingly.
+  PHASE_D_START:    22800,
+  WD_PHONE_IN:      22900,
+  WD_PANEL_IN:      23000,
+  WD_RATIO_INTRO:   23200,  // Ratio: "✓ You're verified..." (in chat)
+  WD_VENDOR_TYPING: 23800,  // Vendor "typing..." indicator
+  WD_VENDOR_PDF:    24500,  // Vendor sends INV-2025-00428.pdf
+  WD_INVOICE_DONE:  25100,  // Status panel "Invoice raised" flips to ✓
+  WD_RATIO_ACK:     25600,  // Ratio acknowledges in chat
 };
 
 export default function Scene02VendorMaster({ t }: { t: number }) {
