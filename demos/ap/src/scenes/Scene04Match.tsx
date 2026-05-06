@@ -21,41 +21,47 @@ const T = {
   AR_TOGGLE: 6500,
   EN_TOGGLE: 10000,
 
-  // ── Scene 4 portion (14000-30000ms) ─────────────────────────────────────────
-  // Step 1 (Compliance) reveals BEFORE scroll, while still partially visible at bottom.
-  STEP1_SHOW:  14400,
-  STEP1_S1:    14800,
-  STEP1_S2:    15400,
-  STEP1_S3:    16000,
-  STEP1_DONE:  16500,
+  // ── Scene 4 portion - keyframes locked to L8 / L9 / L10 / L11 voiceover ──
+  // mergedT origin = scene 3 start (global 34.2s). So:
+  //   L8  (52.1-58.4s) "FTA rules / Duplicates flagged"  -> mergedT 17900-24200
+  //   L9  (58.5-64.6s) "purchase order and GRN"          -> mergedT 24300-30400
+  //   L10 (64.7-69.5s) "surfaces smart insights"         -> mergedT 30500-35300
+  //   L11 (69.6-77.7s) "Pricing drift / duplicate / risk"-> mergedT 35400-43500
+  //
+  // Step 1 (Compliance) reveals BEFORE the scroll, peeking up from the bottom.
+  STEP1_SHOW:  16500,   // ~1.4s before L8, peek
+  STEP1_S1:    18300,   // L8 line 1: "FTA rules"
+  STEP1_S2:    19800,
+  STEP1_S3:    21000,   // L8 line 2: "Duplicates flagged"
+  STEP1_DONE:  22500,
 
-  // Smooth slow scroll DOWN (custom RAF, ~1800ms)
-  SCROLL_DOWN: 16800,
+  // Slow scroll DOWN (custom RAF, ~1800ms) — starts just as L8 begins
+  SCROLL_DOWN: 17900,
 
-  // Step 2 generates DURING and AFTER the scroll — feels parallel
-  STEP2_SHOW:  17400,
-  STEP2_S1:    18000,
-  STEP2_S2:    18800,
-  MODAL_OPEN:  19000,
-  // Cursor sequence: enter → move 700ms → settle 400ms → click → wait 400ms → move 700ms → settle 400ms → click → wait 400ms → close
-  M_CURSOR_IN:    19300,
-  M_CURSOR_AT_OPT:19800,
-  MODAL_PICK:     20900,
-  M_CURSOR_AT_SEL:21300,
-  M_SELECT_CLICK: 22400,
-  MODAL_CLOSE:    22800,
-  STEP2_S3:       22900,
-  STEP2_DONE:     23200,
+  // Step 2 (PO / GRN modal) is locked to L9 — modal opens once the VO says
+  // "purchase order and GRN" so the click matches the words.
+  STEP2_SHOW:  23800,
+  STEP2_S1:    24500,
+  STEP2_S2:    25500,
+  MODAL_OPEN:  26200,   // ~1.9s into L9 - modal pops as VO says "GRN"
+  M_CURSOR_IN:    26500,
+  M_CURSOR_AT_OPT:27000,
+  MODAL_PICK:     28100,
+  M_CURSOR_AT_SEL:28500,
+  M_SELECT_CLICK: 29400,
+  MODAL_CLOSE:    29800,
+  STEP2_S3:       29900,
+  STEP2_DONE:     30200,
 
   // ── Scroll BACK UP. Cursor stays from modal, travels with the scroll up to
   //    the Smart Insights chevron, clicks it, the card expands, then the
   //    cursor moves to the back arrow and clicks to leave for Approval. ──────
-  SCROLL_UP:           24000,    // begins right after STEP2 settles
-  CURSOR_TO_INSIGHTS:  24600,    // cursor leaves modal area, heads up
-  CURSOR_AT_INSIGHTS:  25600,    // cursor lands on chevron
-  INSIGHTS_CLICK:      26100,    // cursor clicks → card expands smoothly
-  CURSOR_TO_BACK:      27800,    // after viewing insights, head to the back arrow
-  BACK_CLICK:          29400,    // click back · scene transitions to Approval
+  SCROLL_UP:           30700,   // start of L10 - "smart insights"
+  CURSOR_TO_INSIGHTS:  31300,
+  CURSOR_AT_INSIGHTS:  32600,
+  INSIGHTS_CLICK:      33100,   // mid-L10 - card expands as VO names insights
+  CURSOR_TO_BACK:      41000,   // L11 winding down - head to back arrow
+  BACK_CLICK:          42500,   // ~1s before scene 6 begins
 };
 
 const GRNS = [
