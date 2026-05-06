@@ -51,32 +51,32 @@ const SUBTITLE_CUES: { start: number; end: number; text: string }[] = [
 
   // Scene 2 - Vendor Onboarding
   { start: 7.5,   end: 12.0,  text: 'You can onboard a new vendor with just their WhatsApp number or email address.' },
-  { start: 12.1,  end: 20.1,  text: "Ratio's AI agent reaches out and collects the trade licence and IBAN certificate." },
-  { start: 20.2,  end: 30.2,  text: 'It verifies and validates the documents, schedules continuous monitoring, and completes the onboarding.' },
+  { start: 12.1,  end: 20.1,  text: "Ratio's AI agent will reach out and collect all the relevant documents, such as the trade licence and IBAN certificate." },
+  { start: 20.2,  end: 30.2,  text: 'The moment Ratio receives them, it verifies and validates the documents, schedules continuous monitoring, and completes the vendor onboarding.' },
 
   // Scene 3 - Invoice Intake
-  { start: 30.3,  end: 33.7,  text: 'Vendors send the invoice to Ratio on WhatsApp.' },
-  { start: 34.2,  end: 41.5,  text: "Ratio's extraction model is trained on thousands of UAE invoices, both in English and Arabic." },
-  { start: 41.9,  end: 51.9,  text: 'It beats legacy OCR, extracting every line item, TRN, AED amount, and VAT.' },
+  { start: 30.3,  end: 33.7,  text: 'Vendors can directly send the invoice to Ratio on WhatsApp.' },
+  { start: 34.2,  end: 41.5,  text: "Ratio's AI extraction model is trained on tens of thousands of UAE invoices, both in English and Arabic." },
+  { start: 41.9,  end: 51.9,  text: 'It beats legacy OCR, and accurately extracts every line item, TRN, AED amount, and VAT from invoices.' },
 
   // Scene 4 - Validate, Match & Surface Insights
-  { start: 52.1,  end: 58.4,  text: 'Tax-invoice format checked against FTA rules. Duplicates flagged.' },
+  { start: 52.1,  end: 58.4,  text: 'Tax-invoice format is checked against FTA rules. Duplicate invoices are flagged.' },
   { start: 58.5,  end: 64.6,  text: "Ratio's AI also fetches the matching purchase order and GRN from your ERP." },
-  { start: 64.7,  end: 69.5,  text: 'For every invoice, it surfaces smart insights your team would have missed.' },
-  { start: 69.6,  end: 77.7,  text: 'Pricing drift. Possible duplicate. Vendor risk. Caught before approval.' },
+  { start: 64.7,  end: 69.5,  text: 'For every invoice, it surfaces smart insights that your team would have missed.' },
+  { start: 69.6,  end: 77.7,  text: "A pricing change. Possible duplicates. Vendor compliance risk. All highlighted, so it's caught before approval." },
 
   // Scene 6 - Approval
-  { start: 77.8,  end: 85.2,  text: 'Approval workflow routes the right invoice to the right approver. Payments made on time.' },
-  { start: 85.3,  end: 93.4,  text: "The approver can approve in one click, in Ratio's mobile app or WhatsApp." },
-  { start: 93.8,  end: 96.1,  text: 'Full context of the invoice, with the audit trail.' },
+  { start: 77.8,  end: 85.2,  text: 'You can set approval workflow logic, so the right invoice is routed to the right approver. And payments are made on time.' },
+  { start: 85.3,  end: 93.4,  text: "The approver can approve them in one click, in Ratio's mobile app, or a WhatsApp chat." },
+  { start: 93.8,  end: 96.1,  text: 'They can also see the full context of the invoice, along with the audit trail.' },
 
   // Scene 7 - Payment & PDC
-  { start: 96.2,  end: 105.1, text: 'Pay via UAEFTS, IPP for instant transfers, or SWIFT for cross-border.' },
-  { start: 105.2, end: 110.6, text: 'Or issue a post-dated cheque. Ratio tracks the full lifecycle.' },
+  { start: 96.2,  end: 105.1, text: 'Once approved, payment can be done via UAEFTS, IPP for instant transfers, or SWIFT for cross-border.' },
+  { start: 105.2, end: 110.6, text: 'Or issue a post-dated cheque. Ratio tracks the full lifecycle of the payment.' },
 
   // Scene 8 - Sync & Reconcile
-  { start: 110.7, end: 116.0, text: 'Ratio integrates with your ERP. Sync reconciled entries with one click.' },
-  { start: 116.6, end: 126.3, text: 'Bank match, journal lines, and the right Chart of Accounts. Your ledger, always up to date.' },
+  { start: 110.7, end: 116.0, text: 'Ratio integrates with your ERP system, and can sync reconciled entries with one click.' },
+  { start: 116.6, end: 126.3, text: 'Every entry already has its bank match, journal lines, and the right Chart of Accounts, so your ledger is reconciled and always up to date.' },
 
   // Scene 9 - Closing
   { start: 126.4, end: 131.8, text: 'Every invoice handled. Every payment reconciled. Built for the UAE.' },
