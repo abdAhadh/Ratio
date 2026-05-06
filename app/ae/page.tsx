@@ -248,7 +248,7 @@ export default function UAEPage() {
             <FadeIn delay={0.45}>
               <div className="flex justify-center mb-16">
                 <a
-                  href="/demo"
+                  href="/demo?market=ae"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-navy text-white font-medium rounded-full hover:bg-navy-light transition-colors"
                 >
                   Request Demo
@@ -468,7 +468,7 @@ export default function UAEPage() {
                   Find out how fast you can close your books when AP is fully automated.
                 </p>
                 <a
-                  href="/demo"
+                  href="/demo?market=ae"
                   className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-navy font-medium rounded-full hover:bg-white/90 transition-colors text-lg"
                 >
                   Request Demo

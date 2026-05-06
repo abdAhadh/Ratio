@@ -1,17 +1,17 @@
 "use client";
 
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { Menu, X, ChevronDown, Check } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { useMarket, type Market } from "@/lib/use-market";
 
-const markets = [
+const markets: { id: Market; label: string; flag: string; href: string }[] = [
   { id: "in", label: "India", flag: "🇮🇳", href: "/?market=in" },
   { id: "ae", label: "UAE",   flag: "🇦🇪", href: "/?market=ae" },
 ];
 
-function getNavLinks(isAE: boolean) {
-  return isAE
+function getNavLinks(market: Market) {
+  return market === "ae"
     ? [
         { label: "Demo",     href: "/ae#demo" },
         { label: "Features", href: "/ae#features" },
@@ -28,10 +28,10 @@ function setMarketCookie(market: string) {
   document.cookie = `market_preference=${market}; path=/; max-age=${60 * 60 * 24 * 30}; samesite=lax`;
 }
 
-function MarketSwitcher({ isAE }: { isAE: boolean }) {
+function MarketSwitcher({ market }: { market: Market }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const current = markets.find((m) => m.id === (isAE ? "ae" : "in"))!;
+  const current = markets.find((m) => m.id === market)!;
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -82,14 +82,16 @@ function MarketSwitcher({ isAE }: { isAE: boolean }) {
   );
 }
 
-export function Navbar() {
+function NavbarInner() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const pathname = usePathname();
-  const isAE = pathname === "/ae";
-  const navLinks = getNavLinks(isAE);
-  const current = markets.find((m) => m.id === (isAE ? "ae" : "in"))!;
+  const market = useMarket();
+  const isAE = market === "ae";
+  const navLinks = getNavLinks(market);
+  const current = markets.find((m) => m.id === market)!;
+  const demoHref = isAE ? "/demo?market=ae" : "/demo";
+  const logoHref = isAE ? "/ae" : "/";
   const { scrollY } = useScroll();
 
   useEffect(() => {
@@ -129,7 +131,7 @@ export function Navbar() {
         }}
         style={{ width: "100%" }}
       >
-        <a href={isAE ? "/ae" : "/"} className="flex items-center gap-2 shrink-0">
+        <a href={logoHref} className="flex items-center gap-2 shrink-0">
           <img src="/logo.svg" alt="Ratio" className="w-8 h-8" />
           <span className="text-xl font-bold text-navy tracking-tight">Ratio</span>
         </a>
@@ -145,9 +147,9 @@ export function Navbar() {
 
         {/* Desktop right: market switcher + CTA */}
         <div className="hidden md:flex items-center gap-3">
-          <MarketSwitcher isAE={isAE} />
+          <MarketSwitcher market={market} />
           <a
-            href="/demo"
+            href={demoHref}
             className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-navy text-white text-base font-medium rounded-full whitespace-nowrap shrink-0 hover:bg-navy-light transition-colors"
           >
             Request Demo
@@ -210,7 +212,7 @@ export function Navbar() {
 
               {/* CTA */}
               <a
-                href="/demo"
+                href={demoHref}
                 onClick={() => setMobileMenuOpen(false)}
                 className="mt-4 inline-flex items-center justify-center px-6 py-3 bg-navy text-white text-base font-medium rounded-full hover:bg-navy-light transition-colors"
               >
@@ -221,5 +223,13 @@ export function Navbar() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+export function Navbar() {
+  return (
+    <Suspense fallback={null}>
+      <NavbarInner />
+    </Suspense>
   );
 }

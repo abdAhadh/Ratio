@@ -1,5 +1,15 @@
-export function Footer({ market }: { market?: "ae" }) {
-  const companyLinks = market === "ae"
+"use client";
+
+import { Suspense } from "react";
+import { useMarket, type Market } from "@/lib/use-market";
+
+function FooterInner({ market }: { market?: Market }) {
+  // If parent didn't pass a market, auto-detect from URL/cookie.
+  const detected = useMarket();
+  const m: Market = market ?? detected;
+  const isAE = m === "ae";
+
+  const companyLinks = isAE
     ? [
         { label: "Demo",     href: "/ae#demo" },
         { label: "Features", href: "/ae#features" },
@@ -16,11 +26,11 @@ export function Footer({ market }: { market?: "ae" }) {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           <div className="col-span-2 md:col-span-2">
-            <a href={market === "ae" ? "/ae" : "/"} className="flex items-center gap-2">
+            <a href={isAE ? "/ae" : "/"} className="flex items-center gap-2">
               <img src="/logo.svg" alt="Ratio" className="w-8 h-8" />
               <span className="text-xl font-bold text-navy tracking-tight">Ratio</span>
             </a>
-            {market !== "ae" && (
+            {!isAE && (
               <p className="text-sm text-text-secondary mt-2 max-w-xs">
                 AI agents that sit on top of your ERP to automate finance ops.
                 Built for India&apos;s growing firms.
@@ -59,7 +69,7 @@ export function Footer({ market }: { market?: "ae" }) {
           <p className="text-xs text-text-secondary text-center sm:text-left">
             &copy; 2026 TidalPeak Labs Private Ltd. All rights reserved.
           </p>
-          {market !== "ae" && (
+          {!isAE && (
             <p className="text-xs text-text-secondary">
               &#127470;&#127475; Made in India, for India.
             </p>
@@ -67,5 +77,13 @@ export function Footer({ market }: { market?: "ae" }) {
         </div>
       </div>
     </footer>
+  );
+}
+
+export function Footer({ market }: { market?: Market }) {
+  return (
+    <Suspense fallback={null}>
+      <FooterInner market={market} />
+    </Suspense>
   );
 }
