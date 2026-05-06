@@ -154,17 +154,14 @@ export function Navbar() {
           </a>
         </div>
 
-        {/* Mobile right: current market flag + hamburger */}
-        <div className="md:hidden flex items-center gap-3">
-          <span className="text-xl leading-none">{current.flag}</span>
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="flex items-center justify-center w-9 h-9 text-navy"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
+        {/* Mobile right: hamburger only */}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="md:hidden flex items-center justify-center w-9 h-9 text-navy"
+          aria-label="Toggle menu"
+        >
+          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
       </motion.nav>
 
       {/* Mobile menu overlay */}
@@ -190,27 +187,26 @@ export function Navbar() {
                 </a>
               ))}
 
-              {/* Region switcher */}
-              <div className="pt-4 pb-1">
-                <p className="text-xs text-text-secondary uppercase tracking-widest mb-3">Region</p>
-                <div className="flex gap-2">
-                  {markets.map((m) => (
+              {/* Region switcher — subtle inline selector */}
+              <div className="pt-3 pb-1 flex items-center gap-1">
+                {markets.map((m, i) => (
+                  <span key={m.id} className="flex items-center gap-1">
+                    {i > 0 && <span className="text-border text-sm select-none">·</span>}
                     <a
-                      key={m.id}
                       href={m.href}
                       onClick={() => { setMarketCookie(m.id); setMobileMenuOpen(false); }}
-                      className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-full border text-sm font-medium transition-colors ${
+                      className={`flex items-center gap-1.5 px-2 py-1 rounded text-sm transition-colors ${
                         m.id === current.id
-                          ? "bg-navy text-white border-navy"
-                          : "bg-white text-navy border-border"
+                          ? "text-navy font-semibold"
+                          : "text-text-secondary hover:text-navy"
                       }`}
                     >
                       <span>{m.flag}</span>
                       <span>{m.label}</span>
                       {m.id === current.id && <Check className="w-3 h-3" />}
                     </a>
-                  ))}
-                </div>
+                  </span>
+                ))}
               </div>
 
               {/* CTA */}

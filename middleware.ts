@@ -5,22 +5,12 @@ export function middleware(request: NextRequest) {
 
   if (pathname !== "/") return NextResponse.next();
 
-  // ?market=ae|in — manual override via URL param, saves preference as cookie
+  // ?market=ae|in — session-only override for testing, never sets a cookie
   const marketParam = searchParams.get("market");
-  if (marketParam === "ae" || marketParam === "in") {
-    const res =
-      marketParam === "ae"
-        ? NextResponse.rewrite(new URL("/ae", request.url))
-        : NextResponse.next();
-    res.cookies.set("market_preference", marketParam, {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 30, // 30 days
-      sameSite: "lax",
-    });
-    return res;
-  }
+  if (marketParam === "ae") return NextResponse.rewrite(new URL("/ae", request.url));
+  if (marketParam === "in") return NextResponse.next();
 
-  // Respect saved user preference (set by cookie when they use the switcher)
+  // Respect the user's explicit switcher preference (set only when they manually pick a country)
   const saved = request.cookies.get("market_preference")?.value;
   if (saved === "ae") return NextResponse.rewrite(new URL("/ae", request.url));
   if (saved === "in") return NextResponse.next();
@@ -31,12 +21,9 @@ export function middleware(request: NextRequest) {
     request.headers.get("cf-ipcountry") ??
     "";
 
-  if (country === "AE") {
-    return NextResponse.rewrite(new URL("/ae", request.url));
-  }
+  if (country === "AE") return NextResponse.rewrite(new URL("/ae", request.url));
 
-  // Secondary signal (timezone) is handled client-side in GeoRedirect component
-  // because timezone is not available in edge middleware
+  // Secondary timezone signal handled client-side in GeoRedirect
   return NextResponse.next();
 }
 
