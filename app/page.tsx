@@ -15,6 +15,8 @@ import {
   ShieldCheck,
   Building2,
   MessageSquare,
+  Maximize2,
+  Minimize2,
 } from "lucide-react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -155,6 +157,24 @@ export default function D2CPage() {
   const [hoverTab, setHoverTab] = useState<number | null>(null);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const demoContainerRef = useRef<HTMLDivElement>(null);
+
+  // Track native fullscreen state
+  useEffect(() => {
+    const handler = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", handler);
+    return () => document.removeEventListener("fullscreenchange", handler);
+  }, []);
+
+  const toggleFullscreen = useCallback(() => {
+    if (!demoContainerRef.current) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      demoContainerRef.current.requestFullscreen();
+    }
+  }, []);
   const tabsWrapRef = useRef<HTMLDivElement>(null);
   const demoSectionRef = useRef<HTMLElement>(null);
   const posthog = usePostHog();
@@ -341,7 +361,10 @@ export default function D2CPage() {
             </FadeIn>
 
             <ScaleIn>
-              <div className="relative rounded-2xl border border-border bg-white shadow-[0_8px_60px_rgba(0,0,0,0.08)] overflow-hidden">
+              <div
+                ref={demoContainerRef}
+                className="relative bg-white rounded-2xl border border-border shadow-[0_8px_60px_rgba(0,0,0,0.08)] overflow-hidden"
+              >
                 {activeDemoTab === 0 && (
                   <div
                     className="relative w-full"
@@ -423,17 +446,26 @@ export default function D2CPage() {
 
                 {activeDemoTab === 1 && (
                   <div
-                    className="relative w-full"
-                    style={{ aspectRatio: "1280 / 768" }}
+                    className={`relative w-full ${isFullscreen ? "h-full" : ""}`}
+                    style={isFullscreen ? {} : { aspectRatio: "1280 / 768" }}
                   >
                     {videoPlaying ? (
-                      <iframe
-                        className="absolute inset-0 w-full h-full"
-                        src="/demos/ar/index.html"
-                        title="Ratio AR agents demo"
-                        allow="autoplay"
-                        style={{ border: "none" }}
-                      />
+                      <>
+                        <iframe
+                          className="absolute inset-0 w-full h-full"
+                          src="/demos/ar/index.html"
+                          title="Ratio AR agents demo"
+                          allow="autoplay"
+                          style={{ border: "none" }}
+                        />
+                        <button
+                          onClick={toggleFullscreen}
+                          aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                          className="absolute bottom-3 right-3 z-10 w-8 h-8 rounded-md bg-black/40 hover:bg-black/60 backdrop-blur flex items-center justify-center text-white transition-colors"
+                        >
+                          {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                        </button>
+                      </>
                     ) : (
                       <button
                         onClick={handlePlay}

@@ -6,8 +6,8 @@ import { Menu, X, ChevronDown, Check } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const markets = [
-  { id: "in", label: "India", flag: "🇮🇳", href: "/" },
-  { id: "ae", label: "UAE",   flag: "🇦🇪", href: "/ae" },
+  { id: "in", label: "India", flag: "🇮🇳", href: "/?market=in" },
+  { id: "ae", label: "UAE",   flag: "🇦🇪", href: "/?market=ae" },
 ];
 
 function getNavLinks(isAE: boolean) {

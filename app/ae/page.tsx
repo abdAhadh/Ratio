@@ -14,6 +14,8 @@ import {
   Smartphone,
   Landmark,
   Sparkles,
+  Maximize2,
+  Minimize2,
 } from "lucide-react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
@@ -140,8 +142,26 @@ function FAQItem({ q, a, open, onClick }: { q: string; a: string; open: boolean;
 export default function UAEPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const demoSectionRef = useRef<HTMLElement>(null);
+  const demoContainerRef = useRef<HTMLDivElement>(null);
   const posthog = usePostHog();
+
+  // Track native fullscreen state
+  useEffect(() => {
+    const handler = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", handler);
+    return () => document.removeEventListener("fullscreenchange", handler);
+  }, []);
+
+  const toggleFullscreen = useCallback(() => {
+    if (!demoContainerRef.current) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      demoContainerRef.current.requestFullscreen();
+    }
+  }, []);
 
   const handlePlay = useCallback(() => {
     setVideoPlaying(true);
@@ -238,19 +258,31 @@ export default function UAEPage() {
             </FadeIn>
 
             <ScaleIn>
-              <div className="relative rounded-2xl border border-border bg-white shadow-[0_8px_60px_rgba(0,0,0,0.08)] overflow-hidden">
+              <div
+                ref={demoContainerRef}
+                className="relative bg-white rounded-2xl border border-border shadow-[0_8px_60px_rgba(0,0,0,0.08)] overflow-hidden"
+              >
                 <div
-                  className="relative w-full"
-                  style={{ aspectRatio: "1280 / 768" }}
+                  className={`relative w-full ${isFullscreen ? "h-full" : ""}`}
+                  style={isFullscreen ? {} : { aspectRatio: "1280 / 768" }}
                 >
                   {videoPlaying ? (
-                    <iframe
-                      className="absolute inset-0 w-full h-full"
-                      src="https://tryratio.io/ap-demo"
-                      title="Ratio UAE AP agents demo"
-                      allow="autoplay"
-                      style={{ border: "none" }}
-                    />
+                    <>
+                      <iframe
+                        className="absolute inset-0 w-full h-full"
+                        src="https://tryratio.io/ap-demo"
+                        title="Ratio UAE AP agents demo"
+                        allow="autoplay"
+                        style={{ border: "none" }}
+                      />
+                      <button
+                        onClick={toggleFullscreen}
+                        aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                        className="absolute bottom-3 right-3 z-10 w-8 h-8 rounded-md bg-black/40 hover:bg-black/60 backdrop-blur flex items-center justify-center text-white transition-colors"
+                      >
+                        {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                      </button>
+                    </>
                   ) : (
                     <button
                       onClick={handlePlay}

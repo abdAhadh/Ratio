@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import { PostHogProvider } from "./providers/posthog";
+import { CookieBanner } from "@/components/cookie-banner";
 
 const dmSans = DM_Sans({
   variable: "--font-geist-sans",
@@ -50,6 +51,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <PostHogProvider>{children}</PostHogProvider>
+        <CookieBanner />
       </body>
     </html>
   );
