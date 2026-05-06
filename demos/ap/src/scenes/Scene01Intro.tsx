@@ -29,10 +29,15 @@ export default function Scene01Intro() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium tracking-wide"
+          className="inline-flex items-center gap-2 pl-1.5 pr-3 py-1 rounded-full text-[11px] font-medium tracking-wide"
           style={{ background: 'rgba(26,26,46,0.05)', color: '#1A1A2E', border: '1px solid rgba(26,26,46,0.10)' }}
         >
-          <span className="w-1.5 h-1.5 rounded-full" style={{ background: '#A87C28' }} />
+          <svg width="18" height="12" viewBox="0 0 18 12" xmlns="http://www.w3.org/2000/svg" className="rounded-sm overflow-hidden shadow-sm">
+            <rect x="0" y="0" width="4.5" height="12" fill="#EF3340" />
+            <rect x="4.5" y="0" width="13.5" height="4" fill="#00732F" />
+            <rect x="4.5" y="4" width="13.5" height="4" fill="#FFFFFF" />
+            <rect x="4.5" y="8" width="13.5" height="4" fill="#000000" />
+          </svg>
           Built for the UAE
         </motion.div>
 
