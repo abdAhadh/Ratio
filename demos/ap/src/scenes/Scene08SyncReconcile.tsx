@@ -17,36 +17,40 @@ import RatioLogo from '../components/RatioLogo';
 //                       5. Cursor clicks Sync → "All synced".
 
 const T = {
-  // ── Phase 0 · Hero intro · slow logo cycle, each ERP visible ~1.7s ─────
-  HERO_IN:           300,
-  ERP_FIRST:         800,
-  ERP_STEP:         1700,    // each logo lingers ~1.7s before the next flip
-  HERO_OUT:         9700,    // 800 + 5×1700 + 400 grace
+  // Scene 8 = 15.7s, locked to L17 + L18.
+  //   L17 (scene-local 0-5.3s)   "Ratio integrates with your ERP system,
+  //                               sync reconciled entries with one click"
+  //   L18 (scene-local 5.9-15.6s) "Every entry already has its bank match,
+  //                                journal lines, Chart of Accounts..."
 
-  // ── Phase 1 · Accounting ────────────────────────────────────────────────
-  TABLE_FADE:      10000,
-  ROW_REVEAL:      10200,    // first row · subsequent rows stagger 90ms
+  // ── Phase 0 · Hero intro · runs through L17, all 5 ERPs cycle in ~5s ────
+  HERO_IN:           200,
+  ERP_FIRST:         500,
+  ERP_STEP:          940,    // 5 logos × 940ms ≈ 4.7s — last logo lingers to HERO_OUT
+  HERO_OUT:         5800,    // exits ~100ms before L18 starts
+
+  // ── Phase 1 · Accounting · plays during L18 ─────────────────────────────
+  TABLE_FADE:       5900,    // L18 starts
+  ROW_REVEAL:       6100,    // first row · subsequent rows stagger 90ms
 
   // Sub-flow A — click one row, see its bank-recon panel, close it.
-  // Panel stays open ~5s so the user can read all three sections (bank-recon
-  // details, linked-bill confirmation, journal posting).
-  CURSOR_IN:       11600,
-  CURSOR_AT_ROW:   12100,
-  ROW_CLICK:       12500,
-  ROW_PANEL_OPEN:  12700,
-  ROW_PANEL_FILL:  13300,
-  CURSOR_TO_CLOSE: 17200,    // dwell ~4s on panel before heading to close
-  CLOSE_CLICK:     17900,
-  PANEL_CLOSED:    18300,
+  CURSOR_IN:        7000,
+  CURSOR_AT_ROW:    7400,
+  ROW_CLICK:        7700,
+  ROW_PANEL_OPEN:   7900,
+  ROW_PANEL_FILL:   8400,
+  CURSOR_TO_CLOSE: 11000,    // dwell ~3s on panel
+  CLOSE_CLICK:     11500,
+  PANEL_CLOSED:    11800,
 
   // Sub-flow B — select all + bulk sync to ERP
-  CURSOR_TO_SELALL:18600,
-  SELECT_ALL_CLICK:19100,
+  CURSOR_TO_SELALL:12100,
+  SELECT_ALL_CLICK:12600,
   ROW_FILL_STEP:      55,
-  CURSOR_TO_SYNC:  19900,
-  SYNC_CLICK:      20900,
-  SYNC_PROGRESS:   21100,
-  SYNCED:          22500,
+  CURSOR_TO_SYNC:  13300,
+  SYNC_CLICK:      14000,
+  SYNC_PROGRESS:   14200,
+  SYNCED:          15400,    // ~200ms before scene 8 ends
 };
 
 // UAE-relevant ERPs
