@@ -195,15 +195,14 @@ export function Navbar() {
                     <a
                       href={m.href}
                       onClick={() => { setMarketCookie(m.id); setMobileMenuOpen(false); }}
-                      className={`flex items-center gap-1.5 px-2 py-1 rounded text-sm transition-colors ${
+                      className={`flex items-center gap-1.5 px-2 py-1 text-sm transition-colors ${
                         m.id === current.id
-                          ? "text-navy font-semibold"
-                          : "text-text-secondary hover:text-navy"
+                          ? "text-navy font-semibold border-b-2 border-navy"
+                          : "text-text-secondary hover:text-navy border-b-2 border-transparent"
                       }`}
                     >
                       <span>{m.flag}</span>
                       <span>{m.label}</span>
-                      {m.id === current.id && <Check className="w-3 h-3" />}
                     </a>
                   </span>
                 ))}
