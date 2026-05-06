@@ -8,8 +8,8 @@ const nextConfig: NextConfig = {
         destination: "/demos/ar/index.html",
       },
       {
-        source: "/demos/ap",
-        destination: "/demos/ap/index.html",
+        source: "/ap-demo",
+        destination: "/ap-demo/index.html",
       },
     ];
   },

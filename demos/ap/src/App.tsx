@@ -308,9 +308,9 @@ export default function App() {
           if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
         }}
       >
-        <audio ref={bgmRef} src="/bgm.mp3" preload="auto" loop
+        <audio ref={bgmRef} src={`${import.meta.env.BASE_URL}bgm.mp3`} preload="auto" loop
           onCanPlay={() => { if (bgmRef.current) bgmRef.current.volume = 0.06; }} />
-        <audio ref={voRef} src="/vo.mp3" preload="auto"
+        <audio ref={voRef} src={`${import.meta.env.BASE_URL}vo.mp3`} preload="auto"
           onCanPlay={() => { if (voRef.current) voRef.current.volume = 1.0; }} />
 
         <TopBar currentScene={currentScene} />
