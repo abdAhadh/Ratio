@@ -202,6 +202,12 @@ export default function D2CPage() {
       const match = hash.match(/^demo\/(\w+)$/);
       if (match) {
         const slug = match[1];
+        // AP demo lives only on the UAE landing page — redirect there so
+        // the link works from anywhere (e.g. tryratio.io/#demo/ap).
+        if (slug === "ap") {
+          window.location.replace("/ae#demo/ap");
+          return;
+        }
         const idx = demoTabs.findIndex((t) => t.slug === slug && t.available);
         if (idx !== -1) {
           setActiveDemoTab(idx);

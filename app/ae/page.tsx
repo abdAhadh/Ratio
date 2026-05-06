@@ -195,19 +195,29 @@ export default function UAEPage() {
     });
   }, [posthog]);
 
-  // Hash → demo scroll
+  // Hash → demo scroll. Initial load uses instant scroll + retry to handle
+  // layout-not-ready timing (especially after window.location.replace from
+  // the India page redirect). Subsequent hashchange events use smooth scroll.
   useEffect(() => {
-    function handleHash() {
-      const hash = window.location.hash.replace("#", "");
-      if (hash === "demo" || hash.startsWith("demo/")) {
-        setTimeout(() => {
-          demoSectionRef.current?.scrollIntoView({ behavior: "smooth" });
-        }, 50);
-      }
+    function scrollToDemo(initial: boolean) {
+      const tryScroll = (attempts: number) => {
+        const el = demoSectionRef.current ?? document.getElementById("demo");
+        if (el) {
+          el.scrollIntoView({ behavior: initial ? "instant" : "smooth", block: "start" });
+          return;
+        }
+        if (attempts > 0) requestAnimationFrame(() => tryScroll(attempts - 1));
+      };
+      tryScroll(20);
     }
-    handleHash();
-    window.addEventListener("hashchange", handleHash);
-    return () => window.removeEventListener("hashchange", handleHash);
+    function handleHash(initial: boolean) {
+      const hash = window.location.hash.replace("#", "");
+      if (hash === "demo" || hash.startsWith("demo/")) scrollToDemo(initial);
+    }
+    handleHash(true);
+    const onHashChange = () => handleHash(false);
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
   return (
