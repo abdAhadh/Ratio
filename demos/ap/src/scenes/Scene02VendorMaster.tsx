@@ -22,21 +22,25 @@ const T = {
   WA_PDF2:      7100,
   WA_ACK:       7800,
 
-  PHASE_C_START: 9000,
-  DETAILS_FORM:  9200,
-  STEP1_SHOW:    9700,   // Trade licence + IBAN collected
-  STEP1_DONE:   10300,
-  DOC_SWITCH:   10500,   // right rail: chevron pressed → IBAN cert
-  STEP2_SHOW:   10700,   // Vendor onboarded + periodic checks
-  STEP2_DONE:   11300,
-  STEP3_SHOW:   11500,   // Compliance checks (continuous)
-  STEP3_TRN:    11700,
-  STEP3_IBAN:   12000,
-  STEP3_SANCT:  12300,
-  CURSOR_IN:    13000,   // cursor enters from below-left
-  CURSOR_AT:    14400,   // cursor lands on Accept (1.4s slow travel)
-  CURSOR_CLICK: 14800,   // click happens
-  ACCEPTED:     15100,   // button flips to Accepted
+  // Phase C keyframes shifted +2700ms vs the pre-VO version so Phase B
+  // (WhatsApp chat) stays visible for the full L3 voiceover ("...such as
+  // the trade licence and IBAN certificate"). PHASE_C_START 11700ms ==
+  // global 19.2s, right at L3 audio end / L4 audio start.
+  PHASE_C_START: 11700,
+  DETAILS_FORM: 11900,
+  STEP1_SHOW:   12400,   // Trade licence + IBAN collected
+  STEP1_DONE:   13000,
+  DOC_SWITCH:   13200,   // right rail: chevron pressed → IBAN cert
+  STEP2_SHOW:   13400,   // Vendor onboarded + periodic checks
+  STEP2_DONE:   14000,
+  STEP3_SHOW:   14200,   // Compliance checks (continuous)
+  STEP3_TRN:    14400,
+  STEP3_IBAN:   14700,
+  STEP3_SANCT:  15000,
+  CURSOR_IN:    15700,   // cursor enters from below-left
+  CURSOR_AT:    17100,   // cursor lands on Accept (1.4s slow travel)
+  CURSOR_CLICK: 17500,   // click happens
+  ACCEPTED:     17800,   // button flips to Accepted
   PHASE_D_START: 23000,    // (disabled) WhatsApp + status panel screen begins. Set past scene 2 duration so Phase C ("Vendor passed all checks. Accept to complete onboarding") stays on screen for the full L4 voiceover.
 
   WD_PHONE_IN:    16100,
