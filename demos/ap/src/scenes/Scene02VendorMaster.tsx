@@ -464,7 +464,7 @@ export default function Scene02VendorMaster({ t }: { t: number }) {
                   </div>
 
                   {/* Convo body */}
-                  <div className="flex-1 flex flex-col px-2.5 py-2.5 gap-1.5 min-h-0 overflow-hidden" style={{ background: '#ECE5DD' }}>
+                  <div className="flex-1 flex flex-col justify-end px-2.5 py-2.5 gap-1.5 min-h-0 overflow-hidden" style={{ background: '#ECE5DD' }}>
                     {/* Date stamp */}
                     <AnimatePresence>
                       {past(T.WA_RATIO_MSG) && (
@@ -757,7 +757,7 @@ export default function Scene02VendorMaster({ t }: { t: number }) {
                   </div>
 
                   {/* Convo */}
-                  <div className="flex-1 flex flex-col px-2.5 py-2.5 gap-1.5 min-h-0 overflow-hidden" style={{ background: '#ECE5DD' }}>
+                  <div className="flex-1 flex flex-col justify-end px-2.5 py-2.5 gap-1.5 min-h-0 overflow-hidden" style={{ background: '#ECE5DD' }}>
                     {/* Ratio confirmation */}
                     <AnimatePresence>
                       {past(T.WD_RATIO_INTRO) && (
