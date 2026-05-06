@@ -5,6 +5,13 @@ export function middleware(request: NextRequest) {
 
   if (pathname !== "/") return NextResponse.next();
 
+  // ?reset_market=1 — clears saved preference and serves default (India)
+  if (searchParams.get("reset_market") === "1") {
+    const res = NextResponse.redirect(new URL("/", request.url));
+    res.cookies.set("market_preference", "", { path: "/", maxAge: 0 });
+    return res;
+  }
+
   // ?market=ae|in — session-only override for testing, never sets a cookie
   const marketParam = searchParams.get("market");
   if (marketParam === "ae") return NextResponse.rewrite(new URL("/ae", request.url));
