@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Connect Tally Prime to Claude & ChatGPT · Ratio",
@@ -42,16 +41,19 @@ export default function TallyMcpPage() {
             <span className="text-lg font-bold tracking-tight text-navy">Ratio</span>
           </span>
         </div>
-        <nav className="flex items-center gap-7">
-          <Link href="/" className="hidden sm:inline text-sm font-medium text-text-secondary">
-            tryratio.io →
-          </Link>
-          <Link
-            href="#guide"
+        <nav className="flex items-center gap-5">
+          <a
+            href="https://app.tryratio.io"
+            className="text-sm font-medium text-text hover:text-navy transition-colors"
+          >
+            Sign in
+          </a>
+          <a
+            href="https://app.tryratio.io"
             className="inline-flex items-center gap-2 px-4 py-2 bg-navy text-white text-sm font-medium rounded-full hover:bg-navy-light transition-colors"
           >
-            Get the Guide
-          </Link>
+            Get started
+          </a>
         </nav>
       </header>
 
@@ -149,26 +151,33 @@ export default function TallyMcpPage() {
           minutes. Works with Tally Prime on desktop and on cloud.
         </p>
 
-        {/* CTA */}
-        <Link
-          id="guide"
-          href="#"
-          className="relative z-10 inline-flex items-center gap-2.5 px-7 py-4 bg-navy text-white text-base font-medium rounded-full hover:bg-navy-light transition-colors mb-20"
-        >
-          Get the Guide
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-[18px] h-[18px]"
+        {/* CTAs */}
+        <div className="relative z-10 flex flex-col sm:flex-row items-center gap-3 mb-20">
+          <a
+            href="https://app.tryratio.io"
+            className="inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-navy text-white text-base font-medium rounded-full hover:bg-navy-light transition-colors w-full sm:w-auto"
           >
-            <line x1="5" y1="12" x2="19" y2="12" />
-            <polyline points="12 5 19 12 12 19" />
-          </svg>
-        </Link>
+            Get started &mdash; free
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-[18px] h-[18px]"
+            >
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </a>
+          <a
+            href="https://app.tryratio.io"
+            className="inline-flex items-center justify-center px-7 py-4 bg-transparent text-navy text-base font-medium rounded-full border border-border hover:bg-cream-dark transition-colors w-full sm:w-auto"
+          >
+            Sign in
+          </a>
+        </div>
 
         {/* Available now */}
         <div className="relative z-10 w-full max-w-[1080px] text-center">
