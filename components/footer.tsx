@@ -11,14 +11,16 @@ function FooterInner({ market }: { market?: Market }) {
 
   const companyLinks = isAE
     ? [
-        { label: "Demo",     href: "/ae#demo" },
-        { label: "Features", href: "/ae#features" },
-        { label: "FAQs",     href: "/ae#faq" },
+        { label: "Demo",            href: "/ae#demo" },
+        { label: "Features",        href: "/ae#features" },
+        { label: "FAQs",            href: "/ae#faq" },
+        { label: "Free Tally MCP",  href: "/tally-mcp" },
       ]
     : [
-        { label: "Demo",     href: "/#demo/sales" },
-        { label: "Features", href: "/#features" },
-        { label: "FAQs",     href: "/#faq" },
+        { label: "Demo",            href: "/#demo/sales" },
+        { label: "Features",        href: "/#features" },
+        { label: "FAQs",            href: "/#faq" },
+        { label: "Free Tally MCP",  href: "/tally-mcp" },
       ];
 
   return (
@@ -65,15 +67,10 @@ function FooterInner({ market }: { market?: Market }) {
             </ul>
           </div>
         </div>
-        <div className="border-t border-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="border-t border-border pt-6">
           <p className="text-xs text-text-secondary text-center sm:text-left">
             &copy; 2026 TidalPeak Labs Private Ltd. All rights reserved.
           </p>
-          {!isAE && (
-            <p className="text-xs text-text-secondary">
-              &#127470;&#127475; Made in India, for India.
-            </p>
-          )}
         </div>
       </div>
     </footer>
