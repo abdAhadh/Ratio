@@ -78,8 +78,12 @@ export default async function TallyMcpPage() {
         <h1
           className="tally-hero-headline relative z-10 font-bold text-navy leading-[1.1] sm:leading-[1.05] tracking-[-0.03em] sm:tracking-[-0.035em] mb-6 max-w-[1000px]"
         >
-          Connect your Tally Prime
-          <br />
+          Connect your Tally{" "}
+          {/* Mobile-only break after "Tally" → line 1 ends here on mobile */}
+          <br className="sm:hidden" />
+          Prime{" "}
+          {/* Desktop-only break after "Prime" → line 1 ends here on desktop */}
+          <br className="hidden sm:inline" />
           to{" "}
           <span className="inline-flex items-center gap-[0.22em] whitespace-nowrap align-baseline">
             <span
@@ -98,10 +102,10 @@ export default async function TallyMcpPage() {
             </span>
             Claude
           </span>{" "}
-          &amp;
-          {/* Mobile-only line break: "to Claude &" then "ChatGPT" on its own line. */}
+          {/* Mobile-only break before "&" → line 2 ends after Claude on mobile,
+              line 3 starts with "& ChatGPT". */}
           <br className="sm:hidden" />
-          {" "}
+          &amp;{" "}
           <span className="inline-flex items-center gap-[0.22em] whitespace-nowrap align-baseline">
             <span
               className="inline-flex items-center justify-center flex-shrink-0 text-black"
