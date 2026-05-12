@@ -64,28 +64,33 @@ export function TallyMcpNav() {
         </button>
       </div>
 
-      {/* Mobile menu overlay */}
+      {/*
+        Mobile menu overlay. Styling and animation mirror the main Navbar
+        component's mobile menu so the design is consistent across the site:
+        same cream background, same border + shadow, same y: -10 / 0.2s
+        easeOut transition, same text-link row + navy pill CTA pattern.
+      */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -8 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
-            className="md:hidden absolute inset-x-0 top-full bg-white border-b border-border shadow-[0_8px_24px_rgba(0,0,0,0.06)] z-50"
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden absolute inset-x-0 top-full bg-cream backdrop-blur-lg border-b border-border shadow-[0_8px_24px_rgba(0,0,0,0.08)] z-40"
           >
-            <div className="flex flex-col px-6 py-5 gap-3">
+            <div className="flex flex-col px-6 py-5">
               <a
                 href={SIGN_IN_URL}
                 onClick={() => setOpen(false)}
-                className="text-base font-medium text-navy py-2 text-center rounded-full border border-border hover:bg-cream-dark transition-colors"
+                className="text-base font-medium text-navy py-3 border-b border-border/50"
               >
                 Sign in
               </a>
               <a
                 href={SIGN_UP_URL}
                 onClick={() => setOpen(false)}
-                className="inline-flex items-center justify-center px-6 py-3 bg-navy text-white text-base font-medium rounded-full hover:bg-navy-light transition-colors"
+                className="mt-4 inline-flex items-center justify-center px-6 py-3 bg-navy text-white text-base font-medium rounded-full hover:bg-navy-light transition-colors"
               >
                 Get started
               </a>
