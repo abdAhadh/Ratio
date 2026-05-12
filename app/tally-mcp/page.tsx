@@ -10,10 +10,18 @@ export const metadata: Metadata = {
   description:
     "A free, copy-paste MCP server guide. Go from zero to AI-powered finance ops in under 30 minutes. Works with Tally Prime on desktop and on cloud.",
   openGraph: {
-    title: "Connect Tally Prime to Claude & ChatGPT · Ratio",
+    title: "Connect Tally Prime to Claude & ChatGPT",
     description:
-      "A free, copy-paste MCP server guide. Go from zero to AI-powered finance ops in under 30 minutes.",
+      "A free, copy-paste MCP connector that brings Claude and ChatGPT to your Tally Prime data. Setup in under 30 minutes. Works on desktop and cloud.",
     type: "website",
+    url: "https://tryratio.io/tally-mcp",
+    siteName: "Ratio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Connect Tally Prime to Claude & ChatGPT",
+    description:
+      "A free, copy-paste MCP connector that brings Claude and ChatGPT to your Tally Prime data. Setup in under 30 minutes.",
   },
 };
 
