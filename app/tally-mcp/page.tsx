@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { Footer } from "@/components/footer";
+import { TallyMcpNav } from "@/components/tally-mcp-nav";
+import { TallyMcpComingSoon } from "@/components/tally-mcp-coming-soon";
 import type { Market } from "@/lib/use-market";
 
 export const metadata: Metadata = {
@@ -26,46 +28,12 @@ export default async function TallyMcpPage() {
 
   return (
     <div className="min-h-screen bg-cream flex flex-col">
-      {/* Top nav — inner container max-w-[1440px] mirrors the main Navbar's at-rest width so the lockup and CTAs sit at the same horizontal positions as on the India / UAE landing pages. */}
-      <header className="border-b border-border">
-        <div className="max-w-[1440px] mx-auto flex items-center justify-between px-6 md:px-10 py-4">
-          {/*
-            Logo links to "/". The edge middleware on `/` handles geo-routing:
-            UAE (IP header `x-vercel-ip-country=AE`, or saved cookie) → /ae,
-            everyone else stays on /. The client-side GeoRedirect on / adds a
-            timezone fallback for VPN users (Asia/Dubai → /ae).
-          */}
-          <a
-            href="/"
-            aria-label="Ratio home"
-            className="flex flex-col items-start gap-1 shrink-0 hover:opacity-80 transition-opacity"
-          >
-            <span className="text-[9px] font-medium tracking-[0.1em] uppercase text-text-secondary opacity-70 leading-none">
-              Powered by
-            </span>
-            <span className="flex items-center gap-2">
-              <img src="/logo.svg" alt="Ratio" className="w-8 h-8" />
-              <span className="text-xl font-bold text-navy tracking-tight">Ratio</span>
-            </span>
-          </a>
-
-          {/* Right: Sign in (text) + Get started (filled navy pill) — same scale as Request Demo on the main navbar */}
-          <nav className="flex items-center gap-4 md:gap-5">
-            <a
-              href="https://app.tryratio.io/sign-in"
-              className="text-sm md:text-base font-medium text-text-secondary hover:text-navy transition-colors"
-            >
-              Sign in
-            </a>
-            <a
-              href="https://app.tryratio.io/sign-up"
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-navy text-white text-base font-medium rounded-full whitespace-nowrap shrink-0 hover:bg-navy-light transition-colors"
-            >
-              Get started
-            </a>
-          </nav>
-        </div>
-      </header>
+      {/*
+        Top nav. Client component because the mobile hamburger menu carries
+        its own open/closed state. Mirrors the main Navbar's positioning on
+        desktop and collapses the CTAs into a hamburger overlay on mobile.
+      */}
+      <TallyMcpNav />
 
       {/* Hero */}
       <main className="flex-1 flex flex-col items-center justify-center px-5 md:px-10 py-12 md:py-20 text-center relative overflow-hidden">
@@ -104,10 +72,12 @@ export default async function TallyMcpPage() {
           <span className="text-xs font-medium text-navy">Free · Setup in under 30 minutes</span>
         </div>
 
-        {/* Headline */}
+        {/* Headline. The mobile floor is small enough that
+            "Connect your Tally Prime" stays on one line on a 320–414px phone;
+            the desktop ceiling is unchanged. */}
         <h1
-          className="relative z-10 font-bold text-navy leading-[1.05] tracking-[-0.035em] mb-6 max-w-[1000px]"
-          style={{ fontSize: "clamp(40px, 5.6vw, 78px)" }}
+          className="relative z-10 font-bold text-navy leading-[1.1] sm:leading-[1.05] tracking-[-0.03em] sm:tracking-[-0.035em] mb-6 max-w-[1000px]"
+          style={{ fontSize: "clamp(26px, 6.5vw, 78px)" }}
         >
           Connect your Tally Prime
           <br />
@@ -129,7 +99,10 @@ export default async function TallyMcpPage() {
             </span>
             Claude
           </span>{" "}
-          &amp;{" "}
+          &amp;
+          {/* Mobile-only line break: "to Claude &" then "ChatGPT" on its own line. */}
+          <br className="sm:hidden" />
+          {" "}
           <span className="inline-flex items-center gap-[0.22em] whitespace-nowrap align-baseline">
             <span
               className="inline-flex items-center justify-center flex-shrink-0 text-black"
@@ -167,7 +140,7 @@ export default async function TallyMcpPage() {
             href="https://app.tryratio.io/sign-up"
             className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-navy text-white text-[15px] font-medium rounded-full hover:bg-navy-light transition-colors w-full sm:w-auto"
           >
-            Get started for free
+            Get started<span className="hidden sm:inline">&nbsp;for free</span>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -209,67 +182,17 @@ export default async function TallyMcpPage() {
           <p className="text-[10px] font-medium tracking-[0.22em] uppercase text-text-secondary opacity-70 mb-5">
             More coming soon
           </p>
-          <div className="flex items-center justify-center gap-x-12 gap-y-5 flex-wrap opacity-80">
-            <span className="flex items-center justify-center h-[44px]" aria-label="SAP">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style={{ height: "44px", width: "auto" }}>
-                <path
-                  d="M0 6.064v11.872h12.13L24 6.064zm3.264 2.208h0.005c0.863 0.001 1.915 0.245 2.676 0.633l-0.82 1.43c-0.835 -0.404 -1.255 -0.442 -1.73 -0.467 -0.708 -0.038 -1.064 0.215 -1.069 0.488 -0.007 0.332 0.669 0.633 1.305 0.838 0.964 0.306 2.19 0.715 2.377 1.9L7.77 8.437h2.046l2.064 5.576 -0.007 -5.575h2.37c2.257 0 3.318 0.764 3.318 2.519 0 1.575 -1.09 2.514 -2.936 2.514h-0.763l-0.01 2.094 -3.588 -0.003 -0.25 -0.908c-0.37 0.122 -0.787 0.189 -1.23 0.189 -0.456 0 -0.885 -0.071 -1.263 -0.2l-0.358 0.919 -2 0.006 0.09 -0.462c-0.029 0.025 -0.057 0.05 -0.087 0.074 -0.535 0.43 -1.208 0.629 -2.037 0.644l-0.213 0.002a5.075 5.075 0 0 1 -2.581 -0.675l0.73 -1.448c0.79 0.467 1.286 0.572 1.956 0.558 0.347 -0.007 0.598 -0.07 0.761 -0.239a0.557 0.557 0 0 0 0.156 -0.369c0.007 -0.376 -0.53 -0.553 -1.185 -0.756 -0.531 -0.164 -1.135 -0.389 -1.606 -0.735 -0.559 -0.41 -0.825 -0.924 -0.812 -1.65a1.99 1.99 0 0 1 0.566 -1.377c0.519 -0.537 1.357 -0.863 2.363 -0.863zm10.597 1.67v1.904h0.521c0.694 0 1.247 -0.23 1.248 -0.964 0 -0.709 -0.554 -0.94 -1.248 -0.94zm-5.087 0.767 -0.748 2.362c0.223 0.085 0.481 0.133 0.757 0.133 0.268 0 0.52 -0.047 0.742 -0.126l-0.736 -2.37z"
-                  fill="#0FAAFF"
-                />
-              </svg>
-            </span>
-            <span className="flex items-center justify-center h-[44px]" aria-label="Acumatica">
-              <svg viewBox="0 0 339.3 85" xmlns="http://www.w3.org/2000/svg" style={{ height: "27px", width: "auto" }}>
-                <path
-                  fill="#49C8F5"
-                  d="M34.6,34.2h-9.8c-5.4,0-9.8-4.4-9.8-9.8c0-5.4,4.4-9.8,9.8-9.8s9.8,4.4,9.8,9.8V34.2z M24.8-0.2C11.1-0.2,0,10.9,0,24.5c0,13.6,11.1,24.7,24.8,24.7h24.8V24.5C49.5,10.9,38.4-0.2,24.8-0.2L24.8-0.2z"
-                />
-                <path
-                  fill="#0D1130"
-                  d="M84.5,11.8h3l4.9,21.4h-13L84.5,11.8z M78.7,4.9L68.1,49.2h7.6l2.2-8.7H94l2.4,8.7h7.6L93.5,4.9H78.7z"
-                />
-                <path
-                  fill="#0D1130"
-                  d="M129.9,17.7l-0.3,6.3c0,0-5.1-0.6-7.5-0.6c-6.5,0-8,2.4-8,9.3c0,7.7,1.3,10.2,8.1,10.2c2.4,0,7.5-0.6,7.5-0.6l0.2,6.3c0,0-6.5,1.1-10,1.1c-9.8,0-13.3-4.9-13.3-17.1c0-11.5,3.9-16.3,13.5-16.3C123.6,16.5,129.9,17.7,129.9,17.7 M161.8,17.2v31.9h-7.3v-1.6c0,0-5,2.3-8.5,2.3c-9.2,0-11.1-4.7-11.1-15.9V17.2h7.3v16.6c0,6.8,0.4,9.4,5.3,9.4c2.8,0,7-1.5,7-1.5V17.2H161.8z M167.5,49.2V17.2h7.3V19c0,0,2.7-1.5,5.6-2c1.2-0.3,2.4-0.4,3.3-0.4c3.3,0.1,5.6,1,7.2,2.7c2.8-1.1,7.4-2.7,11.2-2.7c8.7,0,11.2,4.8,11.2,16v16.7h-7.3V35.3c0-8.6-0.1-12-5.3-12c-3.1,0-6.9,1.5-7,1.6c0.2,0.4,0.4,4.7,0.4,7.7v16.6h-7.3V32.7c0-6.8-0.6-9.4-5.3-9.4c-2.8,0-6.7,1.5-6.7,1.5v24.4H167.5z M243.4,40.5c0.1,2.2,0.8,2.9,2.6,3.2l-0.3,6.2c-5,0-6.7-0.8-8.6-2.2c0,0-5.5,2.2-10.5,2.2c-6.1,0-9.3-3.9-9.3-10.2c0-6.8,3.8-9.2,10.7-9.7l8-0.6v-1.9c0-2.5-1.5-3.8-4-3.8c-4.7,0-12.4,0.6-12.4,0.6l-0.3-6.2c0,0,8.3-1.4,13-1.4c7.1,0,10.9,2.9,10.9,10.8V40.5z M229.1,35.3c-2.8,0.3-4.2,1.5-4.2,4.1c0,2.7,1.2,4.2,3.3,4.2c3.4,0,8-1.3,8-1.3V35L229.1,35.3z M258.9,23.8v13.1c0,4.4,0.1,6.1,3.3,6.1c1.8,0,5.2-0.2,5.2-0.2l0.3,6.3c0,0-4.3,0.9-6.5,0.9c-7.4,0-9.6-2.8-9.6-12V23.8h-4v-6.6h4V8h7.3v9.3h8.7v6.6H258.9z"
-                />
-                <path
-                  fill="#0D1130"
-                  d="M272.6,49.2h7.3V17.2h-7.3V49.2z M272.6,12.1h7.3V4.3h-7.3V12.1z"
-                />
-                <path
-                  fill="#0D1130"
-                  d="M307.8,17.7l-0.3,6.3c0,0-5.1-0.6-7.5-0.6c-6.5,0-8,2.4-8,9.3c0,7.7,1.3,10.2,8.1,10.2c2.4,0,7.5-0.6,7.5-0.6l0.2,6.3c0,0-6.5,1.1-9.9,1.1c-9.8,0-13.3-4.9-13.3-17.1c0-11.5,3.9-16.3,13.5-16.3C301.5,16.5,307.8,17.7,307.8,17.7 M336.7,40.5c0.1,2.2,0.8,2.9,2.6,3.2l-0.3,6.2c-5,0-6.7-0.8-8.6-2.2c0,0-5.5,2.2-10.5,2.2c-6.1,0-9.3-3.9-9.3-10.2c0-6.8,3.8-9.2,10.7-9.7l8-0.6v-1.9c0-2.5-1.5-3.8-4-3.8c-4.7,0-12.4,0.6-12.4,0.6l-0.3-6.2c0,0,8.3-1.4,13-1.4c7.1,0,10.9,2.9,10.9,10.8V40.5z M322.3,35.3c-2.8,0.3-4.2,1.5-4.2,4.1c0,2.7,1.2,4.2,3.3,4.2c3.4,0,8-1.3,8-1.3V35L322.3,35.3z"
-                />
-              </svg>
-            </span>
-            <span className="flex items-center justify-center h-[44px]" aria-label="Epicor">
-              <svg viewBox="0 0 136 18" xmlns="http://www.w3.org/2000/svg" style={{ height: "18px", width: "auto" }}>
-                <path
-                  d="M104.538 12.9894C104.545 13.1172 104.524 13.2448 104.478 13.3642C104.432 13.4835 104.361 13.5919 104.271 13.6824C104.18 13.7728 104.072 13.8434 103.953 13.8895C103.833 13.9355 103.706 13.9561 103.578 13.9499H92.3089C92.0618 13.9388 91.8285 13.8327 91.6576 13.6537C91.4867 13.4748 91.3915 13.2368 91.3918 12.9894V5.34676C91.3918 5.22632 91.4155 5.10705 91.4616 4.99577C91.5077 4.8845 91.5752 4.78339 91.6604 4.69822C91.7456 4.61305 91.8467 4.54549 91.958 4.4994C92.0692 4.45331 92.1885 4.42958 92.3089 4.42958H103.578C103.702 4.42371 103.826 4.44309 103.942 4.48655C104.058 4.53 104.165 4.59663 104.255 4.68239C104.344 4.76815 104.416 4.87126 104.465 4.98546C104.513 5.09966 104.538 5.22258 104.538 5.34676V12.9894ZM131.702 12.6834C134.017 12.334 135.152 10.7615 135.152 8.35931V4.73476C135.152 1.93985 133.536 0.36731 130.785 0.36731H113.579V17.9689H117.903V4.42958H129.872C129.995 4.42336 130.117 4.44282 130.231 4.48671C130.345 4.5306 130.448 4.59794 130.535 4.68438C130.621 4.77083 130.689 4.87444 130.733 4.98854C130.776 5.10264 130.796 5.22467 130.79 5.34676V7.74895C130.796 7.87103 130.776 7.99307 130.733 8.10717C130.689 8.22127 130.621 8.32488 130.535 8.41133C130.448 8.49777 130.345 8.56511 130.231 8.609C130.117 8.65289 129.995 8.67235 129.872 8.66613H119.694V12.7284H126.682L130.35 17.9697H135.635L131.702 12.6834ZM91.4359 0.36731C88.641 0.36731 87.0685 1.98322 87.0685 4.73476V13.5572C87.0685 16.3521 88.6844 17.9247 91.4359 17.9247H104.495C107.246 17.9247 108.862 16.3088 108.862 13.5572V4.73476C108.862 1.93985 107.246 0.36731 104.495 0.36731H91.4359ZM63.0025 13.5572C63.0025 16.3521 64.6184 17.9247 67.3699 17.9247H82.5693V13.9066H68.2871C68.1629 13.9067 68.04 13.8816 67.9258 13.8329C67.8116 13.7841 67.7085 13.7126 67.6228 13.6228C67.537 13.533 67.4704 13.4267 67.4269 13.3104C67.3835 13.194 67.3641 13.0701 67.3699 12.946V5.34676C67.3699 5.10351 67.4666 4.87022 67.6386 4.69822C67.8106 4.52621 68.0439 4.42958 68.2871 4.42958H82.6127V0.36731H67.3699C64.575 0.36731 63.0025 1.98322 63.0025 4.73476V13.5572ZM58.2816 0.36731H53.9174V17.9689H58.2816V0.36731ZM27.7953 0.36731V17.9689H32.1628V4.42958H44.0452C44.1708 4.41687 44.2976 4.4315 44.417 4.47248C44.5364 4.51346 44.6454 4.57981 44.7367 4.66697C44.828 4.75413 44.8993 4.86003 44.9458 4.97738C44.9922 5.09473 45.0127 5.22074 45.0058 5.34676V7.74895C45.0127 7.87496 44.9922 8.00098 44.9458 8.11833C44.8993 8.23568 44.828 8.34158 44.7367 8.42874C44.6454 8.5159 44.5364 8.58225 44.417 8.62323C44.2976 8.66421 44.1708 8.67884 44.0452 8.66613H34.2197V12.7284H44.964C47.7589 12.7284 49.3315 11.1125 49.3315 8.36094V4.73476C49.3315 1.93985 47.7156 0.36731 44.964 0.36731H27.7953ZM5.12759 0.36731C2.33268 0.36731 0.760132 1.98322 0.760132 4.73476V13.5572C0.760132 16.3521 2.37604 17.9247 5.12759 17.9247H22.0779V14.2126H6.00468C5.88416 14.2126 5.76483 14.1888 5.6535 14.1427C5.54217 14.0965 5.44102 14.0289 5.35584 13.9437C5.27066 13.8584 5.20312 13.7572 5.15708 13.6458C5.11103 13.5345 5.08739 13.4151 5.08749 13.2946V4.9974C5.08162 4.87335 5.101 4.74941 5.14446 4.63308C5.18792 4.51675 5.25455 4.41045 5.34031 4.32064C5.42607 4.23082 5.52917 4.15936 5.64337 4.11058C5.75758 4.0618 5.88049 4.03672 6.00468 4.03685H17.2727C17.4005 4.03066 17.5281 4.05126 17.6475 4.09734C17.7668 4.14342 17.8752 4.21395 17.9657 4.30441C18.0561 4.39488 18.1267 4.50326 18.1727 4.62261C18.2188 4.74195 18.2394 4.86962 18.2332 4.9974V6.61331C18.2336 6.7356 18.2083 6.85661 18.159 6.96851C18.1096 7.0804 18.0374 7.1807 17.9468 7.26291C17.8563 7.34512 17.7495 7.40741 17.6334 7.44575C17.5172 7.48409 17.3944 7.49763 17.2727 7.48549H6.88177V11.1976H18.1907C20.9856 11.1976 22.5581 9.53749 22.5581 6.83013V4.73476C22.5581 1.93985 20.9422 0.36731 18.1907 0.36731H5.12759Z"
-                  fill="#025064"
-                />
-              </svg>
-            </span>
-            <span className="flex items-center justify-center h-[44px]" aria-label="Infor">
-              <svg viewBox="0 0 402.78668 371.70667" xmlns="http://www.w3.org/2000/svg" style={{ height: "42px", width: "auto" }}>
-                <g transform="matrix(1.3333333,0,0,-1.3333333,0,371.70667)">
-                  <g transform="scale(0.1)">
-                    <path fill="#d71e25" d="M 2787.85,0 H 0 V 2787.83 H 2787.85 V 0" />
-                    <path
-                      fill="#ffffff"
-                      d="m 248.832,1730.91 h 176.379 v 215.05 L 248.832,1825.11 Z m 1948.898,-665.6 h 176.37 v 232.43 c 0,114.03 16.48,210.48 150.52,210.48 25.86,0 50.55,-4.7 75.26,-11.75 v 154.83 c -179.77,7.72 -225.78,-64.47 -225.78,-64.47 v 49.95 h -176.37 z m -386.58,141.09 c -88.23,0 -141.1,58.81 -141.1,144.64 0,85.85 52.87,144.63 141.1,144.63 88.18,0 141.11,-58.78 141.11,-144.63 0,-85.83 -52.93,-144.64 -141.11,-144.64 m 0,444.48 c -176.41,0 -317.5,-117.57 -317.5,-299.84 0,-182.25 141.09,-299.83 317.5,-299.83 176.34,0 317.48,117.58 317.48,299.83 0,182.27 -141.14,299.84 -317.48,299.84 m -647.34,-585.57 h 176.38 v 430.36 h 130.51 v 141.11 h -130.51 v 90.54 c 0,75.25 28.21,92.9 84.65,92.9 21.17,0 37.61,-4.7 57.61,-11.76 l 8.25,149.33 c -32.91,8.24 -68.23,10.59 -103.49,10.59 -191.66,0 -223.4,-105.81 -223.4,-230.47 z m -644.455,0 h 176.379 v 284.55 c 0,74.09 14.106,145.81 105.832,145.81 90.547,0 91.731,-84.65 91.731,-150.51 v -279.85 h 176.363 v 315.12 c 0,152.89 -32.94,270.48 -211.656,270.47 -139.914,-0.02 -169.328,-66.62 -169.328,-66.62 v 52.5 H 519.355 Z m -270.523,-0.02 h 176.383 v 571.48 H 248.832 v -571.48"
-                    />
-                  </g>
-                </g>
-              </svg>
-            </span>
-          </div>
+          <TallyMcpComingSoon />
         </div>
       </main>
 
-      {/* Footer (shared, market-aware). Passing the server-resolved market
-          eliminates the hydration mismatch caused by client-only cookie reads. */}
-      <Footer market={market} />
+      {/*
+        Footer (shared, market-aware). Passing the server-resolved market
+        eliminates the hydration mismatch caused by client-only cookie reads.
+        hideDescription suppresses the India-side "Built for India's growing
+        firms" tagline on this page only — it's noise on a global product page.
+      */}
+      <Footer market={market} hideDescription />
     </div>
   );
 }
