@@ -33,3 +33,20 @@ body {
   color: var(--color-text);
   font-family: var(--font-sans), system-ui, sans-serif;
 }
+
+/*
+ * Hero headline on /tally-mcp.
+ * Desktop scales fluidly between 40px and 78px.
+ * Mobile (below the sm breakpoint, 640px) uses a tighter clamp that floors
+ * higher than the desktop one would on those viewports — keeps "Connect
+ * your Tally Prime" readable while still fitting on a single line down to
+ * ~360px wide.
+ */
+.tally-hero-headline {
+  font-size: clamp(40px, 5.6vw, 78px);
+}
+@media (max-width: 640px) {
+  .tally-hero-headline {
+    font-size: clamp(30px, 8vw, 38px);
+  }
+}

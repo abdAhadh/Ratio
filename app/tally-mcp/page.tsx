@@ -72,12 +72,11 @@ export default async function TallyMcpPage() {
           <span className="text-xs font-medium text-navy">Free · Setup in under 30 minutes</span>
         </div>
 
-        {/* Headline. The mobile floor is small enough that
-            "Connect your Tally Prime" stays on one line on a 320–414px phone;
-            the desktop ceiling is unchanged. */}
+        {/* Headline. Font size lives in globals.css (.tally-hero-headline)
+            so the mobile and desktop ranges can be tuned independently via
+            a media query. */}
         <h1
-          className="relative z-10 font-bold text-navy leading-[1.1] sm:leading-[1.05] tracking-[-0.03em] sm:tracking-[-0.035em] mb-6 max-w-[1000px]"
-          style={{ fontSize: "clamp(26px, 6.5vw, 78px)" }}
+          className="tally-hero-headline relative z-10 font-bold text-navy leading-[1.1] sm:leading-[1.05] tracking-[-0.03em] sm:tracking-[-0.035em] mb-6 max-w-[1000px]"
         >
           Connect your Tally Prime
           <br />
