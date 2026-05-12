@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { Footer } from "@/components/footer";
 import { TallyMcpNav } from "@/components/tally-mcp-nav";
 import { TallyMcpComingSoon } from "@/components/tally-mcp-coming-soon";
+import { TallyMcpHeroCtas } from "@/components/tally-mcp-hero-ctas";
 import type { Market } from "@/lib/use-market";
 
 export const metadata: Metadata = {
@@ -145,33 +146,9 @@ export default async function TallyMcpPage() {
           minutes. Works with Tally Prime on desktop and on cloud.
         </p>
 
-        {/* CTAs */}
-        <div className="relative z-10 flex flex-col sm:flex-row items-center gap-3 mb-16">
-          <a
-            href="https://app.tryratio.io/sign-up"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-navy text-white text-[15px] font-medium rounded-full hover:bg-navy-light transition-colors w-full sm:w-auto"
-          >
-            Get started
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="w-[16px] h-[16px]"
-            >
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12 5 19 12 12 19" />
-            </svg>
-          </a>
-          <a
-            href="https://app.tryratio.io/sign-in"
-            className="inline-flex items-center justify-center px-6 py-3 bg-transparent text-navy text-[15px] font-medium rounded-full border border-border hover:bg-cream-dark transition-colors w-full sm:w-auto"
-          >
-            Sign in
-          </a>
-        </div>
+        {/* Hero CTAs (client component so it can track clicks to PostHog
+            before the cross-origin navigation). */}
+        <TallyMcpHeroCtas />
 
         {/* Available now */}
         <div className="relative z-10 w-full max-w-[1080px] text-center">
