@@ -192,10 +192,8 @@ export default async function TallyMcpPage() {
       {/*
         Footer (shared, market-aware). Passing the server-resolved market
         eliminates the hydration mismatch caused by client-only cookie reads.
-        hideDescription suppresses the India-side "Built for India's growing
-        firms" tagline on this page only — it's noise on a global product page.
       */}
-      <Footer market={market} hideDescription />
+      <Footer market={market} />
     </div>
   );
 }

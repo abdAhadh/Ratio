@@ -3,13 +3,7 @@
 import { Suspense } from "react";
 import { useMarket, type Market } from "@/lib/use-market";
 
-function FooterInner({
-  market,
-  hideDescription = false,
-}: {
-  market?: Market;
-  hideDescription?: boolean;
-}) {
+function FooterInner({ market }: { market?: Market }) {
   // If parent didn't pass a market, auto-detect from URL/cookie.
   const detected = useMarket();
   const m: Market = market ?? detected;
@@ -38,12 +32,9 @@ function FooterInner({
               <img src="/logo.svg" alt="Ratio" className="w-8 h-8" />
               <span className="text-xl font-bold text-navy tracking-tight">Ratio</span>
             </a>
-            {!isAE && !hideDescription && (
-              <p className="text-sm text-text-secondary mt-2 max-w-xs">
-                AI agents that sit on top of your ERP to automate finance ops.
-                Built for India&apos;s growing firms.
-              </p>
-            )}
+            <p className="text-sm text-text-secondary mt-2 max-w-xs">
+              AI agents that sit on top of your ERP to automate finance ops.
+            </p>
           </div>
           <div>
             <p className="text-sm font-medium text-navy mb-3">Company</p>
@@ -83,16 +74,10 @@ function FooterInner({
   );
 }
 
-export function Footer({
-  market,
-  hideDescription,
-}: {
-  market?: Market;
-  hideDescription?: boolean;
-}) {
+export function Footer({ market }: { market?: Market }) {
   return (
     <Suspense fallback={null}>
-      <FooterInner market={market} hideDescription={hideDescription} />
+      <FooterInner market={market} />
     </Suspense>
   );
 }
