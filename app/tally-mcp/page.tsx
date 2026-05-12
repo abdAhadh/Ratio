@@ -143,7 +143,7 @@ export default async function TallyMcpPage() {
             href="https://app.tryratio.io/sign-up"
             className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-navy text-white text-[15px] font-medium rounded-full hover:bg-navy-light transition-colors w-full sm:w-auto"
           >
-            Get started<span className="hidden sm:inline">&nbsp;for free</span>
+            Get started
             <svg
               viewBox="0 0 24 24"
               fill="none"
