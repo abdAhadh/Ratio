@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { usePostHog } from "posthog-js/react";
 
 const SIGN_IN_URL = "https://app.tryratio.io/sign-in";
 const SIGN_UP_URL = "https://app.tryratio.io/sign-up";
@@ -14,6 +15,16 @@ const SIGN_UP_URL = "https://app.tryratio.io/sign-up";
  */
 export function TallyMcpNav() {
   const [open, setOpen] = useState(false);
+  const posthog = usePostHog();
+
+  function trackCta(event: "signup_clicked" | "signin_clicked", location: string) {
+    // Fire-and-forget. PostHog's send uses fetch/sendBeacon so the event
+    // delivers even when the browser navigates away to app.tryratio.io.
+    posthog?.capture(event, {
+      location,
+      page: "/tally-mcp",
+    });
+  }
 
   return (
     <header className="border-b border-border relative">
@@ -40,12 +51,14 @@ export function TallyMcpNav() {
         <nav className="hidden md:flex items-center gap-4 md:gap-5">
           <a
             href={SIGN_IN_URL}
+            onClick={() => trackCta("signin_clicked", "tally_mcp_header")}
             className="text-sm md:text-base font-medium text-text-secondary hover:text-navy transition-colors"
           >
             Sign in
           </a>
           <a
             href={SIGN_UP_URL}
+            onClick={() => trackCta("signup_clicked", "tally_mcp_header")}
             className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-navy text-white text-base font-medium rounded-full whitespace-nowrap shrink-0 hover:bg-navy-light transition-colors"
           >
             Get started
@@ -82,14 +95,20 @@ export function TallyMcpNav() {
             <div className="flex flex-col px-6 py-5">
               <a
                 href={SIGN_IN_URL}
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  trackCta("signin_clicked", "tally_mcp_mobile_menu");
+                  setOpen(false);
+                }}
                 className="text-base font-medium text-navy py-3 border-b border-border/50"
               >
                 Sign in
               </a>
               <a
                 href={SIGN_UP_URL}
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  trackCta("signup_clicked", "tally_mcp_mobile_menu");
+                  setOpen(false);
+                }}
                 className="mt-4 inline-flex items-center justify-center px-6 py-3 bg-navy text-white text-base font-medium rounded-full hover:bg-navy-light transition-colors"
               >
                 Get started
