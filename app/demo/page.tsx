@@ -15,25 +15,25 @@ const COPY: Record<Market, {
   messagePlaceholder: string;
   phone: { dial: string; flag: string; placeholder: string; digits: number };
 }> = {
-  in: {
-    eyebrow: "Request Demo",
-    heading: "Upgrade your ERP with AI agents",
+  us: {
+    eyebrow: "Request Demo · US",
+    heading: "AI agents for accounts receivable",
     description: (
       <>
-        See how Ratio&apos;s AI agents sit on top of SAP, NetSuite, Tally or
-        your existing ERP to automate finance ops at scale.
+        See how Ratio runs collections, cash applications, deductions and
+        disputes end-to-end, on top of your existing ERP and bank.
         <br />
-        In one call, we&apos;ll show you exactly how we&apos;d fit into your
-        stack.
+        In one call, we&apos;ll map your AR workflow and scope a pilot you can
+        run by week two.
       </>
     ),
     expectations: [
-      "We understand your current ERP and finance ops stack",
-      "Identify the workflows where AI agents deliver the biggest impact",
-      "Walk through how Ratio would deploy on your ERP and stack",
+      "We map how your AR team works today (channels, cadence, exceptions)",
+      "Walk through cash application and deductions on your data",
+      "Show how Ratio embeds your approval workflow and posts to your ERP",
     ],
-    messagePlaceholder: "Which ERP are you on? Which workflows are most broken today?",
-    phone: { dial: "+91", flag: "🇮🇳", placeholder: "98765 43210", digits: 10 },
+    messagePlaceholder: "Which ERP are you on? How many open invoices and AR team size?",
+    phone: { dial: "+1", flag: "🇺🇸", placeholder: "(555) 123 4567", digits: 10 },
   },
   ae: {
     eyebrow: "Request Demo · UAE",

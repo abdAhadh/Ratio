@@ -28,12 +28,12 @@ export const metadata: Metadata = {
 
 export default async function TallyMcpPage() {
   // Read the market_preference cookie server-side so the Footer renders the
-  // correct India/UAE links on the server itself. Without this, useMarket()
-  // returns "in" on SSR and "ae" on hydration for UAE users with the cookie,
+  // correct US/UAE links on the server itself. Without this, useMarket()
+  // returns "us" on SSR and "ae" on hydration for UAE users with the cookie,
   // causing a Next.js hydration mismatch in the Footer logo's href.
   const cookieStore = await cookies();
   const market: Market =
-    cookieStore.get("market_preference")?.value === "ae" ? "ae" : "in";
+    cookieStore.get("market_preference")?.value === "ae" ? "ae" : "us";
 
   return (
     <div className="min-h-screen bg-cream flex flex-col">

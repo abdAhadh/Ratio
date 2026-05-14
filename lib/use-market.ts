@@ -2,7 +2,7 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 
-export type Market = "in" | "ae";
+export type Market = "ae" | "us";
 
 /**
  * Single source of truth for which market the user is currently on.
@@ -10,28 +10,28 @@ export type Market = "in" | "ae";
  *
  * Resolution order (highest to lowest priority):
  *   1. URL pathname (e.g. /ae → ae)
- *   2. URL query param (?market=ae|in)
+ *   2. URL query param (?market=ae|us)
  *   3. market_preference cookie (set by the country switcher)
- *   4. Default: India
+ *   4. Default: US (also rendered at "/")
  *
- * The middleware also handles geo-routing at the edge — by the time this
- * hook runs, a UAE visitor will already be on /ae, so pathname === "/ae"
- * is the most common positive case.
+ * The middleware handles geo-routing at the edge — GCC visitors will be on
+ * /ae by the time this hook runs.
  */
 export function useMarket(): Market {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   if (pathname === "/ae" || pathname?.startsWith("/ae/")) return "ae";
+  if (pathname === "/us" || pathname?.startsWith("/us/")) return "us";
 
   const param = searchParams.get("market");
   if (param === "ae") return "ae";
-  if (param === "in") return "in";
+  if (param === "us") return "us";
 
   if (typeof document !== "undefined") {
     const m = document.cookie.match(/(?:^|;\s*)market_preference=([^;]+)/);
     if (m && m[1] === "ae") return "ae";
   }
 
-  return "in";
+  return "us";
 }

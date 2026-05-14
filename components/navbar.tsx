@@ -6,22 +6,24 @@ import { Menu, X, ChevronDown, Check } from "lucide-react";
 import { useMarket, type Market } from "@/lib/use-market";
 
 const markets: { id: Market; label: string; flag: string; href: string }[] = [
-  { id: "in", label: "India", flag: "🇮🇳", href: "/?market=in" },
-  { id: "ae", label: "UAE",   flag: "🇦🇪", href: "/?market=ae" },
+  { id: "us", label: "US",  flag: "🇺🇸", href: "/?market=us" },
+  { id: "ae", label: "UAE", flag: "🇦🇪", href: "/?market=ae" },
 ];
 
 function getNavLinks(market: Market) {
-  return market === "ae"
-    ? [
-        { label: "Demo",     href: "/ae#demo" },
-        { label: "Features", href: "/ae#features" },
-        { label: "FAQs",     href: "/ae#faq" },
-      ]
-    : [
-        { label: "Demo",     href: "/#demo/sales" },
-        { label: "Features", href: "/#features" },
-        { label: "FAQs",     href: "/#faq" },
-      ];
+  if (market === "ae") {
+    return [
+      { label: "Demo",     href: "/ae#demo" },
+      { label: "Features", href: "/ae#features" },
+      { label: "FAQs",     href: "/ae#faq" },
+    ];
+  }
+  // US (also the default home rendered at "/")
+  return [
+    { label: "Product",      href: "/#product" },
+    { label: "Integrations", href: "/#integrations" },
+    { label: "FAQs",         href: "/#faq" },
+  ];
 }
 
 function setMarketCookie(market: string) {
@@ -90,7 +92,7 @@ function NavbarInner() {
   const isAE = market === "ae";
   const navLinks = getNavLinks(market);
   const current = markets.find((m) => m.id === market)!;
-  const demoHref = isAE ? "/demo?market=ae" : "/demo";
+  const demoHref = isAE ? "/demo?market=ae" : "/demo?market=us";
   const logoHref = isAE ? "/ae" : "/";
   const { scrollY } = useScroll();
 
@@ -111,7 +113,17 @@ function NavbarInner() {
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-center">
       <motion.nav
         className="flex items-center justify-between bg-cream/80 backdrop-blur-md"
-        initial={{ y: -80, opacity: 0 }}
+        initial={{
+          y: -80,
+          opacity: 0,
+          maxWidth: 1440,
+          borderRadius: 0,
+          paddingTop: 16,
+          paddingBottom: 16,
+          paddingLeft: 40,
+          paddingRight: 40,
+          boxShadow: "0 1px 0 rgba(0,0,0,0.04)",
+        }}
         animate={{
           y: shouldAnimate ? 12 : 0,
           opacity: 1,
@@ -129,7 +141,7 @@ function NavbarInner() {
           duration: isMobile ? 0 : 0.5,
           ease: [0.32, 0.72, 0, 1],
         }}
-        style={{ width: "100%" }}
+        style={{ width: "100%", maxWidth: 1440 }}
       >
         <a href={logoHref} className="flex items-center gap-2 shrink-0">
           <img src="/logo.svg" alt="Ratio" className="w-8 h-8" />

@@ -9,18 +9,26 @@ function FooterInner({ market }: { market?: Market }) {
   const m: Market = market ?? detected;
   const isAE = m === "ae";
 
+  // The US landing is also the default home (rendered at "/"). For non-AE
+  // markets we treat everything as the US/default experience.
+  const homeHref = isAE ? "/ae" : "/";
+  const tagline = isAE
+    ? "AI agents that sit on top of your ERP to automate finance ops."
+    : "AI agents that run accounts receivable, end-to-end.";
+
   const companyLinks = isAE
     ? [
-        { label: "Demo",            href: "/ae#demo" },
-        { label: "Features",        href: "/ae#features" },
-        { label: "FAQs",            href: "/ae#faq" },
-        { label: "Free Tally MCP",  href: "/tally-mcp" },
+        { label: "Demo",       href: "/ae#demo" },
+        { label: "Features",   href: "/ae#features" },
+        { label: "FAQs",       href: "/ae#faq" },
+        { label: "Tally MCP",  href: "/tally-mcp" },
       ]
     : [
-        { label: "Demo",            href: "/#demo/sales" },
-        { label: "Features",        href: "/#features" },
-        { label: "FAQs",            href: "/#faq" },
-        { label: "Free Tally MCP",  href: "/tally-mcp" },
+        { label: "Product",      href: "/#product" },
+        { label: "Outcomes",     href: "/#outcomes" },
+        { label: "Integrations", href: "/#integrations" },
+        { label: "FAQs",         href: "/#faq" },
+        { label: "Tally MCP",    href: "/tally-mcp" },
       ];
 
   return (
@@ -28,12 +36,12 @@ function FooterInner({ market }: { market?: Market }) {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           <div className="col-span-2 md:col-span-2">
-            <a href={isAE ? "/ae" : "/"} className="flex items-center gap-2">
+            <a href={homeHref} className="flex items-center gap-2">
               <img src="/logo.svg" alt="Ratio" className="w-8 h-8" />
               <span className="text-xl font-bold text-navy tracking-tight">Ratio</span>
             </a>
             <p className="text-sm text-text-secondary mt-2 max-w-xs">
-              AI agents that sit on top of your ERP to automate finance ops.
+              {tagline}
             </p>
           </div>
           <div>
