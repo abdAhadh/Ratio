@@ -6,6 +6,9 @@ const COOKIE_OPTS = {
   sameSite: "lax" as const,
 };
 
+// GCC countries get the UAE landing page; everyone else gets the US landing.
+const GCC_COUNTRIES = new Set(["AE", "SA", "KW", "QA", "BH", "OM"]);
+
 export function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
 
@@ -18,34 +21,34 @@ export function middleware(request: NextRequest) {
     return res;
   }
 
-  // ?market=ae|in — explicit user choice from country switcher
-  // Sets the cookie AND redirects to the clean URL
+  // ?market=ae|us — explicit user choice from country switcher
   const marketParam = searchParams.get("market");
   if (marketParam === "ae") {
     const res = NextResponse.redirect(new URL("/ae", request.url));
     res.cookies.set("market_preference", "ae", COOKIE_OPTS);
     return res;
   }
-  if (marketParam === "in") {
+  if (marketParam === "us") {
     const res = NextResponse.redirect(new URL("/", request.url));
-    res.cookies.set("market_preference", "in", COOKIE_OPTS);
+    res.cookies.set("market_preference", "us", COOKIE_OPTS);
     return res;
   }
 
-  // Respect saved preference (redirect so URL matches the page)
+  // Respect saved preference
   const saved = request.cookies.get("market_preference")?.value;
   if (saved === "ae") return NextResponse.redirect(new URL("/ae", request.url));
-  if (saved === "in") return NextResponse.next();
+  if (saved === "us") return NextResponse.next();
 
-  // Primary signal: IP geolocation via Vercel edge header
+  // GCC visitors land on /ae. Everyone else stays on / (renders US landing).
   const country =
     request.headers.get("x-vercel-ip-country") ??
     request.headers.get("cf-ipcountry") ??
     "";
 
-  if (country === "AE") return NextResponse.redirect(new URL("/ae", request.url));
+  if (GCC_COUNTRIES.has(country)) {
+    return NextResponse.redirect(new URL("/ae", request.url));
+  }
 
-  // Secondary signal (timezone) handled client-side in GeoRedirect
   return NextResponse.next();
 }
 
