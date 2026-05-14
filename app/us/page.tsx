@@ -417,18 +417,20 @@ function IntegrationMarquee() {
       <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-cream to-transparent z-10" />
       <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-cream to-transparent z-10" />
       <motion.div
-        className="flex items-center gap-16 w-max opacity-60"
+        className="flex items-center w-max opacity-60"
         animate={{ x: ["0%", "-50%"] }}
         transition={{
           x: { repeat: Infinity, repeatType: "loop", duration: 30, ease: "linear" },
         }}
       >
+        {/* Spacing lives on each item (mr-16) so the wrap point has the same
+            gap after the last logo — gap-* alone breaks seamless looping. */}
         {[...integrations, ...integrations].map((logo, i) => (
           <img
             key={`${logo.alt}-${i}`}
             src={logo.src}
             alt={logo.alt}
-            className={`${logo.h} w-auto object-contain shrink-0 grayscale`}
+            className={`${logo.h} w-auto object-contain shrink-0 grayscale mr-16`}
           />
         ))}
       </motion.div>
@@ -708,12 +710,15 @@ export default function USPage() {
               <div className="absolute right-0 top-0 bottom-0 w-24 sm:w-40 bg-gradient-to-l from-cream-dark/30 to-transparent z-10 pointer-events-none" />
 
               <motion.div
-                className="flex items-center gap-20 sm:gap-24 md:gap-28 w-max py-4 opacity-70"
+                className="flex items-center w-max py-4 opacity-70"
                 animate={{ x: ["0%", "-50%"] }}
                 transition={{
                   x: { repeat: Infinity, repeatType: "loop", duration: 36, ease: "linear" },
                 }}
               >
+                {/* Spacing on each item (not flex gap) so the wrap loops
+                    seamlessly — the trailing gap after the last item is
+                    what makes the cycle continuous. */}
                 {[
                   ...integrationLogos,
                   ...integrationLogos,
@@ -722,7 +727,7 @@ export default function USPage() {
                     key={`${logo.alt}-${i}`}
                     src={logo.src}
                     alt={logo.alt}
-                    className={`${logo.h} w-auto object-contain shrink-0 grayscale`}
+                    className={`${logo.h} w-auto object-contain shrink-0 grayscale mr-20 sm:mr-24 md:mr-28`}
                   />
                 ))}
               </motion.div>
