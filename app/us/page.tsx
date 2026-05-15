@@ -418,14 +418,20 @@ function IntegrationMarquee() {
       <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-cream to-transparent z-10" />
       <motion.div
         className="flex items-center w-max opacity-60"
-        animate={{ x: ["0%", "-50%"] }}
+        animate={{ x: ["0%", "-33.333%"] }}
         transition={{
-          x: { repeat: Infinity, repeatType: "loop", duration: 30, ease: "linear" },
+          x: { repeat: Infinity, repeatType: "loop", duration: 45, ease: "linear" },
         }}
       >
-        {/* Spacing lives on each item (mr-16) so the wrap point has the same
-            gap after the last logo — gap-* alone breaks seamless looping. */}
-        {[...integrations, ...integrations].map((logo, i) => (
+        {/*
+          Three copies (not two) and a -33.333% slide. Two copies were
+          mathematically seamless at the wrap point but the total row
+          width (~1180px) was narrower than 2× the visible viewport
+          (~1792px on desktop), so the viewport's right edge could sweep
+          past the end of content and reveal blank cream. Tripling makes
+          (N-1)*W ≥ V on every supported breakpoint.
+        */}
+        {[...integrations, ...integrations, ...integrations].map((logo, i) => (
           <img
             key={`${logo.alt}-${i}`}
             src={logo.src}
@@ -711,15 +717,19 @@ export default function USPage() {
 
               <motion.div
                 className="flex items-center w-max py-4 opacity-70"
-                animate={{ x: ["0%", "-50%"] }}
+                animate={{ x: ["0%", "-33.333%"] }}
                 transition={{
-                  x: { repeat: Infinity, repeatType: "loop", duration: 36, ease: "linear" },
+                  x: { repeat: Infinity, repeatType: "loop", duration: 54, ease: "linear" },
                 }}
               >
-                {/* Spacing on each item (not flex gap) so the wrap loops
-                    seamlessly — the trailing gap after the last item is
-                    what makes the cycle continuous. */}
+                {/*
+                  Three copies and a -33.333% slide. Two were borderline at
+                  wide viewports — content row could be < 2× the visible
+                  width, leaving blank cream at the wrap point. Tripling
+                  guarantees (N-1)*W ≥ viewport at every breakpoint.
+                */}
                 {[
+                  ...integrationLogos,
                   ...integrationLogos,
                   ...integrationLogos,
                 ].map((logo, i) => (
