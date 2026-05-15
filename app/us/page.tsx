@@ -8,7 +8,6 @@ import {
   Plus,
   Phone,
   Mail,
-  Receipt,
   Scale,
   TrendingDown,
   Banknote,
@@ -458,16 +457,10 @@ const capabilities = [
       "Connects to your bank account and auto-matches incoming payments to open invoices, across any source.",
   },
   {
-    icon: Receipt,
-    title: "Recover deductions",
-    body:
-      "When customers short-pay, Ratio validates the claim against your invoice / contract / delivery records, captures the reason, and helps you recover what's owed before write-off.",
-  },
-  {
     icon: Scale,
-    title: "Resolve disputes faster",
+    title: "Disputes and deductions, handled",
     body:
-      "Ratio surfaces disputes in your Slack channel with full context, takes your call on the next step, drafts the resolution reply, and follows through until the cash is collected.",
+      "Short-pays and disputes arrive with full context (invoice, contract, delivery, emails), surfaced in your Slack with a next-step recommendation. Ratio follows through until cash lands.",
   },
   {
     icon: ShieldCheck,
@@ -480,6 +473,12 @@ const capabilities = [
     title: "Real-time AR insights",
     body:
       "Live DSO, aging buckets, and cohort recovery rates. Forecast cash collections by week, customer, and product line.",
+  },
+  {
+    icon: Workflow,
+    title: "The messy edge cases",
+    body:
+      "Coupa or Ariba portal uploads. Short-pays from missing PO lines. Payments blocked on a buyer's internal sign-off. Ratio handles the long tail of AR work that point solutions skip.",
   },
 ];
 
@@ -689,6 +688,11 @@ export default function USPage() {
                 </FadeIn>
               ))}
             </div>
+            <FadeIn delay={0.25}>
+              <p className="text-center text-cream mt-24 md:mt-28 max-w-3xl mx-auto leading-snug text-lg sm:text-xl md:text-2xl font-semibold tracking-tight">
+                Same day responses on shared slack channel with our founding team.
+              </p>
+            </FadeIn>
           </div>
         </section>
 
