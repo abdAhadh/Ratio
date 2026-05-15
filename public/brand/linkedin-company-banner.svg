@@ -1,0 +1,32 @@
+<svg width="1128" height="191" viewBox="0 0 1128 191" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cream background -->
+  <rect width="1128" height="191" fill="#FBF7F1"/>
+
+  <!--
+    Centered tagline. Avatar overlaps bottom-left (~180×130 zone), so we
+    keep type horizontally centered and vertically middle — it stays clear.
+  -->
+  <text
+    x="564"
+    y="108"
+    text-anchor="middle"
+    font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
+    font-size="44"
+    font-weight="700"
+    letter-spacing="-0.5"
+    fill="#1A1A2E"
+  >AI workforce for finance teams.</text>
+
+  <!-- Subtle right-aligned domain mark — quiet attribution, not a CTA. -->
+  <text
+    x="1080"
+    y="170"
+    text-anchor="end"
+    font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
+    font-size="14"
+    font-weight="500"
+    letter-spacing="0.5"
+    fill="#1A1A2E"
+    opacity="0.5"
+  >tryratio.io</text>
+</svg>
