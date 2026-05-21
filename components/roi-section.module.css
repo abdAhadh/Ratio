@@ -1,0 +1,280 @@
+/* ROI (#the-problem) — pixel-matched against localhost:8098.
+   Section is full-width, padding 0 120px. Main Container 1200 wide max,
+   centered, padding 60px 0 100px, with vertical 1px #333 borders. */
+
+.section {
+  position: relative;
+  width: 100%;
+  padding: 0 120px;
+  background: var(--color-bg);
+  box-sizing: border-box;
+}
+
+/* Main Container — bordered box, vertical borders only.
+   Width 1570 (matches Product / CTA / Footer mainContainers so the
+   left+right borders form one continuous vertical frame down the page).
+   Inner content (header + cards row) is sized independently and centered
+   inside this wider frame. Borders are pseudo-element overlays so they
+   don't add to the box's outer size. */
+.mainContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1570px;
+  margin: 0 auto;
+  padding: 60px 0 100px;
+  box-sizing: border-box;
+}
+
+.mainContainer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Content Wrapper — flex col, gap 55 between heading block and card-container
+   start. CardContainer's own 66px top-padding then adds another 66px before
+   the cards, so the visible header-bottom-to-first-card-top gap is 121px. */
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 55px;
+  width: 100%;
+}
+
+/* Heading Container — centered, gap 10 between eyebrow row and heading+sub
+   block. */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Eyebrow row: icon + "ROI". 8098 reports the row 77 wide × 32 tall with
+   icon (20×20) at the left + 8px gap + "ROI" text (14px). The row uses
+   padding 6 12 to reach 32 tall. */
+.eyebrowRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  box-sizing: border-box;
+}
+
+.eyebrowIcon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: 0.42px;
+  color: var(--color-accent-blue);
+  text-transform: uppercase;
+}
+
+/* Heading + Subtext — gap 4 between h2 and sub.
+   Reference shows the rendered h2 at 548 wide × 60 tall (single line, nowrap)
+   and the sub also 548 wide × 24 tall. We let intrinsic width drive it via
+   `width: max-content` so the block hugs the longer of the two children. */
+.headingAndSubtext {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: max-content;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 60px;
+  letter-spacing: -2px;
+  color: var(--color-fg);
+  text-align: center;
+  /* 8098 forces this to a single line at 548 wide via white-space: nowrap.
+     Width 548 measures the rendered text width, not a wrap constraint. */
+  white-space: nowrap;
+}
+
+.sub {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.48px;
+  color: var(--color-fg-muted);
+  text-align: center;
+}
+
+/* ───── Card Container — full 1570 wide, spanning the Main Container edge
+   to edge so the shader band + card grid reach the section's left/right
+   borders (matches 8098). 8098 uses padding: 66px 0 to inset the cards
+   66px from top and bottom, with a Unicorn Studio shader filling the full
+   bordered box behind them. Borders rendered via ::after pseudo (1px solid
+   #333 top + bottom only) so they overlay the box without adding 2px to
+   its outer height. */
+.cardContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1570px;
+  margin: 0 auto;
+  padding: 66px 0;
+  box-sizing: border-box;
+}
+
+.cardContainer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.htband {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Cards Wrapper — 1570×398, sits between the 66px paddings.
+   3 cards, touching (no gap). z-index 1 so it sits over shader. */
+.cardWrapper {
+  position: relative;
+  width: 100%;
+  height: 398px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0;
+  z-index: 1;
+}
+
+/* Each card: 400×398. bg rgba(13,14,17,0.9), backdrop-blur 34, right border
+   1px #333 to create vertical dividers between cards. The last card's right
+   border lands ON the Main Container's right border — visually overlapping,
+   no harm. */
+.card {
+  flex: 1 1 0;
+  height: 100%;
+  background-color: rgba(13, 14, 17, 0.9);
+  -webkit-backdrop-filter: blur(34px);
+  backdrop-filter: blur(34px);
+  border-right: 1px solid #333;
+  padding: 16px 16px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.card:last-child {
+  border-right: none;
+}
+
+.value {
+  font-family: var(--font-sans);
+  font-size: 66.24px;
+  font-weight: 600;
+  line-height: 66.24px;
+  letter-spacing: -1.3248px;
+  color: var(--color-fg-bright);
+  white-space: nowrap;
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19.6px;
+  letter-spacing: 0;
+  color: var(--color-fg-muted);
+  text-align: center;
+}
+
+/* ───── Mobile (≤768px) ─────────────────────────────────────────────
+   Desktop is pixel-built with no fluid sizing. On phones: shrink the
+   section's 120px side padding, drop the section's vertical paddings,
+   stack the 3-card flex row into a single column, and reduce oversized
+   fixed font-sizes. clamp() sizes (none here) would be left alone. */
+@media (max-width: 768px) {
+  .section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .mainContainer {
+    padding: 40px 0 56px;
+  }
+
+  .contentWrapper {
+    gap: 32px;
+  }
+
+  /* The desktop h2 forces a single line at 548px wide via nowrap —
+     that overflows a phone. Allow wrapping and shrink the type. */
+  .headingAndSubtext {
+    width: 100%;
+  }
+
+  .h2 {
+    font-size: 26px;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    white-space: normal;
+  }
+
+  /* Card band: kill the 66px top/bottom inset, stack cards vertically. */
+  .cardContainer {
+    padding: 32px 0;
+  }
+
+  .cardWrapper {
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* Cards no longer share a row — swap vertical dividers for horizontal
+     ones and give each a real height now that the row is unset. */
+  .card {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 200px;
+    border-right: none;
+    border-bottom: 1px solid #333;
+  }
+
+  .card:last-child {
+    border-bottom: none;
+  }
+
+  /* 66px desktop value digit is far too large for a phone. */
+  .value {
+    font-size: 42px;
+    line-height: 42px;
+    letter-spacing: -0.84px;
+  }
+}

@@ -1,0 +1,238 @@
+.section {
+  position: relative;
+  width: 100%;
+  height: 746px;
+  padding: 0 120px;
+  background: var(--color-bg);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ── Main Container — 1570 wide max, centered, full section height. Has
+   vertical L+R 1px #333 borders that align with Product / ROI / Footer
+   mainContainers. All inner elements (line patterns, shader, glass box)
+   are positioned absolutely relative to this 1570-wide frame so they
+   scale with it at any viewport width. */
+.mainContainer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: calc(100% - 240px);
+  max-width: 1570px;
+  height: 100%;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  box-sizing: border-box;
+}
+
+/* ── Top line-pattern strip — full mainContainer width × 65 at top 60px ── */
+.linePatternTop {
+  position: absolute;
+  left: 0;
+  top: 60px;
+  width: 100%;
+  height: 65px;
+  display: block;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Bottom line-pattern strip — same image, 60px from bottom of section */
+.linePatternBottom {
+  position: absolute;
+  left: 0;
+  top: 581px;
+  width: 100%;
+  height: 65px;
+  display: block;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ── Shader area — fills mainContainer width × 456 starting at top:125 ── */
+.shaderArea {
+  position: absolute;
+  left: 0;
+  top: 125px;
+  width: 100%;
+  height: 456px;
+}
+
+.shaderLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* ── Glass Content Wrapper — 32px inset on each side of shaderArea, height 392.
+   At viewport 1440 (mainContainer 1200) this resolves to 1136 wide;
+   at viewport 2000 (mainContainer 1570) it stretches to 1506 wide,
+   matching 8098 reference. */
+.contentWrap {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  top: 32px;
+  height: 392px;
+  background: rgba(12, 12, 12, 0.8);
+  z-index: 2;
+}
+
+/* Decorative border image overlaying the content wrapper */
+.borderImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Content (h2 + sub + cta) sits centered inside content wrapper. */
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0 32px;
+}
+
+.h2 {
+  margin: 0 0 4px 0;
+  font-family: var(--font-serif);
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 60px;
+  letter-spacing: -2px;
+  color: var(--color-fg);
+  max-width: 100%;
+}
+
+.sub {
+  margin: 0 0 30px 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.48px;
+  color: var(--color-fg-muted);
+  max-width: 550px;
+}
+
+/* CTA pill — white pill, icon on the LEFT, label on the RIGHT.
+ * 8098: a.width=177, padding=14, gap=10, label 14/21 weight:500 white-space:pre */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 49px;
+  width: 177px;
+  padding: 14px;
+  background: #ffffff;
+  border-radius: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: background 0.15s ease;
+}
+
+.cta:hover {
+  background: rgb(240, 240, 240);
+}
+
+.ctaIconBg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: rgb(26, 26, 26);
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+
+.ctaIconBg img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.ctaLabel {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: -0.14px;
+  color: rgb(26, 26, 26);
+  white-space: pre;
+  flex: 0 0 auto;
+}
+
+/* ── Mobile (≤768px) ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .section {
+    height: auto;
+    min-height: 480px;
+    padding: 60px 20px;
+    overflow: visible;
+  }
+
+  /* Switch the absolutely-positioned frame to in-flow so it stacks
+     cleanly without fixed pixel offsets clipping the content. */
+  .mainContainer {
+    position: relative;
+    left: auto;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Decorative line strips rely on fixed pixel offsets — hide on mobile. */
+  .linePatternTop,
+  .linePatternBottom {
+    display: none;
+  }
+
+  .shaderArea {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    height: auto;
+    min-height: 360px;
+  }
+
+  .contentWrap {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+    height: auto;
+    min-height: 360px;
+  }
+
+  .content {
+    padding: 48px 20px;
+    height: auto;
+  }
+
+  .h2 {
+    font-size: 26px;
+    line-height: 1.2;
+    letter-spacing: -1px;
+  }
+
+  .sub {
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,212 @@
+.section {
+  position: relative;
+  width: 100%;
+  padding: 0 120px;
+  background: var(--color-bg);
+  text-align: center;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Main Container — 1570 wide max, centered, full section height, with
+   vertical 1px #333 L+R borders that line up with the Product / ROI / CTA
+   / Footer mainContainers so the frame is continuous down the page. */
+.mainContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1570px;
+  margin: 0 auto;
+  padding: 120px 0 140px;
+  box-sizing: border-box;
+}
+
+.mainContainer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.header {
+  max-width: 1200px;
+  margin: 0 auto 64px;
+  padding: 0 60px;
+}
+
+.eyebrowRow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.eyebrowRow img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent-blue);
+}
+
+.h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(32px, 4vw, 56px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-fg);
+  margin: 0 0 18px 0;
+}
+
+.sub {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-fg-muted);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.strip {
+  width: 100%;
+  height: 94px;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+  padding: 28px 0;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  background-image: url("/LZ9t1f3YqMBf3Ia4qPFRdOzzn90.png");
+  background-repeat: repeat;
+  background-size: auto 120%;
+  background-position: center;
+}
+
+.strip::before,
+.strip::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 120px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.strip::before {
+  left: 0;
+  background: linear-gradient(to right, var(--color-bg) 0%, rgba(13, 14, 17, 0) 100%);
+}
+
+.strip::after {
+  right: 0;
+  background: linear-gradient(to left, var(--color-bg) 0%, rgba(13, 14, 17, 0) 100%);
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  width: max-content;
+  animation: ri-marquee 36s linear infinite;
+}
+
+@keyframes ri-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.logo {
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+  flex: 0 0 auto;
+  filter: brightness(0) invert(1);
+  opacity: 0.78;
+  transition: opacity 0.2s ease;
+}
+
+.logo:hover { opacity: 1; }
+.logo[data-h="lg"] { height: 36px; }
+.logo[data-h="md"] { height: 32px; }
+.logo[data-h="sm"] { height: 28px; }
+
+/* Note line below the strip — mirrors 8098's .ri-note (16px / muted /
+   720 max-width / 40px gap above, centered). */
+.note {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-fg-muted);
+  max-width: 720px;
+  margin: 40px auto 0;
+  padding: 0 24px;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track { animation: none; }
+}
+
+/* ───── Mobile (≤768px) ─────────────────────────────────────────────
+   Desktop is pixel-built with no fluid sizing. On phones: shrink the
+   section's 120px side padding, cut the large vertical paddings, and
+   tighten the marquee strip. The .section already has overflow:hidden,
+   which contains the max-content marquee track — but we also shrink the
+   strip's edge-fade and logo gap so the strip doesn't feel cramped.
+   .h2 uses clamp() and is left alone (already fluid). */
+@media (max-width: 768px) {
+  .section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .mainContainer {
+    padding: 56px 0 64px;
+  }
+
+  /* Header had 60px side padding on top of the section padding — too
+     much combined inset on a narrow viewport. */
+  .header {
+    margin: 0 auto 40px;
+    padding: 0 8px;
+  }
+
+  /* Tighten the marquee: smaller logo gap so more logos read at once,
+     narrower edge-fade so it doesn't eat the strip on a 360px screen. */
+  .strip {
+    height: 76px;
+    padding: 22px 0;
+  }
+
+  .strip::before,
+  .strip::after {
+    width: 48px;
+  }
+
+  .track {
+    gap: 48px;
+  }
+
+  /* Scale the logos down so they fit the shorter strip. */
+  .logo[data-h="lg"] { height: 28px; }
+  .logo[data-h="md"] { height: 26px; }
+  .logo[data-h="sm"] { height: 22px; }
+
+  .note {
+    margin-top: 28px;
+    padding: 0 8px;
+  }
+}

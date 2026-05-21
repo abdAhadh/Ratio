@@ -1,0 +1,405 @@
+/* Request Demo (/contact) — middle section, pixel-matched to 8098:
+   hero, hatched divider strip, a flush 2-column section (638 / 932) with
+   marketing copy on the left and a form card framed by an animated
+   gradient border on the right, then a closing hatched strip. */
+
+.main {
+  position: relative;
+  background: var(--color-bg);
+  padding: 0 120px 100px;
+}
+
+.inner {
+  max-width: 1570px;
+  margin: 0 auto;
+}
+
+/* Side rails — same geometry as the footer's, join continuously. */
+.rails {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  bottom: 0;
+  width: calc(100% - 240px);
+  max-width: 1570px;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+/* ── Hero ── */
+.hero {
+  padding: 150px 0 55px;
+  text-align: center;
+}
+
+.h1 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(40px, 4vw, 56px);
+  line-height: 1.14;
+  letter-spacing: -0.05em;
+  color: var(--color-fg);
+}
+
+/* ── Hatched divider strips — framed top + bottom with a 1px #333 line ── */
+.strip {
+  display: block;
+  width: 100%;
+  height: 65px;
+  object-fit: cover;
+  box-sizing: border-box;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+/* ── 2-column section — flush (gap 0), 638 / 932 split ── */
+.grid {
+  display: grid;
+  grid-template-columns: 638fr 932fr;
+}
+
+/* Left — marketing copy */
+.left {
+  padding: 56px;
+  min-width: 0;
+}
+
+.h2 {
+  margin: 0 0 40px;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(32px, 3vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--color-fg);
+}
+
+.divider {
+  height: 0;
+  margin: 0 0 40px;
+  border: 0;
+  border-top: 1px solid #333;
+}
+
+.lead {
+  margin: 0 0 14px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-fg-muted);
+}
+
+.leadLast {
+  margin-bottom: 32px;
+}
+
+.expectHeading {
+  margin: 0 0 16px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--color-fg);
+}
+
+.expectList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.expectItem {
+  display: flex;
+  gap: 12px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-fg-muted);
+}
+
+.checkCircle {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: rgba(44, 198, 255, 0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent-blue);
+}
+
+/* Right — form card with an animated gradient border */
+.right {
+  min-width: 0;
+}
+
+/* The gradient wrapper: its 24px padding IS the visible border. The
+   gradient angle drifts slowly so the frame shimmers (like 8098's animated
+   edge) while always staying a full blue→white→red sweep. */
+@property --grad-angle {
+  syntax: "<angle>";
+  initial-value: 115deg;
+  inherits: false;
+}
+
+.cardWrap {
+  padding: 24px;
+  overflow: clip;
+  background: linear-gradient(
+    var(--grad-angle, 115deg),
+    #0a3fb5 0%,
+    #2f7fd4 14%,
+    #6db8e8 27%,
+    #cfe4f2 41%,
+    #f3dada 52%,
+    #ec8a9a 65%,
+    #de4257 82%,
+    #b81f38 100%
+  );
+  animation: cardGlow 9s ease-in-out infinite alternate;
+}
+
+@keyframes cardGlow {
+  from {
+    --grad-angle: 100deg;
+  }
+  to {
+    --grad-angle: 132deg;
+  }
+}
+
+/* Inner card — translucent dark over a heavy blur so the gradient tints
+   the interior, matching 8098. */
+.card {
+  padding: 24px;
+  background: rgba(25, 27, 32, 0.8);
+  -webkit-backdrop-filter: blur(54px);
+  backdrop-filter: blur(54px);
+}
+
+.eyebrowRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.eyebrowIcon {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-accent-blue);
+}
+
+.cardTitle {
+  margin: 0 0 28px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(30px, 2.4vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.05em;
+  color: var(--color-fg);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-fg-muted);
+}
+
+/* Name / Work Email / Message — flat dark inset fields, no border (8098). */
+.input,
+.textarea {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: #ffffff;
+  background: rgba(13, 14, 17, 0.5);
+  border: 0;
+  border-radius: 0;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.input {
+  height: 51px;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.input:focus,
+.textarea:focus {
+  outline: 1px solid var(--color-accent-blue);
+  outline-offset: -1px;
+}
+
+.textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Phone row — bordered, rounded controls (8098 styles these distinctly). */
+.phoneRow {
+  display: flex;
+  gap: 8px;
+}
+
+.select,
+.phoneInput {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.select {
+  flex: 0 0 auto;
+  width: 104px;
+  padding: 12px 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-fg);
+  cursor: pointer;
+}
+
+.phoneInput {
+  flex: 0 0 auto;
+  width: 220px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+}
+
+.phoneInput::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.select:focus,
+.phoneInput:focus {
+  outline: none;
+  border-color: var(--color-accent-blue);
+}
+
+/* Submit — white, square, content-sized, with a dark chevron icon box. */
+.submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 14px 16px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: rgb(26, 26, 26);
+  background: #ffffff;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.submitIcon {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  background: rgb(26, 26, 26);
+  border-radius: 2px;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+/* Two stacked chevrons — on hover the first slides out left while the
+   second slides in from the right, matching the nav's REQUEST DEMO CTA. */
+.submitChevron {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.44, 0, 0.56, 1);
+}
+
+.submitChevron:first-child {
+  transform: translateX(0);
+}
+
+.submitChevron:last-child {
+  transform: translateX(30px);
+}
+
+.submit:hover .submitChevron:first-child {
+  transform: translateX(-30px);
+}
+
+.submit:hover .submitChevron:last-child {
+  transform: translateX(0);
+}
+
+/* Calendar (after submit) */
+.calNote {
+  margin: 0 0 20px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-fg-muted);
+}
+
+@media (max-width: 900px) {
+  .main {
+    padding: 0 24px 80px;
+  }
+  .rails {
+    display: none;
+  }
+  .hero {
+    padding: 120px 0 40px;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .left {
+    padding: 40px 0;
+  }
+  .phoneInput {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+  }
+}

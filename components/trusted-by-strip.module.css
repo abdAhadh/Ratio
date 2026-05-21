@@ -1,0 +1,145 @@
+/* Trusted-by strip — 1440 × 112, overlays bottom 112px of hero. */
+.section {
+  position: relative;
+  width: 100%;
+  height: 112px;
+  margin-top: -112px; /* pull up so strip sits at viewport top:788 inside hero */
+  z-index: 5;
+  background-color: var(--color-trusted-by-bg, #010101);
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  box-sizing: border-box;
+  /* 8098 uses Framer's data-border style which renders 1px borders top + bottom
+     on the strip — colour is the same #333 used elsewhere on the page. */
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+/* ───── Left pane: "INTEGRATIONS / WITH" 2-line stacked label ───── */
+.subheading {
+  flex: 0 0 253px;
+  width: 253px;
+  height: 112px;
+  background-color: var(--color-trusted-by-bg, #010101);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding-left: 60px;
+  box-sizing: border-box;
+  z-index: 2;
+  /* Right border separates the subheading from the ticker pane (matches the
+     Framer data-border="true" vertical divider on 8098). */
+  border-right: 1px solid #333;
+}
+
+.label {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 19.2px;
+  letter-spacing: 0;
+  color: #ffffff;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ───── Right pane: striped pattern + JS-driven marquee ───── */
+.ticker {
+  flex: 1 1 auto;
+  height: 112px;
+  position: relative;
+  overflow: clip;
+}
+
+.pattern {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 0;
+}
+
+/* Track (the ul). Position absolute and let JS animate via transform. Two
+   copies of the logo set are rendered so wrap-around is seamless. */
+.track {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* 8098 uses gap:48px between logos */
+  gap: 48px;
+  /* Padding-left starts items below the subheading mask plus a small
+     visual pad. */
+  padding: 0 48px 0 48px;
+  margin: 0;
+  list-style: none;
+  z-index: 1;
+  width: max-content;
+}
+
+.tickerItem {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+.logo {
+  height: 22px;
+  display: block;
+  flex: 0 0 auto;
+  object-fit: contain;
+  opacity: 0.85;
+  /* Default filter — collapse coloured wordmarks to a white silhouette,
+     matching 8098. */
+  filter: brightness(0) invert(1);
+}
+
+/* Logos with internal detail (QuickBooks, Salesforce) use a softer filter
+   so the wordmark/text inside the icon stays readable, matching 8098. */
+.tickerItemPreserve .logo {
+  opacity: 0.9;
+  filter: grayscale(1) brightness(1.3) contrast(1.05);
+}
+
+/* ───── Mobile (≤768px) ─────
+   The 253px subheading pane eats over half a phone viewport, leaving the
+   logo ticker cramped. Shrink the pane + its 60px gutter so the ticker
+   keeps room; the strip stays a flex row (height auto-trims slightly). */
+@media (max-width: 768px) {
+  .section {
+    height: 88px;
+    margin-top: -88px;
+  }
+
+  .subheading {
+    flex: 0 0 130px;
+    width: 130px;
+    height: 88px;
+    padding-left: 20px;
+  }
+
+  .label {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .ticker {
+    height: 88px;
+  }
+
+  .track {
+    gap: 32px;
+    padding: 0 24px;
+  }
+}

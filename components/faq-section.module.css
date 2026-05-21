@@ -1,0 +1,208 @@
+/* FAQ (#faq) — pixel-matched against 8098's #ratio-faq accordion.
+   Uses the shared 1570px bordered frame (borders line up with the
+   Integrations section above and the CTA below). The header is 1200 wide;
+   the accordion list is 800 wide and left-aligned. */
+
+.section {
+  position: relative;
+  width: 100%;
+  padding: 0 120px;
+  background: var(--color-bg);
+  box-sizing: border-box;
+}
+
+.mainContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1570px;
+  margin: 0 auto;
+  padding: 120px 0 140px;
+  box-sizing: border-box;
+}
+
+.mainContainer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Header — eyebrow + heading + subheading, centered, 1200 wide. */
+.head {
+  max-width: 1200px;
+  margin: 0 auto 64px;
+  padding: 0 60px;
+  text-align: center;
+}
+
+.eyebrowRow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.eyebrowRow img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent-blue);
+}
+
+.h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(32px, 4vw, 56px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-fg);
+  margin: 0 0 18px 0;
+}
+
+.sub {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-fg-muted);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* Accordion list — 800 wide, left-aligned. */
+.list {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+  text-align: left;
+}
+
+.item {
+  border-top: 1px solid #333;
+}
+
+.item:last-child {
+  border-bottom: 1px solid #333;
+}
+
+/* Question row (a button). */
+.q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  padding: 24px 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.4;
+  transition: color 0.2s ease;
+}
+
+.q:hover {
+  color: var(--color-fg-bright);
+}
+
+/* +/- icon — two 1.5px bars; the vertical bar rotates away on open. */
+.icon {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  position: relative;
+}
+
+.icon::before,
+.icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transform: translateY(-50%);
+  border-radius: 1px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.icon::after {
+  transform: translate(0, -50%) rotate(90deg);
+  transform-origin: center;
+}
+
+.item[data-open="true"] .icon::after {
+  transform: translate(0, -50%) rotate(0deg);
+  opacity: 0;
+}
+
+/* Answer. */
+.a {
+  padding: 0 40px 40px 0;
+}
+
+.a p {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-fg-muted);
+  margin: 0;
+  padding-right: 40px;
+}
+
+/* ── Mobile (≤768px) ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .section {
+    padding: 0 20px;
+  }
+
+  .mainContainer {
+    padding: 80px 0 80px;
+  }
+
+  .head {
+    max-width: 100%;
+    margin: 0 auto 40px;
+    padding: 0;
+  }
+
+  .sub {
+    max-width: 100%;
+  }
+
+  .list {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .q {
+    gap: 16px;
+    padding: 20px 0;
+    font-size: 16px;
+  }
+
+  .a {
+    padding: 0 0 32px 0;
+  }
+
+  .a p {
+    padding-right: 0;
+  }
+}

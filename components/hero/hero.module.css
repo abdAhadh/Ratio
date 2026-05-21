@@ -1,0 +1,245 @@
+.section {
+  position: relative;
+  width: 100%;
+  /* Responsive — fills the viewport like 8098 (which scales to 100vh on
+     bigger screens). Floor at 900px so on shorter screens content isn't
+     squashed. The shader fills the section minus the 112px trusted-by
+     overlay at the bottom. */
+  height: 100vh;
+  min-height: 900px;
+  overflow: hidden;
+  background: var(--color-bg);
+  box-sizing: border-box;
+}
+
+/* Unicorn shader fills the hero except the bottom 112px (where the
+   trusted-by strip overlays). Use absolute positioning with bottom:112 so
+   it scales with the section's responsive height. */
+.shaderLayer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 112px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Content stack — responsive layout matching 8098:
+   - Horizontally: padding-left = max(72px, (vw - 1570) / 2). At <=1714vw
+     the content sits 72px from edge; above that it slides right into the
+     centred 1570-wide column (probe @ 2000vw → eyebrow at left:215).
+   - Vertically: each element absolutely positioned via top = base + offset
+     where base = (hero_height - 432) / 2. At 900vh → base=234 (eyebrow);
+     at 1000vh → base=284. The "432" is 8098's design content-block height
+     (slightly larger than the actual content stack to give visual breathing
+     room around the centre). */
+.content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+/* Shared positioning: every hero element pins to the same x and uses a
+   responsive top offset. Tops are listed with their additive offsets so the
+   element stack is preserved. */
+.eyebrow {
+  position: absolute;
+  left: max(72px, calc((100vw - 1570px) / 2));
+  top: calc((100% - 432px) / 2);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 33px;
+  padding: 6px 8px;
+  background: rgba(178, 178, 178, 0.16);
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+/* 18×18 gradient-filled tile that wraps the white 12×12 star icon — verbatim
+   from 8098. The gradient sweeps coral → cyan → deep blue at 153°. */
+.eyebrowIconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  background: linear-gradient(
+    153deg,
+    rgb(250, 125, 122) 0%,
+    rgb(27, 213, 227) 37.9808%,
+    rgb(2, 57, 108) 100%
+  );
+  border-radius: 2px;
+}
+
+.eyebrowIcon {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+.eyebrowText {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: -0.14px;
+  color: var(--color-fg-muted);
+}
+
+/* ───── H1 ───── */
+.h1 {
+  position: absolute;
+  left: max(72px, calc((100vw - 1570px) / 2));
+  /* eyebrow base + 75 (eyebrow height 33 + gap 42) */
+  top: calc((100% - 432px) / 2 + 75px);
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 64px;
+  letter-spacing: -2.8px;
+  color: var(--color-fg-bright);
+  width: 558px;
+}
+
+.h1Word {
+  display: inline-block;
+  /* GPU compositing for the blur transform */
+  will-change: opacity, filter, transform;
+  /* Entry: blur-in + fade-up. Stagger handled by inline animation-delay. */
+  opacity: 0.001;
+  filter: blur(10px);
+  transform: translateY(10px);
+  animation: heroWordIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes heroWordIn {
+  to {
+    opacity: 1;
+    filter: blur(0.001px);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ───── Subhead ───── */
+.sub {
+  position: absolute;
+  left: max(72px, calc((100vw - 1570px) / 2));
+  /* eyebrow base + 215 (33 + 42 + 128 + 12) */
+  top: calc((100% - 432px) / 2 + 215px);
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.48px;
+  color: rgba(255, 255, 255, 0.7);
+  width: 560px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes heroFadeUp {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ───── CTA pill ───── */
+.cta {
+  position: absolute;
+  left: max(72px, calc((100vw - 1570px) / 2));
+  /* eyebrow base + 299 (33 + 42 + 128 + 12 + 48 + 36) */
+  top: calc((100% - 432px) / 2 + 299px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  width: 164px;
+  padding: 14px;
+  background: #ffffff;
+  border-radius: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: background 0.15s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.cta:hover {
+  background: rgb(240, 240, 240);
+}
+
+.ctaLabel {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.14px;
+  color: rgb(26, 26, 26);
+  white-space: nowrap; /* prevent "REQUEST DEMO" wrapping in the 164px pill */
+}
+
+.ctaIconBg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: rgb(26, 26, 26);
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+
+.ctaIconBg img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* ───── Mobile (≤768px) ─────
+   Desktop pins eyebrow / h1 / sub / cta absolutely at left:max(72px, …).
+   On a phone the 558–560px text blocks overflow, so we re-pin to a 20px
+   gutter, cap widths to the viewport, and shrink the 56px serif H1. The
+   absolute tops are kept (they're viewport-relative via calc) so the stack
+   still reads top-to-bottom; offsets are tightened for the smaller type. */
+@media (max-width: 768px) {
+  .section {
+    min-height: 640px;
+  }
+
+  .eyebrow {
+    left: 20px;
+  }
+
+  .h1 {
+    left: 20px;
+    width: 100%;
+    max-width: calc(100% - 40px);
+    font-size: 36px;
+    line-height: 42px;
+    letter-spacing: -1.4px;
+    top: calc((100% - 432px) / 2 + 60px);
+  }
+
+  .sub {
+    left: 20px;
+    width: 100%;
+    max-width: calc(100% - 40px);
+    top: calc((100% - 432px) / 2 + 190px);
+  }
+
+  .cta {
+    left: 20px;
+    top: calc((100% - 432px) / 2 + 290px);
+  }
+}

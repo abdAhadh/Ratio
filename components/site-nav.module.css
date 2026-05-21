@@ -1,0 +1,208 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: 80px;
+  /* Responsive horizontal padding so the logo aligns vertically with the
+     hero content's left edge — same formula as .content in hero.module.css.
+     At 1440vw → 72px; at 2000vw → 215px. */
+  padding: 16px max(72px, calc((100vw - 1570px) / 2));
+  background: rgb(1, 1, 1);
+  backdrop-filter: blur(15.55px);
+  -webkit-backdrop-filter: blur(15.55px);
+  box-sizing: border-box;
+  /* 8098 applies this via Framer's CSS-variable border system on the nav
+     (data-border="true" + --border-bottom-width:1px + --border-color). The
+     visible result is a subtle 1px hairline below the nav. */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  column-gap: 10px;
+  height: 48px;
+  width: 100%;
+  /* No max-width / margin auto — the nav itself uses responsive padding to
+     position the logo (left edge of .inner = left edge of hero content). */
+}
+
+/* Grid placement: logo starts in column 1, nav links center in column 2,
+   CTA pinned to column 3 right edge. Equal 1fr columns on either side of the
+   auto-sized centre group keep the link cluster mathematically centred within
+   the nav row — matching the live 8098 layout (PRODUCT at left: 584 of 1440). */
+.logoLink {
+  justify-self: start;
+}
+.links {
+  justify-self: center;
+}
+.cta {
+  justify-self: end;
+}
+
+.logoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  /* 8098: sun icon starts at viewport x:60 (nav padding-left), text wordmark
+     at x:92 → 32px - 24px icon - 0 = 8px gap between icon and text.
+     Inner Container starts at viewport x:60 already so no extra padding. */
+}
+
+.logoIcon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  flex: 0 0 auto;
+  /* Spin on hover — 8098 rotates the icon a quarter turn (Framer spring,
+     ~1s, no bounce); the cubic-bezier approximates that damped ease. */
+  transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.logoLink:hover .logoIcon {
+  transform: rotate(90deg);
+}
+
+/* 85.33 × 24 — the 64×18 wordmark SVG scaled a uniform 4/3, matching 8098
+   (an 85×24 box would stretch the 64×18 art non-uniformly). */
+.logoImg {
+  width: 85.33px;
+  height: 24px;
+  display: block;
+  flex: 0 0 auto;
+}
+
+/* "Ratio" wordmark — HTML text (8098's actual SVG is the original "Closor"
+   path; the live site swaps it via runtime JS, but we don't want to ship a
+   "Closor" SVG). Target visible footprint: 85 × 24 to match 8098.
+   Use Geist 36px / 700 / -2.2px tracking so "Ratio" renders at ~85px. */
+.logoText {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  font-family: var(--font-sans);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  flex: 0 0 auto;
+}
+
+/* ───── Center nav links ───── */
+.links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: -0.14px;
+  color: var(--color-fg-dim);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.link:hover {
+  color: var(--color-fg);
+}
+
+/* ───── Primary CTA pill on the right ───── */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  width: 164px;
+  padding: 14px;
+  background: #ffffff;
+  border-radius: 0; /* sharp corners — verified against live 8098 */
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: background 0.15s ease;
+}
+
+.cta:hover {
+  background: rgb(240, 240, 240);
+}
+
+.ctaLabel {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.14px;
+  color: rgb(26, 26, 26);
+  white-space: nowrap; /* prevent "REQUEST DEMO" wrapping to two lines */
+}
+
+.ctaIconBg {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: rgb(26, 26, 26);
+  border-radius: 2px;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+/* Two stacked chevrons. At rest the first is centred, the second parked
+   30px off the right edge (clipped). On hover both slide -30px in lockstep:
+   the first exits left, the second slides into centre — 8098's icon loop. */
+.ctaChevron {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.44, 0, 0.56, 1);
+}
+
+.ctaChevron:first-child {
+  transform: translateX(0);
+}
+
+.ctaChevron:last-child {
+  transform: translateX(30px);
+}
+
+.cta:hover .ctaChevron:first-child {
+  transform: translateX(-30px);
+}
+
+.cta:hover .ctaChevron:last-child {
+  transform: translateX(0);
+}
+
+/* ───── Mobile — drop the centre links, keep logo + CTA ───── */
+@media (max-width: 768px) {
+  .nav {
+    padding: 16px 20px;
+  }
+  .inner {
+    grid-template-columns: 1fr auto;
+  }
+  .links {
+    display: none;
+  }
+  .cta {
+    width: auto;
+  }
+}

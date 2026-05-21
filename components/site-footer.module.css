@@ -1,0 +1,396 @@
+/* Footer height = fixed top block (ends at 689 — the line-pattern strip's
+   bottom) + the wordmark card, which scales with content width exactly like
+   8098 (875 tall @1440 / content 1200 · 933 tall @1920 / content 1570). */
+.footer {
+  position: relative;
+  width: 100%;
+  height: calc(689px + 0.155 * min(100vw - 240px, 1570px));
+  padding: 0 120px;
+  background: var(--color-bg);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ── Main container — 1570 wide max, centered, starting at top:118 from
+   footer top. Holds the 3-column grid + Pro section. Width matches
+   Product / ROI / CTA mainContainers. The vertical 1px #333 rails are a
+   separate full-height element (.rails) so they run the whole footer. */
+.mainContainer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 118px;
+  width: calc(100% - 240px);
+  max-width: 1570px;
+  box-sizing: border-box;
+}
+
+/* ── Vertical rails — 1px #333 left+right, spanning the FULL footer
+   height (matches 8098, where the rails run footer top to bottom). */
+.rails {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  bottom: 0;
+  width: calc(100% - 240px);
+  max-width: 1570px;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* ── Heading row — 3 col titles side-by-side, top + bottom border.
+   Grid (not flex) so column dividers land on exact thirds and line up
+   with the links row + pro row below them. */
+.headingRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  position: relative;
+}
+
+.headingRow::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  border-top: 1px solid #333;
+  pointer-events: none;
+}
+
+.headingRow::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-bottom: 1px solid #333;
+  pointer-events: none;
+}
+
+.col {
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* Column header cell — 56 tall, right border on first two cells */
+.colHead {
+  height: 56px;
+  padding: 16px 0 16px 44px; /* left:164-120 = 44 inset from main container */
+  box-sizing: border-box;
+  border-right: 1px solid #333;
+}
+
+/* Last column head has no right border (already on .mainContainer) */
+.headingRow .col:last-child .colHead {
+  border-right: none;
+}
+
+.colTitle {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.48px;
+  color: var(--color-fg-muted);
+}
+
+/* ── Links row — 3 link list cells. Grid so dividers match the heading row. */
+.linksRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.linksCell {
+  min-width: 0;
+  padding: 40px 0 72px 44px; /* 8098: first link sits 40px below row top, 72px from bottom */
+  box-sizing: border-box;
+  border-right: 1px solid #333;
+  min-height: 212px;
+}
+
+.linksRow .linksCell:last-child {
+  border-right: none;
+}
+
+/* HOME links cell gets a bottom border — the line under the HOME links
+   that caps the top of the "Ratio" box (8098: framer-1manmnt). COMPANY
+   and LEGAL get none. */
+.linksRow .linksCell:first-child {
+  border-bottom: 1px solid #333;
+}
+
+.colList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px; /* 38px between item-tops minus 24 line-height = 14 */
+}
+
+/* Footer link — 8098's "roller blind" hover: the link is a 24px window
+   over a 2-copy text track. On hover the track slides up exactly one line
+   so the cyan copy replaces the white one. */
+.colLink {
+  display: block;
+  width: fit-content;
+  height: 24px;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.colLinkTrack {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease-out;
+}
+
+.colLink:hover .colLinkTrack {
+  transform: translateY(-24px);
+}
+
+.colLinkText {
+  display: block;
+  height: 24px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.48px;
+  white-space: nowrap;
+}
+
+.colLinkText:first-child {
+  color: var(--color-fg-bright);
+}
+
+.colLinkText:last-child {
+  color: var(--color-accent-blue);
+}
+
+/* ── Pro row — "Ratio" h4 + tagline closed as a box under the HOME column.
+   Grid with 3 tracks: the box is track 1; an empty .proDivider in track 2
+   carries the 2/3 column divider down through the row. The box is closed
+   by its right border + the row's full-width bottom border — matches 8098. */
+.proRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid #333;
+}
+
+.proCell {
+  min-width: 0;
+  padding: 40px 0 32px 44px;
+  box-sizing: border-box;
+  border-right: 1px solid #333;
+  min-height: 184px;
+}
+
+/* Empty cell in track 2 — extends the 2/3 column divider through the
+   pro row (8098: framer-1ozfzfw right border). */
+.proDivider {
+  border-right: 1px solid #333;
+}
+
+.proTitle {
+  margin: 0 0 4px 0; /* tagline sits 40px below proTitle top per 8098 (line-height 36 + 4 = 40) */
+  font-family: var(--font-sans);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 36px;
+  letter-spacing: -1.2px;
+  color: var(--color-fg);
+}
+
+.tagline {
+  width: 324px;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.48px;
+  color: var(--color-fg-muted);
+}
+
+/* ── Copyright (centered) ── */
+.copyright {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 586px; /* 5750 + 586 = 6336 */
+  width: calc(100% - 240px);
+  max-width: 1570px;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22.4px;
+  letter-spacing: 0;
+  text-align: center;
+  color: var(--color-fg-muted);
+}
+
+/* ── Decorative line-pattern strip below copyright — framed top + bottom
+   with a 1px #333 border, matching 8098's bordered strip. ── */
+.linePattern {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 624px; /* 5750 + 624 = 6374 */
+  width: calc(100% - 240px);
+  max-width: 1570px;
+  height: 65px;
+  display: block;
+  object-fit: cover;
+  box-sizing: border-box;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Giant "Ratio" wordmark — flat card flush inside the 1570 rails,
+   directly below the line-pattern strip (top:689). Height tracks the card
+   width via aspect-ratio (8098: 1200×186 → 1570×243) so it scales with the
+   viewport. Overflow:clip keeps the shader within the card frame. */
+.wordmark {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 689px;
+  width: calc(100% - 240px);
+  max-width: 1570px;
+  aspect-ratio: 1200 / 186;
+  overflow: clip;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Shader gradient — fills the FULL card. Width tracks the card (100%); the
+   1200:786 aspect-ratio keeps the scene at its natural proportion (forcing
+   a flat width:height such as 1570×243 squashes the scene and it renders
+   blank). It is taller than the card and vertically centred, so the card's
+   overflow:clip shows a full-width band of gradient — no empty/black
+   region at any viewport width. */
+.wordmarkShader {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  aspect-ratio: 1200 / 786;
+  z-index: 1;
+}
+
+.wordmarkText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 120px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -4.8px;
+  color: #ffffff;
+  z-index: 2;
+}
+
+/* ───── Mobile — the footer is absolutely positioned on desktop; on phones
+   everything switches to normal flow so it stacks: columns → copyright →
+   strip → wordmark. ───── */
+@media (max-width: 768px) {
+  .footer {
+    height: auto;
+    padding: 48px 16px;
+  }
+
+  .mainContainer {
+    position: static;
+    transform: none;
+    top: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .rails {
+    display: none;
+  }
+
+  .colHead {
+    height: 52px;
+    padding: 14px 0 14px 10px;
+  }
+
+  .colTitle {
+    font-size: 14px;
+  }
+
+  .linksCell {
+    padding: 20px 0 24px 10px;
+    min-height: 0;
+  }
+
+  /* The "Ratio" box spans the full width on phones. */
+  .proRow {
+    grid-template-columns: 1fr;
+  }
+
+  .proDivider {
+    display: none;
+  }
+
+  .proCell {
+    padding: 24px 0 28px 10px;
+    border-right: none;
+    min-height: 0;
+  }
+
+  .tagline {
+    width: 100%;
+  }
+
+  .copyright {
+    position: static;
+    transform: none;
+    top: auto;
+    width: 100%;
+    max-width: 100%;
+    margin: 32px 0 0;
+  }
+
+  .linePattern {
+    position: static;
+    transform: none;
+    top: auto;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 24px;
+  }
+
+  /* relative (not static) so the absolutely-positioned shader inside stays
+     contained and clipped to the card instead of escaping to the footer. */
+  .wordmark {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: auto;
+    height: 104px;
+    margin-top: 24px;
+  }
+
+  .wordmarkText {
+    font-size: 54px;
+    letter-spacing: -2px;
+  }
+}
