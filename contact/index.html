@@ -673,7 +673,7 @@
   function sendDemoRequestToSlack(name, email, phone, message) {
     // Mirror tryratio.io's demo-submission Slack notification. The browser
     // POSTs to our own /api/notify-slack serverless function, which forwards
-    // the message to Slack using the RATIO_SLACK_WEBHOOK_URL env var. The
+    // the message to Slack using the SLACK_WEBHOOK_URL env var. The
     // webhook secret never ships in client code or the repo.
     var blocks = [
       { type: 'header', text: { type: 'plain_text', text: 'New Demo Request', emoji: true } },
