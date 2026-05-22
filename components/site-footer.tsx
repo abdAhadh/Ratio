@@ -177,6 +177,61 @@ export function SiteFooter() {
           </div>
           <div className={styles.proDivider} aria-hidden="true" />
         </div>
+
+        {/* Mobile-only 2×2 column grid (CSS-controlled): HOME | COMPANY on
+            row 1, the "Ratio" box | LEGAL on row 2. On mobile the desktop
+            heading / links / pro rows above are hidden instead. */}
+        <div className={styles.mGrid}>
+          <div className={styles.mCell}>
+            <p className={styles.mTitle}>HOME</p>
+            <ul className={styles.mList}>
+              {NAV_HOME.map((it) => (
+                <li key={it.label}>
+                  <a href={it.href} className={styles.mLink}>
+                    {it.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className={styles.mCell}>
+            <p className={styles.mTitle}>COMPANY</p>
+            <ul className={styles.mList}>
+              {NAV_COMPANY.map((it) => (
+                <li key={it.label}>
+                  <a
+                    href={it.href}
+                    className={styles.mLink}
+                    {...(it.external
+                      ? { target: "_blank", rel: "noreferrer" }
+                      : {})}
+                  >
+                    {it.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className={styles.mCell}>
+            <h4 className={styles.mProTitle}>Ratio</h4>
+            <p className={styles.mTagline}>
+              Start as a co-pilot for your AR team. Graduate it to autopilot
+              whenever you&apos;re ready.
+            </p>
+          </div>
+          <div className={styles.mCell}>
+            <p className={styles.mTitle}>LEGAL</p>
+            <ul className={styles.mList}>
+              {NAV_LEGAL.map((it) => (
+                <li key={it.label}>
+                  <a href={it.href} className={styles.mLink}>
+                    {it.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
 
       {/* Copyright (centered) */}

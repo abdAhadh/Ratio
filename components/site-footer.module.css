@@ -303,6 +303,12 @@
   z-index: 2;
 }
 
+/* The mobile-only 2×2 footer grid — hidden on desktop, where the
+   heading / links / pro rows above are used instead. */
+.mGrid {
+  display: none;
+}
+
 /* ───── Mobile — the footer is absolutely positioned on desktop; on phones
    everything switches to normal flow so it stacks: columns → copyright →
    strip → wordmark. ───── */
@@ -424,5 +430,78 @@
   .wordmarkText {
     font-size: 54px;
     letter-spacing: -2px;
+  }
+
+  /* The desktop heading / links / pro rows are replaced on mobile by a
+     2×2 grid: HOME | COMPANY on the top row, the "Ratio" box | LEGAL on
+     the bottom row. */
+  .headingRow,
+  .linksRow,
+  .proRow {
+    display: none;
+  }
+
+  .mGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid #333;
+  }
+
+  .mCell {
+    box-sizing: border-box;
+    min-width: 0;
+    padding: 24px 16px;
+    border-right: 1px solid #333;
+    border-bottom: 1px solid #333;
+  }
+
+  /* Right-hand cells sit against the side rail — no inner divider. */
+  .mCell:nth-child(2n) {
+    border-right: none;
+  }
+
+  .mTitle {
+    margin: 0 0 18px 0;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.42px;
+    color: var(--color-fg-muted);
+  }
+
+  .mList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .mLink {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: -0.48px;
+    color: var(--color-fg-bright);
+    text-decoration: none;
+  }
+
+  .mProTitle {
+    margin: 0 0 8px 0;
+    font-family: var(--font-sans);
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -1px;
+    color: var(--color-fg);
+  }
+
+  .mTagline {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+    color: var(--color-fg-muted);
   }
 }
