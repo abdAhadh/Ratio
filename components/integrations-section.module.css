@@ -177,11 +177,11 @@
     padding: 56px 0 64px;
   }
 
-  /* Header had 60px side padding on top of the section padding — too
-     much combined inset on a narrow viewport. */
+  /* Heading + subheading inset from the section edges with comfortable
+     side padding. */
   .header {
     margin: 0 auto 40px;
-    padding: 0 8px;
+    padding: 0 24px;
   }
 
   /* Tighten the marquee: smaller logo gap so more logos read at once,

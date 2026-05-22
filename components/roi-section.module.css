@@ -234,6 +234,13 @@
     gap: 32px;
   }
 
+  /* Extra side padding so the heading + subheading sit inset from the
+     section edges. */
+  .header {
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
   /* The desktop h2 forces a single line at 548px wide via nowrap —
      that overflows a phone. Allow wrapping and shrink the type. */
   .headingAndSubtext {
