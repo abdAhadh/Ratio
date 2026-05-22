@@ -278,13 +278,14 @@
 
   /* Sticky stacking — each card pins near the top and the next slides over
      it, like the Product section. Opaque background + uniform min-height so
-     each card fully covers the one beneath; dimensions match the Product
-     card (310 wide via the wrapper padding, 340 tall). */
+     each card fully covers the one beneath. 230px is ~32% shorter than the
+     Product card; the value + label stay vertically centred (justify-content
+     centre), so the space above and below them is equal. */
   .card {
     position: sticky;
     flex: 0 0 auto;
     height: auto;
-    min-height: 340px;
+    min-height: 230px;
     padding: 28px 16px;
     background-color: #16181c;
     border-right: none;
