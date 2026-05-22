@@ -217,29 +217,47 @@
     min-height: 640px;
   }
 
+  /* Mobile hero is centre-aligned, matching the Closor template. Every
+     element is absolutely positioned: the eyebrow pill centres via
+     translateX; the CTA centres via margin-auto (it runs a fade-up
+     animation that owns `transform`, so translateX would be overwritten);
+     the h1 + sub span full width and centre their text. Font sizes match
+     the template: 40px / 52px serif H1. */
   .eyebrow {
-    left: 20px;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .h1 {
-    left: 20px;
-    width: 100%;
-    max-width: calc(100% - 40px);
-    font-size: 36px;
-    line-height: 42px;
-    letter-spacing: -1.4px;
-    top: calc((100% - 432px) / 2 + 60px);
+    left: 0;
+    right: 0;
+    width: auto;
+    max-width: none;
+    padding: 0 20px;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 40px;
+    line-height: 52px;
+    letter-spacing: -2px;
+    top: calc((100% - 432px) / 2 + 75px);
   }
 
   .sub {
-    left: 20px;
-    width: 100%;
-    max-width: calc(100% - 40px);
-    top: calc((100% - 432px) / 2 + 190px);
+    left: 0;
+    right: 0;
+    width: auto;
+    max-width: none;
+    padding: 0 20px;
+    box-sizing: border-box;
+    text-align: center;
+    top: calc((100% - 432px) / 2 + 191px);
   }
 
   .cta {
-    left: 20px;
-    top: calc((100% - 432px) / 2 + 290px);
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: calc((100% - 432px) / 2 + 299px);
   }
 }
