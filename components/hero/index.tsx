@@ -22,7 +22,7 @@ import styles from "./hero.module.css";
  */
 const H1_TEXT = "Your AI coworker to automate AR";
 const SUBHEAD =
-  "AI agents that run collections, cash applications, deductions and disputes, end-to-end. Sits on top of your existing ERP and bank.";
+  "AI agents that run collections, cash applications, deductions and disputes, end-to-end. Sits on top of your existing systems. Live in days.";
 
 const WORD_STAGGER_MS = 50;
 const WORD_BASE_MS = 100;
