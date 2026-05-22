@@ -371,12 +371,11 @@
 }
 
 /* ───── Mobile (≤768px) ─────
-   Desktop is a 2-col flex row (644 + 926 = 1570) with a sticky scroll-driven
-   indicator on the left. On a phone we collapse to a single column: the
-   left/right panes go full-width and stack, the leftSide drops its sticky
-   pin + fixed height (the scroll-indicator's hardcoded 545px geometry is
-   decorative and doesn't translate, so the column just flows), and the
-   right side loses its huge min-height. Outer 120px padding → 20px gutter. */
+   Desktop is a 2-col flex row (left scroll-indicator + right sticky cards).
+   On a phone we match the Closor template's mobile feature section: a single
+   column of sticky stacking cards over the background animation. The whole
+   left pane (numbered list + scroll dots) and the decorative hatched strips
+   are dropped; a 1px line sits between the heading and the card region. */
 @media (max-width: 768px) {
   .section {
     padding: 0 20px;
@@ -390,42 +389,30 @@
     gap: 40px;
   }
 
+  /* Heading — Closor's mobile feature h2 is 24 / 31.2 / -1.2. */
   .h2 {
-    font-size: 28px;
-    line-height: 38px;
-    letter-spacing: -1px;
+    font-size: 24px;
+    line-height: 31.2px;
+    letter-spacing: -1.2px;
   }
 
+  /* Single column. The left pane (numbered list + scroll-dot indicator) is
+     dropped entirely — Closor shows only the cards on mobile. The 1px
+     border-top is the line that closes the top of the card region, in
+     place of the desktop hatched strip. */
   .cardsWrapper {
     flex-direction: column;
     min-height: 0;
+    border-top: 1px solid #333;
   }
 
   .leftSide {
-    flex: 1 1 auto;
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    position: static;
-    top: auto;
-    padding: 32px 16px;
-  }
-
-  .stickyHeadings {
-    height: auto;
-  }
-
-  /* Scroll-driven dot/line indicator relies on hardcoded desktop pixel
-     geometry that doesn't translate to a phone — the .dot children are
-     position:absolute and would scatter as stray squares over the stacked
-     list. Hide the whole indicator; the numbered .list keeps "1. 2. 3.". */
-  .track {
     display: none;
   }
 
-  .list {
-    gap: 24px;
-    padding-left: 0;
+  /* Decorative hatched line-pattern strips removed on mobile. */
+  .linePattern {
+    display: none;
   }
 
   .rightSide {
@@ -436,34 +423,38 @@
     padding: 0;
   }
 
-  /* The shader fills rightSide behind the card column. On desktop the cards
-     are sticky and overlap, hiding it; stacked static on a phone it bleeds
-     through every 20px card gap as harsh red bands. Hide it on mobile so the
-     cards stack cleanly on the page background. */
+  /* Background animation stays visible — in the Closor template it shows as
+     a ~20px frame around the inset cards and scrolls behind the stack. */
   .shader {
-    display: none;
+    display: block;
   }
 
+  /* Cards inset 20px inside the shader so the animation frames them; 32px
+     gap between cards — matching the Closor template (cards 310 wide,
+     animation 350 wide, at a 390 viewport). */
   .cardWrapper {
-    padding: 16px 0;
-    gap: 20px;
+    padding: 40px 20px;
+    gap: 32px;
   }
 
-  /* Sticky cards stack normally on a phone — the per-index `top` inline
-     style is harmless once they're in a single flowing column. */
+  /* Sticky stacking: each card pins near the top and the next slides over
+     it. The per-card `top` (120 / 130 / 140 …) is the inline style from
+     product-section.tsx — the same values the Closor template uses. */
   .cardSticky {
-    position: static;
+    position: sticky;
   }
 
+  /* Card padding + inner gap match the Closor template's mobile card.
+     cardTitle (24/36/-1.2) and cardBody (16/24) keep their desktop sizes,
+     which already match Closor, so they need no mobile override.
+     min-height makes every card a uniform height so each one fully covers
+     the card beneath it in the sticky stack — without it, a taller card's
+     body text peeks out below a shorter card stacked on top. 340 clears
+     the tallest card's natural content (~332). */
   .card {
-    gap: 40px;
-    padding: 20px 20px 28px 20px;
-  }
-
-  .cardTitle {
-    font-size: 22px;
-    line-height: 32px;
-    letter-spacing: -1px;
+    gap: 72px;
+    padding: 16px 16px 28px;
+    min-height: 340px;
   }
 
   .cardBody {
