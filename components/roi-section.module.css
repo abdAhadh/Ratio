@@ -254,37 +254,51 @@
     white-space: normal;
   }
 
-  /* Card band: kill the 66px top/bottom inset, stack cards vertically. */
+  /* Card region — mirrors the Product section's mobile treatment: the
+     background animation fills the container and the cards are inset 20px
+     so it frames them. */
   .cardContainer {
-    padding: 32px 0;
+    padding: 0;
   }
 
-  /* The htband shader fills the card container behind the stat cards. On a
-     phone it bleeds through the 32px top/bottom padding as a harsh red band.
-     Hide it so the stacked cards sit cleanly on the page background. */
+  /* Background animation stays on — it frames the inset cards and scrolls
+     behind the stack. */
   .htband {
-    display: none;
+    display: block;
   }
 
+  /* Single column; cards inset 20px inside the animation, 32px gap, with
+     40px of animation showing above the first / below the last card. */
   .cardWrapper {
     flex-direction: column;
     height: auto;
+    padding: 40px 20px;
+    gap: 32px;
   }
 
-  /* Cards no longer share a row — swap vertical dividers for horizontal
-     ones. Drop the desktop fixed 398px height and let each card hug its
-     value + label with a comfortable padding instead of a dead min-height. */
+  /* Sticky stacking — each card pins near the top and the next slides over
+     it, like the Product section. Opaque background + uniform min-height so
+     each card fully covers the one beneath; dimensions match the Product
+     card (310 wide via the wrapper padding, 340 tall). */
   .card {
-    flex: 1 1 auto;
+    position: sticky;
+    flex: 0 0 auto;
     height: auto;
-    min-height: 0;
+    min-height: 340px;
     padding: 28px 16px;
+    background-color: #16181c;
     border-right: none;
-    border-bottom: 1px solid #333;
+    border-bottom: none;
   }
 
-  .card:last-child {
-    border-bottom: none;
+  .card:nth-child(1) {
+    top: 120px;
+  }
+  .card:nth-child(2) {
+    top: 130px;
+  }
+  .card:nth-child(3) {
+    top: 140px;
   }
 
   /* 66px desktop value digit is far too large for a phone. */
