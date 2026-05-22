@@ -343,6 +343,16 @@
     min-height: 0;
   }
 
+  /* One clean full-width line under the links row, instead of the
+     desktop's HOME-column-only border. */
+  .linksRow {
+    border-bottom: 1px solid #333;
+  }
+
+  .linksRow .linksCell:first-child {
+    border-bottom: none;
+  }
+
   /* The desktop colLink is a 24px roller-blind window (overflow:hidden over a
      2-copy track) — a hover effect that's useless on touch and leaves only a
      24px tap target. On mobile open it up: show one copy at a comfortable
@@ -366,10 +376,13 @@
     display: none;
   }
 
+  /* Centred "Ratio" + tagline box, bounded by the links-row border above
+     and the pro-row border below. */
   .proCell {
-    padding: 24px 0 28px 10px;
+    padding: 32px 16px;
     border-right: none;
     min-height: 0;
+    text-align: center;
   }
 
   .tagline {
