@@ -217,6 +217,13 @@
     min-height: 640px;
   }
 
+  /* The shader stops 112px from the hero bottom to leave room for the
+     trusted-by strip. On mobile that strip is only 88px tall, so a 112px
+     gap left a 24px black band uncovered. Match the mobile strip height. */
+  .shaderLayer {
+    bottom: 88px;
+  }
+
   /* Mobile hero is centre-aligned, matching the Closor template. Every
      element is absolutely positioned: the eyebrow pill centres via
      translateX; the CTA centres via margin-auto (it runs a fade-up
