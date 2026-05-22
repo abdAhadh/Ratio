@@ -206,26 +206,38 @@
     display: none;
   }
 
+  /* The shader area holds the animation; its padding becomes the frame
+     of animation visible around the card — 60px top/bottom, 16px sides,
+     matching the Closor template (350-wide animation, 318-wide card). */
   .shaderArea {
     position: relative;
     left: auto;
     top: auto;
     width: 100%;
     height: auto;
-    min-height: 360px;
+    padding: 60px 16px;
+    box-sizing: border-box;
   }
 
+  /* The card sits in-flow inside that padding so the animation frames it.
+     A subtle 1px border replaces the desktop border image, which can't
+     stretch to the mobile card's aspect ratio without distorting. */
   .contentWrap {
     position: relative;
     left: auto;
     right: auto;
     top: auto;
     height: auto;
-    min-height: 360px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  /* The desktop border image is hidden on mobile (see .contentWrap). */
+  .borderImage {
+    display: none;
   }
 
   .content {
-    padding: 48px 32px;
+    padding: 48px 16px;
     height: auto;
   }
 
