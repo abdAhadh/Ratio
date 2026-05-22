@@ -432,6 +432,16 @@
     letter-spacing: -2px;
   }
 
+  /* Enlarge the shader so the visible band is a tighter, more zoomed-in
+     crop of the scene — matching the Closor / 8097 footer wordmark,
+     instead of the wide flat band the 100%-width shader produced. The
+     wordmark's overflow:clip keeps it bounded to the card. */
+  .wordmarkShader {
+    width: 135%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
   /* The desktop heading / links / pro rows are replaced on mobile by a
      2×2 grid: HOME | COMPANY on the top row, the "Ratio" box | LEGAL on
      the bottom row. */
