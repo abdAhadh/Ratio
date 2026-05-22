@@ -252,17 +252,26 @@
     padding: 32px 0;
   }
 
+  /* The htband shader fills the card container behind the stat cards. On a
+     phone it bleeds through the 32px top/bottom padding as a harsh red band.
+     Hide it so the stacked cards sit cleanly on the page background. */
+  .htband {
+    display: none;
+  }
+
   .cardWrapper {
     flex-direction: column;
     height: auto;
   }
 
   /* Cards no longer share a row — swap vertical dividers for horizontal
-     ones and give each a real height now that the row is unset. */
+     ones. Drop the desktop fixed 398px height and let each card hug its
+     value + label with a comfortable padding instead of a dead min-height. */
   .card {
     flex: 1 1 auto;
     height: auto;
-    min-height: 200px;
+    min-height: 0;
+    padding: 28px 16px;
     border-right: none;
     border-bottom: 1px solid #333;
   }

@@ -81,7 +81,7 @@ export function Hero() {
         </p>
 
         <a
-          href="#cta-banner"
+          href="/contact"
           className={styles.cta}
           style={
             { animationDelay: `${ctaDelay}ms` } as React.CSSProperties

@@ -122,10 +122,14 @@
     margin-top: -88px;
   }
 
+  /* The section is 88px with box-sizing:border-box + 1px top/bottom borders,
+     so its content box is only 86px. Fixed height:88px children overflowed
+     and clipped the logos. height:auto lets the flex row stretch them to the
+     true 86px content height. */
   .subheading {
     flex: 0 0 130px;
     width: 130px;
-    height: 88px;
+    height: auto;
     padding-left: 20px;
   }
 
@@ -135,7 +139,7 @@
   }
 
   .ticker {
-    height: 88px;
+    height: auto;
   }
 
   .track {

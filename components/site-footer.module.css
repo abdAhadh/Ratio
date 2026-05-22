@@ -338,6 +338,20 @@
     min-height: 0;
   }
 
+  /* The desktop colLink is a 24px roller-blind window (overflow:hidden over a
+     2-copy track) — a hover effect that's useless on touch and leaves only a
+     24px tap target. On mobile open it up: show one copy at a comfortable
+     44px tap height and drop the second (cyan-hover) copy. */
+  .colLink {
+    height: auto;
+    overflow: visible;
+    padding: 10px 0;
+  }
+
+  .colLinkText:last-child {
+    display: none;
+  }
+
   /* The "Ratio" box spans the full width on phones. */
   .proRow {
     grid-template-columns: 1fr;

@@ -416,14 +416,10 @@
   }
 
   /* Scroll-driven dot/line indicator relies on hardcoded desktop pixel
-     geometry — neutralise it so it doesn't collide with the stacked list. */
+     geometry that doesn't translate to a phone — the .dot children are
+     position:absolute and would scatter as stray squares over the stacked
+     list. Hide the whole indicator; the numbered .list keeps "1. 2. 3.". */
   .track {
-    position: static;
-    width: 100%;
-    height: auto;
-  }
-
-  .line {
     display: none;
   }
 
@@ -438,6 +434,14 @@
     max-width: 100%;
     min-height: 0;
     padding: 0;
+  }
+
+  /* The shader fills rightSide behind the card column. On desktop the cards
+     are sticky and overlap, hiding it; stacked static on a phone it bleeds
+     through every 20px card gap as harsh red bands. Hide it on mobile so the
+     cards stack cleanly on the page background. */
+  .shader {
+    display: none;
   }
 
   .cardWrapper {
