@@ -183,6 +183,13 @@
     padding: 0 24px;
   }
 
+  /* The desktop h2 clamps to 32px on a phone — bigger than the other
+     section headings. Bring it in line (26 / 1.2, matching ROI). */
+  .h2 {
+    font-size: 26px;
+    line-height: 1.2;
+  }
+
   .sub {
     max-width: 100%;
   }

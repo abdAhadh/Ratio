@@ -25,6 +25,10 @@ const LOGOS: Array<{ src: string; alt: string; h: "lg" | "md" | "sm" }> = [
 export function IntegrationsSection() {
   // Duplicate the list for a seamless marquee loop.
   const loop = [...LOGOS, ...LOGOS];
+  // Reverse-order copy for the second (mobile-only) marquee bar, so the
+  // two bars don't show the same logo at the same spot.
+  const reversed = [...LOGOS].reverse();
+  const loopReverse = [...reversed, ...reversed];
 
   return (
     <section id="integrations" className={styles.section}>
@@ -53,7 +57,7 @@ export function IntegrationsSection() {
           {loop.map((logo, i) => (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              key={`${logo.alt}-${i}`}
+              key={`a-${logo.alt}-${i}`}
               src={logo.src}
               alt={logo.alt}
               data-h={logo.h}
@@ -62,6 +66,27 @@ export function IntegrationsSection() {
           ))}
         </div>
       </div>
+
+      {/* Second marquee bar — shown only on mobile (CSS-controlled), it
+          scrolls the opposite direction with a gap above it. */}
+      <div
+        className={`${styles.strip} ${styles.stripReverse}`}
+        aria-hidden="true"
+      >
+        <div className={`${styles.track} ${styles.trackReverse}`}>
+          {loopReverse.map((logo, i) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={`b-${logo.alt}-${i}`}
+              src={logo.src}
+              alt=""
+              data-h={logo.h}
+              className={styles.logo}
+            />
+          ))}
+        </div>
+      </div>
+
       <p className={styles.note}>
         Same day responses on shared slack channel with our founding team.
       </p>

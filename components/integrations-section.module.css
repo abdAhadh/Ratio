@@ -123,6 +123,17 @@
   animation: ri-marquee 36s linear infinite;
 }
 
+/* Second marquee bar — same animation reversed so it scrolls the
+   opposite way. The strip itself is desktop-hidden and only appears on
+   mobile (see the media query below). */
+.trackReverse {
+  animation-direction: reverse;
+}
+
+.stripReverse {
+  display: none;
+}
+
 @keyframes ri-marquee {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
@@ -184,6 +195,13 @@
     padding: 0 24px;
   }
 
+  /* The desktop h2 clamps to 32px on a phone — bigger than the other
+     section headings. Bring it in line (26 / 1.2, matching ROI). */
+  .h2 {
+    font-size: 26px;
+    line-height: 1.2;
+  }
+
   /* Tighten the marquee: smaller logo gap so more logos read at once,
      narrower edge-fade so it doesn't eat the strip on a 360px screen. */
   .strip {
@@ -198,6 +216,13 @@
 
   .track {
     gap: 48px;
+  }
+
+  /* Reveal the second marquee bar on mobile, with a gap above it so the
+     two bars read as separate sliders. */
+  .stripReverse {
+    display: block;
+    margin-top: 16px;
   }
 
   /* Scale the logos down so they fit the shorter strip. */
