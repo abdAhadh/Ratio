@@ -194,9 +194,12 @@
     max-width: 100%;
   }
 
+  /* Inset the accordion so its horizontal divider lines stop short of
+     the section's vertical side borders (24px — same inset as the
+     heading). */
   .list {
     max-width: 100%;
-    padding: 0;
+    padding: 0 24px;
   }
 
   .q {

@@ -181,13 +181,15 @@
 @media (max-width: 768px) {
   .section {
     height: auto;
-    min-height: 480px;
-    padding: 60px 20px;
+    padding: 0 20px;
     overflow: visible;
   }
 
   /* Switch the absolutely-positioned frame to in-flow so it stacks
-     cleanly without fixed pixel offsets clipping the content. */
+     cleanly without fixed pixel offsets clipping the content. The 60px
+     vertical breathing room moves onto the mainContainer as padding, so
+     its L/R borders span the full section height — keeping the side
+     borders continuous with the FAQ above and the footer below. */
   .mainContainer {
     position: relative;
     left: auto;
@@ -195,6 +197,7 @@
     width: 100%;
     max-width: 100%;
     height: auto;
+    padding: 60px 0;
   }
 
   /* Decorative line strips rely on fixed pixel offsets — hide on mobile. */

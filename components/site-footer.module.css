@@ -309,7 +309,7 @@
 @media (max-width: 768px) {
   .footer {
     height: auto;
-    padding: 48px 16px;
+    padding: 48px 20px;
   }
 
   .mainContainer {
@@ -320,8 +320,13 @@
     max-width: 100%;
   }
 
+  /* Keep the vertical side rails on mobile so the L/R borders run
+     continuously from the sections above down to the end of the page.
+     calc(100% - 40px) lines them up at the same 20px inset as the
+     FAQ / CTA section borders. */
   .rails {
-    display: none;
+    display: block;
+    width: calc(100% - 40px);
   }
 
   .colHead {
