@@ -410,7 +410,12 @@
   }
   .left {
     order: 2;
-    padding: 32px 0;
+    /* Side padding inset on the "AI agents for AR" text block. */
+    padding: 32px 24px;
+  }
+  /* Centre the heading on mobile (left-aligned on desktop). */
+  .h2 {
+    text-align: center;
   }
   .phoneInput {
     flex: 1 1 auto;
