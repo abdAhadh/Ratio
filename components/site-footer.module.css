@@ -315,7 +315,9 @@
 @media (max-width: 768px) {
   .footer {
     height: auto;
-    padding: 48px 20px;
+    /* No bottom padding so the wordmark sits flush with the page end —
+       the animation reaches the bottom of the page with no gap below. */
+    padding: 48px 20px 0;
   }
 
   .mainContainer {
@@ -515,11 +517,12 @@
   }
 
   /* Full-width "Ratio" + tagline row at the bottom of the grid — spans
-     both columns, centred, with no inner right border (the rail caps it). */
+     both columns, centred, with no inner right border (the rail caps it).
+     Extra side padding so the heading and tagline sit comfortably inset. */
   .mProRow {
     grid-column: 1 / -1;
     border-right: none;
     text-align: center;
-    padding: 28px 16px;
+    padding: 28px 32px;
   }
 }

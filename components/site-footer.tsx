@@ -230,8 +230,9 @@ export function SiteFooter() {
           <div className={`${styles.mCell} ${styles.mProRow}`}>
             <h4 className={styles.mProTitle}>Ratio</h4>
             <p className={styles.mTagline}>
-              Start as a co-pilot for your AR team. Graduate it to autopilot
-              whenever you&apos;re ready.
+              Start as a co-pilot for your AR team.
+              <br />
+              Graduate it to autopilot whenever you&apos;re ready.
             </p>
           </div>
         </div>
