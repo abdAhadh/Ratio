@@ -62,15 +62,44 @@ export default function RootLayout({
       className={`${geist.variable} ${gelasio.variable}`}
     >
       <head>
-        {/* Preload the UnicornStudio runtime so the background shaders
-            initialise as soon as the first IntersectionObserver fires —
-            without this the script only starts fetching when a shader
-            comes into view, adding a noticeable beat on a cold load. */}
+        {/* Preload the UnicornStudio runtime + every scene JSON / texture
+            the page renders so the shaders can hit a warm cache on first
+            paint instead of doing a serial fetch chain. The 4 unique scenes
+            in use across the page total ~120 KB — fine to grab upfront. */}
+        <link rel="preload" as="script" href="/unicornStudio.umd.js" />
         <link
           rel="preload"
-          as="script"
-          href="/unicornStudio.umd.js"
+          as="fetch"
+          href="/us-scenes/hNoUYN2AHKFq4LxKJyNV.json"
+          crossOrigin="anonymous"
         />
+        <link
+          rel="preload"
+          as="fetch"
+          href="/us-scenes/dEgIk7gTgac92JHdIqzB.json"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          as="fetch"
+          href="/us-scenes/mAQ1wUPYxiiGOyyU767Z.json"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/us-textures/blue_noise_med-3e976e.png"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/us-textures/remix_download__83_-7f61c2.jfif"
+        />
+        {/* Kick off the UnicornStudio runtime load + parse during the
+            initial HTML parse, not after hydration — without this the script
+            only starts executing once the first shader's IntersectionObserver
+            fires, which can be a full second after first paint on slow links. */}
+        <script src="/unicornStudio.umd.js" async data-ratio-unicorn="1" />
       </head>
       <body>{children}</body>
     </html>
