@@ -73,6 +73,12 @@ export function ROISection() {
               ))}
             </div>
           </div>
+
+          {/* Closing tagline under the ROI cards, centred on all viewports. */}
+          <p className={styles.outro}>
+            Start as a co-pilot for your AR team. Graduate it to autopilot
+            whenever you&apos;re ready.
+          </p>
         </div>
       </div>
     </section>

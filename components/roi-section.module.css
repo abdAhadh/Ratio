@@ -215,6 +215,19 @@
   text-align: center;
 }
 
+/* Closing tagline under the ROI cards — supporting line, centred. The
+   55px gap on .contentWrapper provides the spacing above it. */
+.outro {
+  margin: 0 auto;
+  max-width: 720px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.48px;
+  color: var(--color-fg-muted);
+  text-align: center;
+}
+
 /* ───── Mobile (≤768px) ─────────────────────────────────────────────
    Desktop is pixel-built with no fluid sizing. On phones: shrink the
    section's 120px side padding, drop the section's vertical paddings,
@@ -307,5 +320,10 @@
     font-size: 42px;
     line-height: 42px;
     letter-spacing: -0.84px;
+  }
+
+  /* Tagline inset from the section rails on mobile. */
+  .outro {
+    padding: 0 24px;
   }
 }
