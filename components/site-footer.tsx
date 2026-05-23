@@ -213,13 +213,6 @@ export function SiteFooter() {
             </ul>
           </div>
           <div className={styles.mCell}>
-            <h4 className={styles.mProTitle}>Ratio</h4>
-            <p className={styles.mTagline}>
-              Start as a co-pilot for your AR team. Graduate it to autopilot
-              whenever you&apos;re ready.
-            </p>
-          </div>
-          <div className={styles.mCell}>
             <p className={styles.mTitle}>LEGAL</p>
             <ul className={styles.mList}>
               {NAV_LEGAL.map((it) => (
@@ -231,13 +224,24 @@ export function SiteFooter() {
               ))}
             </ul>
           </div>
+          {/* Empty cell — keeps col 2 of row 2 as an empty bordered box. */}
+          <div className={styles.mCell} aria-hidden="true" />
+          {/* "Ratio" + tagline — its own full-width row at the bottom. */}
+          <div className={`${styles.mCell} ${styles.mProRow}`}>
+            <h4 className={styles.mProTitle}>Ratio</h4>
+            <p className={styles.mTagline}>
+              Start as a co-pilot for your AR team. Graduate it to autopilot
+              whenever you&apos;re ready.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Copyright (centered) */}
+      {/* Copyright (centered) — entity on line 1, rights reserved on line 2. */}
       <p className={styles.copyright}>
-        © {new Date().getFullYear()} TidalPeak Labs Private Ltd. All rights
-        reserved.
+        © {new Date().getFullYear()} TidalPeak Labs Private Ltd.
+        <br />
+        All rights reserved.
       </p>
 
       {/* Decorative line-pattern strip */}

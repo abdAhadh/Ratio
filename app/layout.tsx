@@ -61,6 +61,17 @@ export default function RootLayout({
       dir="ltr"
       className={`${geist.variable} ${gelasio.variable}`}
     >
+      <head>
+        {/* Preload the UnicornStudio runtime so the background shaders
+            initialise as soon as the first IntersectionObserver fires —
+            without this the script only starts fetching when a shader
+            comes into view, adding a noticeable beat on a cold load. */}
+        <link
+          rel="preload"
+          as="script"
+          href="/unicornStudio.umd.js"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

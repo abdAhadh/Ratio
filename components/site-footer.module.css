@@ -402,15 +402,14 @@
     width: 100%;
     max-width: 100%;
     margin: 32px 0 0;
+    padding: 0 16px;
+    box-sizing: border-box;
   }
 
+  /* The hatched divider strip is hidden on mobile so the wordmark sits
+     directly below the copyright and the animation fills the space. */
   .linePattern {
-    position: static;
-    transform: none;
-    top: auto;
-    width: 100%;
-    max-width: 100%;
-    margin-top: 24px;
+    display: none;
   }
 
   /* relative (not static) so the absolutely-positioned shader inside stays
@@ -513,5 +512,14 @@
     line-height: 1.5;
     letter-spacing: -0.2px;
     color: var(--color-fg-muted);
+  }
+
+  /* Full-width "Ratio" + tagline row at the bottom of the grid — spans
+     both columns, centred, with no inner right border (the rail caps it). */
+  .mProRow {
+    grid-column: 1 / -1;
+    border-right: none;
+    text-align: center;
+    padding: 28px 16px;
   }
 }
