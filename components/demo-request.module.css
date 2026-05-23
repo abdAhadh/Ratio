@@ -411,7 +411,7 @@
   .left {
     order: 2;
     /* Side padding inset on the "AI agents for AR" text block. */
-    padding: 32px 24px;
+    padding: 32px 32px;
   }
   /* Centre the heading on mobile (left-aligned on desktop). */
   .h2 {
