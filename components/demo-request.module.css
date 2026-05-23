@@ -382,11 +382,16 @@
 }
 
 @media (max-width: 900px) {
+  /* Section padding lined up with the homepage / footer (20px) so the
+     vertical side rails run continuously down the page. */
   .main {
-    padding: 0 24px 80px;
+    padding: 0 20px 0;
   }
+  /* Show the side rails on mobile too — they extend the page-long L/R
+     borders down through the demo-request section to meet the footer. */
   .rails {
-    display: none;
+    display: block;
+    width: calc(100% - 40px);
   }
   .hero {
     padding: 120px 0 40px;
@@ -394,8 +399,18 @@
   .grid {
     grid-template-columns: 1fr;
   }
+  /* On mobile reorder the two columns: the form (right) comes first,
+     then the marketing copy (left). A 1px horizontal border below the
+     form separates the two sections (the existing hatched strips
+     separate hero / grid and grid / footer). */
+  .right {
+    order: 1;
+    padding-bottom: 32px;
+    border-bottom: 1px solid #333;
+  }
   .left {
-    padding: 40px 0;
+    order: 2;
+    padding: 32px 0;
   }
   .phoneInput {
     flex: 1 1 auto;

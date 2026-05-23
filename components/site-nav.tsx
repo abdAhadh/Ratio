@@ -107,7 +107,16 @@ export function SiteNav() {
           className={styles.mobileCta}
           onClick={() => setMenuOpen(false)}
         >
-          REQUEST DEMO
+          <span className={styles.mobileCtaIconBg} aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
+              alt=""
+              width={20}
+              height={20}
+            />
+          </span>
+          <span>REQUEST DEMO</span>
         </a>
       </div>
     </nav>
