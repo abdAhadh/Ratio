@@ -38,13 +38,114 @@ import styles from "./product-section.module.css";
  *    1px rgb(139,139,139) border).
  */
 
-const ICON_BY_INDEX = [
-  "/6pRYpobkrWh2yNPYqHguUUDbVEE.png",
-  "/dsXPU0Cpg4Fr4MwOTgW3yshNav4.png",
-  "/9PTI8ycd1AIcihocijHNBTy8WQ.png",
-  "/9PTI8ycd1AIcihocijHNBTy8WQ.png",
-  "/9PTI8ycd1AIcihocijHNBTy8WQ.png",
-  "/9PTI8ycd1AIcihocijHNBTy8WQ.png",
+/* Per-card SVG glyphs (Lucide-style, 24×24, 1.75px white stroke). Inline so
+   they don't depend on PNG icons whose strokes were almost invisible on the
+   card background. Each glyph maps to its card's subject:
+     0 multi-channel collections  → speech-bubble with lines
+     1 cash auto-applied          → landmark / bank
+     2 recover deductions         → receipt
+     3 resolve disputes faster    → message-circle-question
+     4 data-led credit terms      → bar chart
+     5 real-time AR insights      → activity / line chart */
+const ICON_BY_INDEX: Array<React.ReactElement> = [
+  <svg
+    key="comms"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    <path d="M7 9h10" />
+    <path d="M7 13h6" />
+  </svg>,
+  <svg
+    key="cash"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <line x1="3" y1="22" x2="21" y2="22" />
+    <line x1="6" y1="18" x2="6" y2="11" />
+    <line x1="10" y1="18" x2="10" y2="11" />
+    <line x1="14" y1="18" x2="14" y2="11" />
+    <line x1="18" y1="18" x2="18" y2="11" />
+    <polygon points="12 2 20 7 4 7" />
+  </svg>,
+  <svg
+    key="receipt"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M4 2v20l2-2 2 2 2-2 2 2 2-2 2 2 2-2 2 2V2l-2 2-2-2-2 2-2-2-2 2-2-2-2 2Z" />
+    <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+    <path d="M12 17.5v-11" />
+  </svg>,
+  <svg
+    key="dispute"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </svg>,
+  <svg
+    key="credit"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M3 3v18h18" />
+    <path d="M18 17V9" />
+    <path d="M13 17V5" />
+    <path d="M8 17v-3" />
+  </svg>,
+  <svg
+    key="insights"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+  </svg>,
 ];
 
 // Per-card sticky top (CSS top) — each subsequent card stickies a few px lower
@@ -199,24 +300,31 @@ export function ProductSection() {
                     />
                     {CARDS.map((_, i) => {
                       const active = isDotActive(i);
+                      /* DOT_VISUAL_OFFSET (9px) shifts each dot down so its
+                         vertical centre aligns with the centre of the
+                         corresponding text line (line-height 30 → centre y=15;
+                         dot height ~12 → top at 9 puts its centre at 15). */
                       return (
                         <div
                           key={i}
                           className={`${styles.dot} ${active ? styles.dotActive : ""}`}
-                          style={{ top: `${DOT_TOPS[i] + (active ? -0.5 : 0)}px` }}
+                          style={{
+                            top: `${DOT_TOPS[i] + 9 + (active ? -0.5 : 0)}px`,
+                          }}
                         />
                       );
                     })}
                   </div>
 
-                  {/* Numbered titles */}
+                  {/* Card titles (numbers removed — the dot rail to the left
+                      already conveys order). */}
                   <ol className={styles.list}>
                     {CARDS.map((c, i) => (
                       <li
                         key={c.title}
                         className={`${styles.listItem} ${i === activeItemIdx ? styles.listItemActive : ""}`}
                       >
-                        {i + 1}. {c.title}
+                        {c.title}
                       </li>
                     ))}
                   </ol>
@@ -238,14 +346,7 @@ export function ProductSection() {
                       <article className={styles.card}>
                         <div className={styles.cardHead}>
                           <div className={styles.cardIcon}>
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={ICON_BY_INDEX[i]}
-                              alt=""
-                              width={24}
-                              height={24}
-                              aria-hidden="true"
-                            />
+                            {ICON_BY_INDEX[i]}
                           </div>
                           <span className={styles.cardNum}>
                             {String(i + 1).padStart(2, "0")}

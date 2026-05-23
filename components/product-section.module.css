@@ -181,7 +181,9 @@
   display: block;
   position: absolute;
   left: 6px; /* visually centre within the 13-wide track */
-  top: 8px;  /* start just below dot 1's top */
+  /* top = DOT_VISUAL_OFFSET (9) + dot height ~ 17 → starts just below dot 1
+     after dot 1 has itself been shifted down 9px to align with text. */
+  top: 17px;
   width: 1px;
   min-height: 0;
   /* Vertical dashed pattern via a repeating linear gradient */
@@ -324,9 +326,13 @@
   background: rgba(178, 178, 178, 0.16);
   border-radius: 0;
   flex: 0 0 auto;
+  /* Inline SVGs use currentColor for their stroke so they render as a soft
+     off-white that reads cleanly on the dark card. */
+  color: #e6e6e6;
 }
 
-.cardIcon img {
+.cardIcon img,
+.cardIcon svg {
   width: 24px;
   height: 24px;
   display: block;
