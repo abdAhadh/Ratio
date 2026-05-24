@@ -1,0 +1,342 @@
+/* /tally-mcp — "Free Tally MCP / Connector" page.
+   Self-contained styling that matches the rest of the rebuilt site:
+   dark bg + serif heading + sans subhead, with the same vertical 1px #333
+   side rails as the other sections. Two soft radial blurs sit behind the
+   hero for warmth (carried over from the old version of this page). */
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  padding: 0 120px;
+  background: var(--color-bg);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.inner {
+  position: relative;
+  width: 100%;
+  max-width: 1570px;
+  margin: 0 auto;
+  padding: 160px 0 120px;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Soft accent blurs behind the hero copy. Kept low-opacity so they
+   warm the dark background without competing with the headline. */
+.blurA,
+.blurB {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: 0;
+}
+
+.blurA {
+  width: 520px;
+  height: 520px;
+  background: rgba(44, 198, 255, 0.16); /* accent blue */
+  top: -120px;
+  left: -120px;
+}
+
+.blurB {
+  width: 460px;
+  height: 460px;
+  background: rgba(228, 88, 98, 0.12); /* accent red */
+  bottom: -100px;
+  right: -120px;
+}
+
+/* Chip — sits above the headline. Glass pill with a tiny green status dot. */
+.chip {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.1px;
+  color: var(--color-fg);
+  margin-bottom: 28px;
+}
+
+.chipDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18);
+  flex: 0 0 auto;
+}
+
+/* Headline. Serif (Gelasio) to match the site's other h1/h2. The mobile
+   override drops the size and tightens line-height. */
+.h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 24px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(40px, 5.4vw, 72px);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  color: var(--color-fg);
+  max-width: 1100px;
+}
+
+/* Inline logo+wordmark group inside the headline ("Claude", "ChatGPT").
+   Sets logos to currentColor so a single CSS color drives both glyph and
+   text — easy to keep them white on the dark background. */
+.brandInline {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.18em;
+  white-space: nowrap;
+  color: var(--color-fg);
+}
+
+.brandInline svg {
+  width: 0.82em;
+  height: 0.82em;
+  position: relative;
+  top: 0.08em;
+  flex: 0 0 auto;
+}
+
+/* Responsive line-break helpers — match the old page's typographic
+   rhythm (desktop: 2 lines, mobile: 3 lines). */
+.brDesktop {
+  display: none;
+}
+
+.brMobile {
+  display: inline;
+}
+
+@media (min-width: 769px) {
+  .brDesktop {
+    display: inline;
+  }
+  .brMobile {
+    display: none;
+  }
+}
+
+.sub {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 36px;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.55;
+  letter-spacing: -0.3px;
+  color: var(--color-fg-muted);
+  max-width: 620px;
+}
+
+/* CTA row */
+.ctaRow {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 80px;
+}
+
+/* Primary CTA — same anatomy as the nav/hero "REQUEST DEMO" pill:
+   white background, sharp corners, dark icon-box on the left, sans label. */
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 49px;
+  padding: 14px 18px 14px 14px;
+  background: #ffffff;
+  border-radius: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: background 0.15s ease;
+}
+
+.ctaPrimary:hover {
+  background: rgb(240, 240, 240);
+}
+
+.ctaIconBg {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: rgb(26, 26, 26);
+  border-radius: 2px;
+  flex: 0 0 auto;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.ctaIconBg svg {
+  width: 14px;
+  height: 14px;
+}
+
+.ctaLabel {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.14px;
+  color: rgb(26, 26, 26);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Secondary CTA — transparent pill, hairline outline. */
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 49px;
+  padding: 14px 22px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.14px;
+  color: var(--color-fg);
+  text-decoration: none;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.ctaSecondary:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Available now + coming soon strips. */
+.stripLabel {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 20px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+.availableNow {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 56px;
+}
+
+/* Logo whiten: matches the integrations marquee filter so brand glyphs
+   read as a unified silver-white set against the dark background. */
+.logoWhite {
+  filter: brightness(0) invert(1);
+  opacity: 0.88;
+}
+
+.comingSoon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 56px;
+  flex-wrap: wrap;
+}
+
+.comingSoon span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Mobile (≤768px) ─── */
+@media (max-width: 768px) {
+  .main {
+    padding: 0 20px;
+  }
+  .inner {
+    padding: 110px 0 80px;
+  }
+  .blurA {
+    width: 340px;
+    height: 340px;
+    top: -80px;
+    left: -80px;
+  }
+  .blurB {
+    width: 320px;
+    height: 320px;
+    bottom: -60px;
+    right: -80px;
+  }
+  .h1 {
+    font-size: clamp(30px, 8.5vw, 40px);
+    letter-spacing: -0.03em;
+    padding: 0 8px;
+  }
+  .sub {
+    font-size: 15px;
+    padding: 0 8px;
+  }
+  .ctaRow {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    margin-bottom: 56px;
+  }
+  .ctaPrimary,
+  .ctaSecondary {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+  }
+  .availableNow {
+    margin-bottom: 40px;
+  }
+  .comingSoon {
+    gap: 36px;
+  }
+}

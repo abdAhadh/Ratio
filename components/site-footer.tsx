@@ -40,6 +40,7 @@ const NAV_COMPANY = [
     href: "https://www.linkedin.com/company/try-ratio/",
     external: true,
   },
+  { label: "Free Tally MCP", href: "/tally-mcp" },
 ];
 const NAV_LEGAL = [
   { label: "Terms of Use", href: "/terms" },
