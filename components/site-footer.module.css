@@ -236,6 +236,13 @@
   color: var(--color-fg-muted);
 }
 
+/* Hide the line break on desktop so the entire copyright sits on one line.
+   On the mobile @media (≤768px) below, the `display: none` is unset and
+   the <br> behaves natively, forcing a 2-line layout. */
+.copyrightBreak {
+  display: none;
+}
+
 /* ── Decorative line-pattern strip below copyright — framed top + bottom
    with a 1px #333 border, matching 8098's bordered strip. ── */
 .linePattern {
@@ -406,6 +413,11 @@
     margin: 32px 0 0;
     padding: 0 16px;
     box-sizing: border-box;
+  }
+
+  /* Restore the line break on mobile so the copyright is two lines. */
+  .copyrightBreak {
+    display: inline;
   }
 
   /* The hatched divider strip is hidden on mobile so the wordmark sits

@@ -238,10 +238,12 @@ export function SiteFooter() {
         </div>
       </div>
 
-      {/* Copyright (centered) — entity on line 1, rights reserved on line 2. */}
+      {/* Copyright (centered) — single line on desktop; the `<br>` is
+          display:none above the mobile breakpoint so the whole string flows
+          inline, then becomes a hard break on mobile (its native behaviour). */}
       <p className={styles.copyright}>
-        © {new Date().getFullYear()} TidalPeak Labs Private Ltd.
-        <br />
+        © {new Date().getFullYear()} TidalPeak Labs Private Ltd.{" "}
+        <br className={styles.copyrightBreak} />
         All rights reserved.
       </p>
 
