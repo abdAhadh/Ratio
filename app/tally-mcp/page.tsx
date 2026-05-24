@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
+import { UnicornShader } from "@/components/hero/unicorn-shader";
 import styles from "./tally-mcp.module.css";
 
 /**
@@ -26,22 +27,6 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
-
-/* Right-pointing arrow used in the primary CTA's icon box. */
-const ArrowIcon = () => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <line x1="5" y1="12" x2="19" y2="12" />
-    <polyline points="12 5 19 12 12 19" />
-  </svg>
-);
 
 /* Claude logomark — single-path glyph from the official wordmark.
    Uses currentColor so the parent's color (white) drives the fill on
@@ -144,13 +129,29 @@ export default function TallyMcpPage() {
 
       <main className={styles.main}>
         <div className={styles.inner}>
-          <div className={styles.blurA} aria-hidden="true" />
-          <div className={styles.blurB} aria-hidden="true" />
+          {/* WebGL shader — same project as the landing-page hero so the
+              two heroes share a visual language. Sits behind all hero copy. */}
+          <div className={styles.shaderLayer} aria-hidden="true">
+            <UnicornShader project="hNoUYN2AHKFq4LxKJyNV" />
+          </div>
+          <div className={styles.scrim} aria-hidden="true" />
 
-          {/* Chip */}
-          <div className={styles.chip}>
-            <span className={styles.chipDot} aria-hidden="true" />
-            Free · Setup in under 30 minutes
+          {/* Eyebrow pill — same component shape as the landing hero's
+              "AI agents for AR" eyebrow (gradient-tile icon + 14px label). */}
+          <div className={styles.eyebrow}>
+            <span className={styles.eyebrowIconWrap} aria-hidden="true">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/FLUpFZ3WewYoIhp88GA3QqCv9A.svg"
+                alt=""
+                width={12}
+                height={12}
+                className={styles.eyebrowIcon}
+              />
+            </span>
+            <span className={styles.eyebrowText}>
+              Free · Setup in under 30 minutes
+            </span>
           </div>
 
           {/* Headline. Three responsive line breaks let the typographic
@@ -180,16 +181,33 @@ export default function TallyMcpPage() {
             desktop and on cloud.
           </p>
 
-          {/* CTAs */}
+          {/* CTAs — primary mirrors the SiteNav / CTA-banner "REQUEST DEMO"
+              pill: white pill, dark icon box with two stacked chevrons that
+              slide on hover. Secondary stays a transparent outline pill. */}
           <div className={styles.ctaRow}>
             <a
               href="https://app.tryratio.io/sign-up"
               className={styles.ctaPrimary}
             >
               <span className={styles.ctaIconBg} aria-hidden="true">
-                <ArrowIcon />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className={styles.ctaChevron}
+                />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
+                  alt=""
+                  width={20}
+                  height={20}
+                  className={styles.ctaChevron}
+                />
               </span>
-              <span className={styles.ctaLabel}>Get started for free</span>
+              <span className={styles.ctaLabel}>GET STARTED FOR FREE</span>
             </a>
             <a
               href="https://app.tryratio.io/sign-in"
