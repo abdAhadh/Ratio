@@ -21,9 +21,9 @@ const gelasio = Gelasio({
   adjustFontFallback: false,
 });
 
-const SITE_TITLE = "Ratio | Your AI coworker to automate AR";
+const SITE_TITLE = "Ratio | Recover retail deductions on autopilot";
 const SITE_DESCRIPTION =
-  "Ratio is the AI coworker that automates accounts receivable. Multi-channel collections, cash auto-applied, deductions recovered, disputes resolved.";
+  "Ratio's AI agents pull deductions from portals, emails and EDI, match them against your contracts and shipment docs, and dispute the invalid ones. Adds 3% back to your topline.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tryratio.io"),
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Ratio, your AI coworker to automate AR",
+        alt: "Ratio — AI agents that recover invalid retailer deductions and FBA reimbursement leakage",
       },
     ],
   },

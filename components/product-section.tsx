@@ -41,15 +41,14 @@ import styles from "./product-section.module.css";
 /* Per-card SVG glyphs (Lucide-style, 24×24, 1.75px white stroke). Inline so
    they don't depend on PNG icons whose strokes were almost invisible on the
    card background. Each glyph maps to its card's subject:
-     0 multi-channel collections  → speech-bubble with lines
-     1 cash auto-applied          → landmark / bank
-     2 recover deductions         → receipt
-     3 resolve disputes faster    → message-circle-question
-     4 data-led credit terms      → bar chart
-     5 real-time AR insights      → activity / line chart */
+     0 intake from many channels  → speech-bubble with lines
+     1 verify against your docs   → receipt
+     2 file disputes              → message-circle-question
+     3 live dispute status        → activity / line chart
+     4 cash + ERP close-out       → landmark / bank */
 const ICON_BY_INDEX: Array<React.ReactElement> = [
   <svg
-    key="comms"
+    key="intake"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -65,7 +64,53 @@ const ICON_BY_INDEX: Array<React.ReactElement> = [
     <path d="M7 13h6" />
   </svg>,
   <svg
-    key="cash"
+    key="verify"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M4 2v20l2-2 2 2 2-2 2 2 2-2 2 2 2-2 2 2V2l-2 2-2-2-2 2-2-2-2 2-2-2-2 2Z" />
+    <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+    <path d="M12 17.5v-11" />
+  </svg>,
+  <svg
+    key="file"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </svg>,
+  <svg
+    key="track"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.75"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+  </svg>,
+  <svg
+    key="close"
     width="24"
     height="24"
     viewBox="0 0 24 24"
@@ -83,111 +128,47 @@ const ICON_BY_INDEX: Array<React.ReactElement> = [
     <line x1="18" y1="18" x2="18" y2="11" />
     <polygon points="12 2 20 7 4 7" />
   </svg>,
-  <svg
-    key="receipt"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.75"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="M4 2v20l2-2 2 2 2-2 2 2 2-2 2 2 2-2 2 2V2l-2 2-2-2-2 2-2-2-2 2-2-2-2 2Z" />
-    <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
-    <path d="M12 17.5v-11" />
-  </svg>,
-  <svg
-    key="dispute"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.75"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
-    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-    <line x1="12" y1="17" x2="12.01" y2="17" />
-  </svg>,
-  <svg
-    key="credit"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.75"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="M3 3v18h18" />
-    <path d="M18 17V9" />
-    <path d="M13 17V5" />
-    <path d="M8 17v-3" />
-  </svg>,
-  <svg
-    key="insights"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.75"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-  </svg>,
 ];
 
 // Per-card sticky top (CSS top) — each subsequent card stickies a few px lower
 // so they stack/fan visually as the user scrolls.
-const STICKY_TOPS = [120, 130, 140, 140, 140, 140];
+const STICKY_TOPS = [120, 130, 140, 140, 140];
 
 const CARDS = [
   {
-    title: "Multi-channel collections",
-    body: "Voice, email, or SMS. Ratio picks each customer's preferred channel, follows the cadence you set, and escalates when your contact goes dark.",
+    title: "Pulls every deduction into one place",
+    body: "Agents read deductions out of emails, EDI feeds and retailer portals. If you sell 3P on Amazon, FBA charges are pulled in too.",
   },
   {
-    title: "Cash, auto-applied",
-    body: "Connects to your bank and auto-matches incoming payments to open invoices, across any source. Zero spreadsheet reconciliation.",
+    title: "Verifies each one against your records",
+    body: "Every deduction is matched against your invoice, BOL, POD and promo contracts to find what is invalid.",
   },
   {
-    title: "Recover deductions",
-    body: "When customers short-pay, Ratio validates the claim against your invoice and contract records, captures the reason, and helps recover what's owed before write-off.",
+    title: "Files disputes in each retailer's portal",
+    body: "Agents file each dispute in the right portal with the supporting documents attached, before the retailer's deadline.",
   },
   {
-    title: "Resolve disputes faster",
-    body: "Ratio surfaces disputes in Slack with full context, drafts the reply, and follows through until the cash is collected.",
+    title: "Live status on every dispute",
+    body: "A dashboard shows what the agents are working on and where each dispute stands.",
   },
   {
-    title: "Data-led credit terms",
-    body: "Combines payment history with pulled credit reports so finance can set smarter terms — and renegotiate when an account trends risky.",
-  },
-  {
-    title: "Real-time AR insights",
-    body: "Live DSO, aging buckets, and cohort recovery rates. Forecast cash collections by week, customer, and product line.",
+    title: "Closes the loop in your ERP",
+    body: "Once a recovery clears, agents apply the cash, create the credit memo and post the entries in your ERP.",
   },
 ];
 
 export function ProductSection() {
   // 8098 mechanic: a dashed vertical line element grows from dot 1 downward
   // as the user scrolls; each dot it reaches turns from outlined-square into
-  // a white-filled-circle, CUMULATIVELY. So at full scroll, all 6 dots are
+  // a white-filled-circle, CUMULATIVELY. So at full scroll, all 5 dots are
   // filled circles connected by a dashed line; at the top, only dot 1 is
   // filled and no line is visible.
   //
-  // - `lineHeight` = pixel height of the dashed connector line (0…~515)
-  // - A dot at index i is considered "reached" when lineHeight >= i*103
+  // - `lineHeight` = pixel height of the dashed connector line (0…~320)
+  // - A dot at index i is considered "reached" when lineHeight >= i*80
+  //   (80 = list line-height 30 + flex gap 50 — gives the items visible
+  //   breathing room while end-of-section alignment with card 5 is held
+  //   by the leftSide padding-bottom setting.)
   const [lineHeight, setLineHeight] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -207,18 +188,18 @@ export function ProductSection() {
         if (r.top <= activationLine) activeIdx = i;
       });
 
-      // Compute the line height. Each step between dots is 103px (matches
-      // 8098's 103-pixel vertical spacing). Within the current step we
-      // interpolate based on how close the next card is to the activation
-      // line, so the line grows smoothly between dots rather than snapping.
-      let h = activeIdx * 103;
+      // Compute the line height. Each step between dots is 80px (line-height
+      // 30 + list gap 50). Within the current step we interpolate based on
+      // how close the next card is to the activation line, so the line grows
+      // smoothly between dots.
+      let h = activeIdx * 80;
       if (activeIdx < cards.length - 1) {
         const next = cards[activeIdx + 1].getBoundingClientRect();
         const remaining = next.top - activationLine;
         // Each card occupies ~328px of scroll. Use that to estimate
         // the in-between progress.
         const stepProgress = Math.max(0, Math.min(1, 1 - remaining / 328));
-        h += stepProgress * 103;
+        h += stepProgress * 80;
       }
       setLineHeight((prev) =>
         Math.abs(prev - h) < 0.5 ? prev : Math.round(h)
@@ -233,8 +214,11 @@ export function ProductSection() {
     };
   }, []);
 
-  // Each dot's vertical position from the top of the track.
-  const DOT_TOPS = [0, 103, 206, 309, 412, 515];
+  // Each dot's vertical position from the top of the track. 80px step
+  // (line-height 30 + gap 50). End-of-section alignment with card 5's
+  // bottom is held independently by .leftSide padding-bottom (= 50), so
+  // changing the step here doesn't affect that alignment.
+  const DOT_TOPS = [0, 80, 160, 240, 320];
   // A dot is "active" (filled circle) once the line has reached its top.
   const isDotActive = (i: number) => lineHeight >= DOT_TOPS[i];
   // The current active text item is the highest-index reached dot.
@@ -264,12 +248,12 @@ export function ProductSection() {
             {/* Heading and Subtext (gap 4) */}
             <div className={styles.headingAndSubtext}>
               <h2 className={styles.h2}>
-                Finally, AR software that does the work for you.
+                How Ratio recovers money for you.
               </h2>
               <p className={styles.sub}>
-                Ratio learns from every customer interaction and gets smarter
-                over time. It personalises every touchpoint, just like your
-                best AR hire would.
+                AI agents take over finding and disputing invalid retailer
+                deductions, so your team does not have to. Our deduction
+                experts step in for complex cases.
               </p>
             </div>
           </header>

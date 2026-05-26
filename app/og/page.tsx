@@ -28,14 +28,15 @@ export default function OgPreviewPage() {
                 className={styles.eyebrowIcon}
               />
             </span>
-            <span className={styles.eyebrowText}>AI agents for AR</span>
+            <span className={styles.eyebrowText}>AI agents for CPG</span>
           </div>
 
-          <h1 className={styles.h1}>Your AI coworker to automate AR</h1>
+          <h1 className={styles.h1}>Recover retail deductions on autopilot.</h1>
 
           <p className={styles.sub}>
-            AI agents that run collections, cash applications, deductions
-            and disputes — end-to-end.
+            AI agents that pull deductions from portals, emails and EDI,
+            match against your contracts and shipment docs, and dispute the
+            invalid ones.
           </p>
         </div>
       </div>

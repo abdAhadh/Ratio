@@ -49,23 +49,41 @@ export function CTABanner() {
             />
             <div className={styles.content}>
               <h2 className={styles.h2}>
-                Your next AR hire should be an AI agent
+                Run a free audit of last year&apos;s deductions.
               </h2>
               <p className={styles.sub}>
-                Pilot live in 1 week. Measurable DSO impact by day 60.
+                We will run a free 12-month audit of your retailer
+                deductions and show you what is recoverable.
               </p>
-              <a href="/contact" className={styles.cta}>
-                <span className={styles.ctaIconBg} aria-hidden="true">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
-                    alt=""
-                    width={20}
-                    height={20}
-                  />
-                </span>
-                <span className={styles.ctaLabel}>REQUEST A DEMO</span>
-              </a>
+              <div className={styles.ctaRow}>
+                <a href="/contact" className={styles.cta}>
+                  <span className={styles.ctaIconBg} aria-hidden="true">
+                    {/* Two stacked chevrons: the first slides out left on
+                        hover, the second slides in from the right. Matches
+                        the nav CTA's icon-loop. */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                      className={styles.ctaChevron}
+                    />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                      className={styles.ctaChevron}
+                    />
+                  </span>
+                  <span className={styles.ctaLabel}>GET A FREE AUDIT</span>
+                </a>
+                <a href="/contact" className={styles.ctaSecondary}>
+                  <span className={styles.ctaSecondaryLabel}>REQUEST DEMO</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>

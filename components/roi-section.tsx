@@ -27,9 +27,9 @@ import styles from "./roi-section.module.css";
  *         label (14/19.6 Geist 400 #a6a6a6), centered with 20px gap.
  */
 const STATS = [
-  { value: "40%", label: "DSO reduction" },
-  { value: "70%", label: "less time spent on AR work" },
-  { value: "$65K+", label: "saved per AR hire avoided" },
+  { number: "3-5", unit: "%", label: "of topline revenue." },
+  { number: "95", unit: "%", label: "of disputes filed are won." },
+  { number: "25", unit: "hrs / wk", label: "of finance team's time is freed up." },
 ];
 
 export function ROISection() {
@@ -52,9 +52,10 @@ export function ROISection() {
               <p className={styles.eyebrow}>ROI</p>
             </div>
             <div className={styles.headingAndSubtext}>
-              <h2 className={styles.h2}>What you should expect in 60 days</h2>
+              <h2 className={styles.h2}>Recover 15x of what you pay Ratio.</h2>
               <p className={styles.sub}>
-                Numbers that collect you more cash, faster and cheaper.
+                Numbers vary by your brand size and channel mix. Here is
+                what we usually see.
               </p>
             </div>
           </header>
@@ -66,19 +67,16 @@ export function ROISection() {
             </div>
             <div className={styles.cardWrapper}>
               {STATS.map((s) => (
-                <div key={s.value} className={styles.card}>
-                  <div className={styles.value}>{s.value}</div>
+                <div key={s.label} className={styles.card}>
+                  <div className={styles.value}>
+                    {s.number}
+                    <span className={styles.unit}>{s.unit}</span>
+                  </div>
                   <div className={styles.label}>{s.label}</div>
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Closing tagline under the ROI cards, centred on all viewports. */}
-          <p className={styles.outro}>
-            Start as a co-pilot for your AR team. Graduate it to autopilot
-            whenever you&apos;re ready.
-          </p>
         </div>
       </div>
     </section>

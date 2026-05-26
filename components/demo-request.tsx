@@ -22,9 +22,9 @@ const COUNTRY_CODES = [
 ];
 
 const EXPECT = [
-  "We get a snapshot of your receivables: AR balance, overdue book, and which customers are dragging DSO.",
-  "We map how your AR workflow looks today: channels, cadence, exceptions.",
-  "Quick walk-through of Ratio's AI agents.",
+  "Quick read on your retailer mix and roughly how much you write off each year.",
+  "Walk-through of how Ratio's AI agents pull, verify and dispute deductions.",
+  "Scope a free 12-month audit you can start within a week.",
 ];
 
 function CheckIcon() {
@@ -98,15 +98,16 @@ export function DemoRequest() {
         <div className={styles.grid}>
           {/* Left — marketing copy */}
           <div className={styles.left}>
-            <h2 className={styles.h2}>AI agents for accounts receivable</h2>
+            <h2 className={styles.h2}>AI agents that recover retail deductions</h2>
             <hr className={styles.divider} />
             <p className={styles.lead}>
-              See how Ratio runs collections, cash applications, deductions and
-              disputes end-to-end, on top of your existing systems.
+              See how Ratio pulls deductions from portals, emails and EDI,
+              matches them against your invoices and shipment docs, and
+              disputes the invalid ones.
             </p>
             <p className={`${styles.lead} ${styles.leadLast}`}>
-              In one call, we&apos;ll map your AR workflow and scope a pilot you
-              can run by week two.
+              In one call, we&apos;ll walk through your retailer mix and
+              scope a free 12-month audit of what is recoverable.
             </p>
             <p className={styles.expectHeading}>What to expect in this call?</p>
             <ul className={styles.expectList}>
@@ -199,7 +200,7 @@ export function DemoRequest() {
                       <textarea
                         className={styles.textarea}
                         rows={3}
-                        placeholder="Which ERP are you on? How many open invoices?"
+                        placeholder="Which retailers do you sell into? Approximate annual revenue?"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                       />

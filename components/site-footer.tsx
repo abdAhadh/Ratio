@@ -33,6 +33,8 @@ const NAV_HOME = [
   { label: "Product", href: "/#how-it-works" },
   { label: "ROI", href: "/#the-problem" },
   { label: "Integrations", href: "/#integrations" },
+  { label: "Calculator", href: "/#calculator" },
+  { label: "FAQ", href: "/#faq" },
 ];
 const NAV_COMPANY = [
   {
@@ -40,7 +42,7 @@ const NAV_COMPANY = [
     href: "https://www.linkedin.com/company/try-ratio/",
     external: true,
   },
-  { label: "Free Tally MCP", href: "/tally-mcp" },
+  { label: "Request Demo", href: "/contact" },
 ];
 const NAV_LEGAL = [
   { label: "Terms of Use", href: "/terms" },
@@ -172,8 +174,8 @@ export function SiteFooter() {
           <div className={styles.proCell}>
             <h4 className={styles.proTitle}>Ratio</h4>
             <p className={styles.tagline}>
-              Start as a co-pilot for your AR team. Graduate it to autopilot
-              whenever you&apos;re ready.
+              AI agents that recover invalid retailer deductions for CPG
+              brands.
             </p>
           </div>
           <div className={styles.proDivider} aria-hidden="true" />
@@ -231,9 +233,9 @@ export function SiteFooter() {
           <div className={`${styles.mCell} ${styles.mProRow}`}>
             <h4 className={styles.mProTitle}>Ratio</h4>
             <p className={styles.mTagline}>
-              Start as a co-pilot for your AR team.
+              AI agents that recover invalid retailer
               <br />
-              Graduate it to autopilot whenever you&apos;re ready.
+              deductions for CPG brands.
             </p>
           </div>
         </div>

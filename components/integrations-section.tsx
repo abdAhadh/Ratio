@@ -47,8 +47,9 @@ export function IntegrationsSection() {
         </div>
         <h2 className={styles.h2}>Works with the systems you already use.</h2>
         <p className={styles.sub}>
-          Think of Ratio as a co-worker who has access to your CRM, ERP,
-          payment processor and messaging systems. No rip and replace.
+          Ratio connects to your retailer portals, ERP, accounting system,
+          and 3PL data. Read-only wherever possible, no rip and replace,
+          no long IT project.
         </p>
       </header>
 

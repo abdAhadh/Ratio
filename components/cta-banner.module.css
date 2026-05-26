@@ -128,6 +128,14 @@
   max-width: 550px;
 }
 
+/* CTA row — primary white pill + secondary bordered button side by side,
+   centered under the sub paragraph. */
+.ctaRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
 /* CTA pill — white pill, icon on the LEFT, label on the RIGHT.
  * 8098: a.width=177, padding=14, gap=10, label 14/21 weight:500 white-space:pre */
 .cta {
@@ -149,7 +157,42 @@
   background: rgb(240, 240, 240);
 }
 
+/* Secondary CTA — transparent, bordered. Sits on the dark glass card so the
+   border tint mirrors the hero secondary (white with alpha). */
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 49px;
+  padding: 14px 18px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.ctaSecondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.ctaSecondaryLabel {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: -0.14px;
+  color: #ffffff;
+  white-space: pre;
+  flex: 0 0 auto;
+}
+
 .ctaIconBg {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -158,12 +201,36 @@
   background: rgb(26, 26, 26);
   border-radius: 2px;
   flex: 0 0 auto;
+  overflow: hidden;
 }
 
-.ctaIconBg img {
+/* Two stacked chevrons. The first sits in the centre, the second parks 30px
+   off the right edge (clipped by overflow:hidden above). On hover both slide
+   -30px in lockstep — the first exits left, the second slides into centre. */
+.ctaChevron {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 20px;
   height: 20px;
   display: block;
+  transition: transform 0.4s cubic-bezier(0.44, 0, 0.56, 1);
+}
+
+.ctaChevron:first-child {
+  transform: translateX(0);
+}
+
+.ctaChevron:last-child {
+  transform: translateX(30px);
+}
+
+.cta:hover .ctaChevron:first-child {
+  transform: translateX(-30px);
+}
+
+.cta:hover .ctaChevron:last-child {
+  transform: translateX(0);
 }
 
 .ctaLabel {
@@ -249,5 +316,14 @@
 
   .sub {
     max-width: 100%;
+  }
+
+  /* Stack the two CTAs vertically on mobile so they don't go side-by-side
+     and clip the card. Same pattern as the hero secondary on mobile. */
+  .ctaRow {
+    flex-direction: column;
+    gap: 12px;
+    width: max-content;
+    margin: 0 auto;
   }
 }

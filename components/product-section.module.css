@@ -31,6 +31,11 @@
   border-left: 1px solid #333;
   border-right: 1px solid #333;
   box-sizing: border-box;
+  /* Clip horizontal overflow only — using `overflow-x: clip` (not `hidden`)
+     so we DON'T create a scroll container, which would break the sticky
+     dot indicator and the sticky-stacking cards below. Same pattern the
+     globals use on html/body. */
+  overflow-x: clip;
 }
 
 /* ───── Content Wrapper ─────
@@ -131,8 +136,12 @@
 
 /* ───── Cards Wrapper (2-col flex row) ─────
    Left Side 644 + Right Side 926 = 1570. No gap.
-   Reference has min-height: 2220 (100px more than its content) — gives the
-   bottom of the cards column some breathing room before the bottom line strip. */
+   No explicit min-height: lets the wrapper hug the tallest child (rightSide
+   with the card column). Previously had min-height: 1870 which extended the
+   wrapper ~100px below where the cards actually end on the right, which
+   made the left rail's item 5 sit way below card 5's bottom edge at the end
+   of the section. Removing the min-height lets both sides bottom-out at the
+   same y so item 5 lines up with card 5's bottom. */
 .cardsWrapper {
   position: relative;
   display: flex;
@@ -140,38 +149,44 @@
   align-items: flex-start;
   width: 100%;
   gap: 0;
-  min-height: 2220px;
 }
 
 /* ───── Left Side Container ─────
-   644 wide, sticky top:120, padding 75 40 45 30. height 665 in reference. */
+   644 wide, sticky top:120. Items step every 80px (line-height 30 + gap 50)
+   for visible breathing room. End-of-section alignment with card 5's bottom
+   is held by padding-bottom = 50: cardWrapper has 80px bottom padding and
+   item 5's line is 30px tall, so 80 − 30 = 50 puts item 5's top at card 5's
+   bottom in the unstuck end-of-section state.
+   Height = 75 top pad + 350 stickyHeadings (5×30 + 4×50) + 50 bot pad = 475. */
 .leftSide {
   flex: 0 0 644px;
   width: 644px;
-  padding: 75px 40px 45px 30px;
+  padding: 75px 40px 50px 30px;
   box-sizing: border-box;
   position: sticky;
   top: 120px;
   align-self: flex-start;
-  height: 665px;
+  height: 475px;
 }
 
-/* Inside: 426-wide block with padding-left 14, holds dots + list */
+/* Inside: 426-wide block with padding-left 14, holds dots + list.
+   Height = 5 list items at 30px line-height with 50px gaps = 350. */
 .stickyHeadings {
   position: relative;
   width: 100%;
-  height: 545px;
+  height: 350px;
 }
 
 /* ───── Indicator track (dots only) ─────
    Dot 1 = white filled circle (13×13, border-radius 50%).
-   Dots 2-6 = outlined 12×12 squares, 1px #8b8b8b border, transparent fill. */
+   Dots 2-5 = outlined 12×12 squares, 1px #8b8b8b border, transparent fill.
+   Track height = last dot top (320) + dot height (13) + small pad = 350. */
 .track {
   position: absolute;
   left: 14px;
   top: 0;
   width: 13px;
-  height: 545px;
+  height: 350px;
 }
 
 /* Dashed vertical line that grows downward as the user scrolls. Sits
@@ -224,10 +239,10 @@
 }
 
 /* ───── Item list ─────
-   Items vertically tops at 195, 298, ... — 103px apart.
-   Item baseline-top in reference for item 1: y=571 at scrollY=900 (sectionY=100,
-   inside leftSide which has padding-top 75, so item-1-top = 100+75+? ).
-*/
+   Items step every 80px (line-height 30 + flex gap 50) for visible breathing
+   room. End-of-section alignment between item 5 and card 5's bottom is held
+   by leftSide padding-bottom rather than by item spacing, so this gap is
+   free to be tuned for visual feel. */
 .list {
   list-style: none;
   margin: 0;
@@ -235,7 +250,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 73px;
+  gap: 50px;
   padding-left: 38px; /* 14 (track left) + 12 (dot w) + 12 (gap) */
 }
 
@@ -258,12 +273,21 @@
    top/bottom padding via Framer quirks. We mimic the visual result by using
    horizontal-only padding so cards still start at x=891 and y=rightSideY. */
 .rightSide {
-  flex: 0 0 926px;
-  width: 926px;
+  /* Allow the column to shrink below the 926 reference width when the
+     parent container is narrower (viewports < ~1810px). min-width: 0 is
+     required so flex children can size below their content. Do NOT add
+     overflow: hidden here — it would create a scroll container and break
+     the sticky-stacking cards inside. The absolutely-positioned shader
+     is `inset: 0`, so it naturally tracks this column's shrunken width. */
+  flex: 0 1 926px;
+  min-width: 0;
+  max-width: 926px;
   padding: 0 32px;
   box-sizing: border-box;
   position: relative;
-  min-height: 2120px;
+  /* No min-height: let rightSide hug the cardWrapper's natural height so its
+     bottom edge matches where card 5 actually ends. Previously had 1770 which
+     misaligned with the left rail's bottom. */
 }
 
 /* Unicorn Studio shader fills Right Side exactly (926×2120 in reference). */
@@ -292,7 +316,7 @@
 .cardSticky {
   position: sticky;
   width: 100%;
-  /* `top` comes from inline style per index (120, 130, 140, 140, 140, 140) */
+  /* `top` comes from inline style per index (120, 130, 140, 140, 140) */
 }
 
 .card {

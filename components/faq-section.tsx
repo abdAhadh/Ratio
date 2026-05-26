@@ -12,20 +12,24 @@ import styles from "./faq-section.module.css";
  */
 const FAQS: Array<{ q: string; a: string }> = [
   {
-    q: "Will this replace my AR team?",
-    a: "No. Ratio is built to augment your existing AR team, not replace them. Most customers keep their existing headcount and use Ratio to cover 10× more accounts. This is especially useful for the long tail of customers you have. Their work shifts from chasing collections to resolving disputes, deciding credit terms, and managing strategic accounts.",
+    q: "Which retailers and channels do you cover?",
+    a: "Walmart, Target, Costco, Kroger, Amazon (1P and 3P FBA), Albertsons, Whole Foods, KeHE, UNFI, and most US grocery, mass, club and distributor channels. If you sell into a retailer we have not seen before, we can typically add it within 1 week.",
+  },
+  {
+    q: "Can you recover deductions we already wrote off?",
+    a: "Usually yes. Most retailers allow disputes within a 6 to 24 month window, so our audit reaches back through that period.",
+  },
+  {
+    q: "What does the free audit involve from our side?",
+    a: "We need read-only access to your retailer portals, recent remittances, invoice and shipment records, and contracts with retailers. We run the audit in our environment and come back with a report showing recoverable dollars by retailer.",
   },
   {
     q: "How is Ratio priced?",
-    a: "Fixed plans, sized to your invoice volume. We work directly with each customer to land on the plan that fits their AR workload. Clean ROI math, no per-seat surprises.",
-  },
-  {
-    q: "What's the best way to partner?",
-    a: "Start with a pilot. Connect your tools, define your guardrails, and see results by week two. Early customers get founding-partner pricing and a direct hand in the roadmap. We're actively shaping the product alongside the first cohort.",
+    a: "A small monthly subscription plus a commission on what we recover. The commission rate scales with your deduction volume, so larger brands pay a lower rate. We start with a free audit of the last 12 months, so you see the value before committing.",
   },
   {
     q: "How is data handled and is it secure?",
-    a: "Your data is encrypted at rest and in transit. We use it only to improve performance on your own account. Any other use is explicitly outside our data-governance policies.",
+    a: "Your data is encrypted at rest and in transit, with read-only access wherever available. We only use your data to validate and dispute your own deductions, nothing else.",
   },
 ];
 

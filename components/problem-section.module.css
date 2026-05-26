@@ -1,0 +1,310 @@
+/* ───── Problem section (#problem) ─────
+   Layout mirrors ROI section's bordered main container, plus the line-
+   pattern strips above and below the cards (the same pattern the Product
+   section uses). 3 cards sit flush in a row with vertical 1px #333
+   dividers between them, each with: icon top-left, number top-right,
+   title + body in the lower half. */
+
+.section {
+  position: relative;
+  width: 100%;
+  padding: 0 120px;
+  background: var(--color-bg);
+  box-sizing: border-box;
+}
+
+/* At 1280–1535 viewport widths, the single-line H2 (~1050px at 40px
+   Gelasio) does not fit inside the default 120px side padding. Tighten
+   the padding so it stays on one line. */
+@media (max-width: 1535px) and (min-width: 1280px) {
+  .section {
+    padding: 0 80px;
+  }
+}
+
+/* Below 1280px, single-line is no longer achievable at 40px font without
+   shrinking the type. Allow the H2 to wrap normally and reapply the
+   header-friendly max-width so it wraps inside the header box. */
+@media (max-width: 1279px) and (min-width: 769px) {
+  .h2 {
+    white-space: normal;
+    max-width: 720px;
+  }
+}
+
+.mainContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1570px;
+  margin: 0 auto;
+  padding: 60px 0 100px;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  box-sizing: border-box;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 55px;
+  width: 100%;
+}
+
+/* ───── Heading ───── */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.eyebrowRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  box-sizing: border-box;
+}
+
+.eyebrowIcon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.headingAndSubtext {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: 0.42px;
+  color: var(--color-accent-blue);
+  text-transform: uppercase;
+}
+
+.h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 60px;
+  letter-spacing: -2px;
+  color: var(--color-fg);
+  /* Keep the H2 on a single line at the design font size (40px). The
+     parent .header has max-width: 720px, so this h2 will visually overflow
+     the header's bounds at large viewports. Section padding on either side
+     contains it within the viewport. At smaller viewports (below 1280px)
+     a media query below relaxes nowrap and reapplies a max-width so the
+     line wraps cleanly. */
+  max-width: none;
+  white-space: nowrap;
+}
+
+.sub {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.48px;
+  color: var(--color-fg-muted);
+  max-width: 660px;
+}
+
+/* ───── Card container ─────
+   Acts as the positioning context for the UnicornShader (absolute,
+   inset:0). Vertical padding gives the shader visible space ABOVE and
+   BELOW the cards row, so the warm animated glow frames the cards top
+   and bottom — the look from the closor reference, but driven by the
+   shader instead of static striped images. */
+.cardContainer {
+  position: relative;
+  width: 100%;
+  padding: 70px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.shader {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ───── Cards row (3 cards, no gap, vertical dividers) ─────
+   Full 1px border frames the cards row so the colorful shader above
+   and below is clearly separated from the cards themselves. */
+.cardsRow {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border: 1px solid #333;
+  box-sizing: border-box;
+}
+
+.card {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 380px;
+  /* Darker, more solid card surface so the shader only barely shows
+     through (matching the closor reference). A subtle linear gradient
+     gives each card a faint top-to-bottom tonal shift. */
+  background: linear-gradient(
+    180deg,
+    rgba(11, 12, 15, 0.94) 0%,
+    rgba(15, 16, 20, 0.94) 100%
+  );
+  backdrop-filter: blur(34px);
+  -webkit-backdrop-filter: blur(34px);
+  border-right: 1px solid #333;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:last-child {
+  border-right: none;
+}
+
+/* ───── Card head: icon pill + number ───── */
+.cardHead {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+}
+
+.cardIcon {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(178, 178, 178, 0.16);
+  border-radius: 0;
+  flex: 0 0 auto;
+  color: #e6e6e6;
+}
+
+.cardIcon svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.cardNum {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 30px;
+  color: var(--color-fg-bright);
+}
+
+/* ───── Card text: title + body ───── */
+.cardText {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--font-sans);
+  /* Matches the product section card titles (24/36/-1.2) so type sizes
+     stay consistent across the site. */
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 36px;
+  letter-spacing: -1.2px;
+  color: #e6e6e6;
+}
+
+.cardBody {
+  margin: 0;
+  font-family: var(--font-sans);
+  /* Matches the product section card body and the site-wide sub size
+     (16/24/-0.48). */
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.48px;
+  color: var(--color-fg-muted);
+}
+
+/* ───── Mobile (≤768px) ─────
+   Stack cards vertically. Drop the decorative line strips and use
+   horizontal 1px dividers between cards instead of vertical ones. */
+@media (max-width: 768px) {
+  .section {
+    padding: 0 20px;
+  }
+  .mainContainer {
+    padding: 40px 0 56px;
+  }
+  .contentWrapper {
+    gap: 32px;
+  }
+  .header {
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+  .h2 {
+    /* On mobile, also allow wrapping (overriding the desktop nowrap). */
+    white-space: normal;
+    max-width: 720px;
+    font-size: 26px;
+    line-height: 34px;
+    letter-spacing: -1.3px;
+  }
+  .cardContainer {
+    /* Smaller vertical breathing room on mobile so the shader-only
+       framing doesn't take up too much screen. */
+    padding: 32px 0;
+  }
+  .cardsRow {
+    flex-direction: column;
+    /* Keep the full 1px frame on mobile (cards stack vertically inside). */
+  }
+  .card {
+    border-right: none;
+    border-bottom: 1px solid #333;
+    min-height: 280px;
+    padding: 32px 24px;
+  }
+  .card:last-child {
+    border-bottom: none;
+  }
+  .cardTitle {
+    /* Slightly reduced on mobile so it sits well in narrower stacked
+       cards, but kept larger than before to align with site type scale. */
+    font-size: 22px;
+    line-height: 32px;
+    letter-spacing: -1.1px;
+  }
+}

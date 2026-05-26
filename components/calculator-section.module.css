@@ -1,0 +1,378 @@
+/* ───── Calculator section (#calculator) ─────
+   Same outer-frame structure as ROI: full-width section, bordered 1570 main
+   container, shader-backed band inside. The interactive calculator is a
+   centered card inside the band. */
+
+.section {
+  position: relative;
+  width: 100%;
+  padding: 0 120px;
+  background: var(--color-bg);
+  box-sizing: border-box;
+}
+
+.mainContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1570px;
+  margin: 0 auto;
+  padding: 60px 0 100px;
+  box-sizing: border-box;
+}
+
+.mainContainer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ───── Header ───── */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  max-width: 720px;
+  margin: 0 auto 55px;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+.eyebrowRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  box-sizing: border-box;
+}
+
+.eyebrowIcon {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: 0.42px;
+  color: var(--color-accent-blue);
+  text-transform: uppercase;
+}
+
+.headingAndSubtext {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 60px;
+  letter-spacing: -2px;
+  color: var(--color-fg);
+  text-align: center;
+}
+
+.sub {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.48px;
+  color: var(--color-fg-muted);
+  text-align: center;
+  max-width: 540px;
+}
+
+/* ───── Card container — shader band with 1px top+bottom borders ───── */
+.cardContainer {
+  position: relative;
+  width: 100%;
+  max-width: 1570px;
+  margin: 0 auto;
+  padding: 66px 24px;
+  box-sizing: border-box;
+}
+
+.cardContainer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.shader {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ───── Card — interactive calculator ───── */
+.card {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  background: rgba(13, 14, 17, 0.92);
+  -webkit-backdrop-filter: blur(34px);
+  backdrop-filter: blur(34px);
+  border: 1px solid #333;
+  padding: 48px 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  box-sizing: border-box;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.blockLabel {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.42px;
+  color: var(--color-fg-muted);
+  text-transform: uppercase;
+}
+
+.bigValue {
+  font-family: var(--font-sans);
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -1.5px;
+  color: var(--color-fg-bright);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.dash {
+  color: var(--color-fg-muted);
+  font-weight: 400;
+}
+
+/* On hover/active the slider, give the recoverable numbers a subtle visual
+   nod — slight upward shimmer via text-shadow + bright color. Done with a
+   :has() selector on the card so it tracks slider interaction state. */
+.recoveredHighlight {
+  transition:
+    color 0.18s ease,
+    text-shadow 0.18s ease;
+}
+
+.card:has(.slider:active) .recoveredHighlight {
+  color: #ffffff;
+  text-shadow: 0 0 18px rgba(44, 198, 255, 0.35);
+}
+
+/* ───── Slider ─────
+   Native range input, fully restyled. The .sliderTrack underlay holds the
+   filled portion (sliderFill) so we can transition its width independent
+   of the native track (which Safari paints separately from the thumb). */
+.sliderWrap {
+  position: relative;
+  width: 100%;
+}
+
+/* sliderArea is the same height as the slider input so the visible track,
+   centered within it, sits exactly under the thumb. The tick labels live
+   outside sliderArea as a sibling so they don't shift the track. */
+.sliderArea {
+  position: relative;
+  width: 100%;
+  height: 28px;
+}
+
+.sliderTrack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 4px;
+  background: #2a2d33;
+  border-radius: 2px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sliderFill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(44, 198, 255, 0.65) 0%,
+    var(--color-accent-blue) 100%
+  );
+  border-radius: 2px;
+  transition: width 0.12s ease-out;
+}
+
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  /* Re-enable focus ring via thumb shadow only. */
+  outline: none;
+}
+
+/* WebKit (Chrome / Safari) */
+.slider::-webkit-slider-runnable-track {
+  height: 4px;
+  background: transparent;
+  border: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.34);
+  margin-top: -7px;
+  box-shadow: 0 0 0 0 rgba(44, 198, 255, 0);
+  transition:
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+  cursor: grab;
+}
+
+.slider:hover::-webkit-slider-thumb {
+  box-shadow: 0 0 0 6px rgba(44, 198, 255, 0.18);
+  transform: scale(1.05);
+}
+
+.slider:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 6px rgba(44, 198, 255, 0.22);
+}
+
+.slider:active::-webkit-slider-thumb {
+  box-shadow: 0 0 0 10px rgba(44, 198, 255, 0.28);
+  transform: scale(1.08);
+  cursor: grabbing;
+}
+
+/* Firefox */
+.slider::-moz-range-track {
+  height: 4px;
+  background: transparent;
+  border: none;
+}
+
+.slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.34);
+  box-shadow: 0 0 0 0 rgba(44, 198, 255, 0);
+  transition:
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+  cursor: grab;
+}
+
+.slider:hover::-moz-range-thumb {
+  box-shadow: 0 0 0 6px rgba(44, 198, 255, 0.18);
+  transform: scale(1.05);
+}
+
+.slider:active::-moz-range-thumb {
+  box-shadow: 0 0 0 10px rgba(44, 198, 255, 0.28);
+  transform: scale(1.08);
+  cursor: grabbing;
+}
+
+.sliderTicks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  color: var(--color-fg-muted);
+  text-transform: uppercase;
+}
+
+.divider {
+  height: 1px;
+  background: #2a2d33;
+  margin: 4px 0;
+}
+
+/* ───── Mobile (≤768px) ───── */
+@media (max-width: 768px) {
+  .section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .mainContainer {
+    padding: 40px 0 56px;
+  }
+
+  .h2 {
+    font-size: 26px;
+    line-height: 34px;
+    letter-spacing: -1.3px;
+  }
+
+  .cardContainer {
+    padding: 32px 0;
+  }
+
+  .card {
+    padding: 28px 22px;
+    gap: 24px;
+    margin: 0 12px;
+  }
+
+  .blockLabel {
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.36px;
+  }
+
+  .bigValue {
+    font-size: 36px;
+    letter-spacing: -1px;
+    gap: 6px;
+  }
+
+  .sliderTicks {
+    margin-top: 12px;
+    font-size: 11px;
+  }
+}

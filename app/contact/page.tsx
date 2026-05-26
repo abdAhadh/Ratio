@@ -6,7 +6,7 @@ import { DemoRequest } from "@/components/demo-request";
 export const metadata: Metadata = {
   title: "Request Demo | Ratio",
   description:
-    "Book a demo of Ratio and see how the AI coworker for accounts receivable runs collections, cash application, deductions and disputes on top of your existing systems.",
+    "Book a demo of Ratio. See how our AI agents recover invalid retailer deductions and Amazon FBA reimbursements for CPG brands.",
 };
 
 export default function ContactPage() {
