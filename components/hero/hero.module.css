@@ -134,6 +134,19 @@
   }
 }
 
+/* ───── H1 line-break toggles ─────
+   The H1 is rendered with TWO <br /> tags, one after "retail" (mobileBreak)
+   and one after "deductions" (desktopBreak). Only one is visible per
+   viewport, giving us different splits without duplicating markup:
+     Desktop: "Recover retail deductions" / "on autopilot"
+     Mobile : "Recover retail"            / "deductions on autopilot" */
+.mobileBreak {
+  display: none;
+}
+.desktopBreak {
+  display: inline;
+}
+
 /* ───── Subhead ─────
    Two stacked paragraphs:
      .sub        the mechanism sentence (3 lines at 15/24)
@@ -365,22 +378,24 @@
   .h1 {
     width: auto;
     max-width: none;
-    /* Tracks closor.framer.website's mobile H1 spec (40px Gelasio, line
-       height ~130%, letter-spacing -0.05em). Clamped to fit the longer
-       of the natural-wrap lines ("deductions on autopilot", 23 chars) on
-       typical phone widths — at 375px viewport this resolves to ~36px,
-       at 430px to 38px. Pure natural wrap (no text-wrap: balance) gives
-       the desired 2-line break "Recover retail" / "deductions on
-       autopilot", since balance preferred 3 balanced lines. */
-    font-size: clamp(30px, 9.5vw, 38px);
+    /* Matches closor.framer.website's mobile H1 spec (Gelasio, ~40px,
+       letter-spacing -0.05em). Mobile line 1 is "Recover retail" (14
+       chars) and line 2 is "deductions on autopilot" (23 chars). Line 2
+       is the constraint — clamp tops out at the largest font that lets
+       "deductions on autopilot" fit on one line across iPhone widths
+       (~36px at 375 viewport, 40px at 430). */
+    font-size: clamp(32px, 9.5vw, 40px);
     line-height: 1.15;
     letter-spacing: -0.05em;
     margin-bottom: 20px;
   }
 
-  /* Hide the desktop's forced line break on mobile so the H1 can pick a
-     natural wrap that supports the larger closor-matching font size. */
-  .h1Break {
+  /* Swap the visible <br /> for mobile: line 1 ends after "retail", and
+     the desktop break (after "deductions") is hidden. */
+  .mobileBreak {
+    display: inline;
+  }
+  .desktopBreak {
     display: none;
   }
 

@@ -20,17 +20,17 @@ import styles from "./hero.module.css";
  * fight React 19 hydration timing here, so we skip it and use vanilla
  * animations with per-word `animation-delay`.
  */
-// Hero H1 is forced onto two lines:
-//   Line 1: "Recover retail deductions"
-//   Line 2: "on autopilot"
-// We render each line's words in its own span loop with a <br /> between
-// so the break is preserved at every viewport. Animation delays are kept
-// continuous across both lines so the per-word stagger reads as one
-// gesture, not two separate stacks. On mobile the <br /> is hidden via
-// CSS (display:none) so the headline can use a bigger font and break
-// naturally at a shorter word boundary instead.
-const H1_LINE_1 = "Recover retail deductions";
-const H1_LINE_2 = "on autopilot";
+// Hero H1 is forced onto two lines, but at DIFFERENT word boundaries per
+// viewport so the line lengths stay balanced:
+//   Desktop: "Recover retail deductions" / "on autopilot"
+//   Mobile : "Recover retail"            / "deductions on autopilot"
+// The mobile split puts a shorter string on line 1, which lets the headline
+// scale up to a closor.framer.website-style 38–40px on the smaller screen
+// without overflowing. Two <br /> tags render between the parts; CSS toggles
+// which one is visible per viewport (.mobileBreak vs .desktopBreak).
+const H1_PART1 = "Recover retail"; // line 1 on mobile, fits line 1 on desktop
+const H1_PART2 = "deductions"; // line 2 on mobile, completes line 1 on desktop
+const H1_PART3 = "on autopilot"; // line 2 on desktop, continues line 2 on mobile
 // Subhead is rendered as two visual paragraphs (first the mechanism, then
 // the outcome on its own line). The full string is kept here for SEO /
 // metadata reuse; the JSX below renders the two halves.
@@ -42,9 +42,11 @@ const WORD_STAGGER_MS = 50;
 const WORD_BASE_MS = 100;
 
 export function Hero() {
-  const line1Words = H1_LINE_1.split(" ");
-  const line2Words = H1_LINE_2.split(" ");
-  const totalH1Words = line1Words.length + line2Words.length;
+  const part1Words = H1_PART1.split(" ");
+  const part2Words = H1_PART2.split(" ");
+  const part3Words = H1_PART3.split(" ");
+  const totalH1Words =
+    part1Words.length + part2Words.length + part3Words.length;
   const subDelay = WORD_BASE_MS + totalH1Words * WORD_STAGGER_MS + 200;
   const subLine2Delay = subDelay + 100;
   const ctaDelay = subLine2Delay + 200;
@@ -71,8 +73,9 @@ export function Hero() {
         </div>
 
         <h1 className={styles.h1}>
-          {line1Words.map((w, i) => (
-            <Fragment key={`l1-${w}-${i}`}>
+          {/* Part 1 — "Recover retail" */}
+          {part1Words.map((w, i) => (
+            <Fragment key={`p1-${w}-${i}`}>
               <span
                 className={styles.h1Word}
                 style={
@@ -83,28 +86,49 @@ export function Hero() {
               >
                 {w}
               </span>
-              {/* Always include a trailing space so when the desktop <br />
-                  is hidden on mobile (display:none), the words still flow
-                  with proper spacing between line 1 and line 2. */}
               {" "}
             </Fragment>
           ))}
-          <br className={styles.h1Break} />
-          {line2Words.map((w, i) => (
-            <Fragment key={`l2-${w}-${i}`}>
+          {/* Forces the line break after "retail" on mobile only. */}
+          <br className={styles.mobileBreak} />
+          {/* Part 2 — "deductions" */}
+          {part2Words.map((w, i) => (
+            <Fragment key={`p2-${w}-${i}`}>
               <span
                 className={styles.h1Word}
                 style={
                   {
                     animationDelay: `${
-                      WORD_BASE_MS + (line1Words.length + i) * WORD_STAGGER_MS
+                      WORD_BASE_MS + (part1Words.length + i) * WORD_STAGGER_MS
                     }ms`,
                   } as React.CSSProperties
                 }
               >
                 {w}
               </span>
-              {i < line2Words.length - 1 ? " " : ""}
+              {" "}
+            </Fragment>
+          ))}
+          {/* Forces the line break after "deductions" on desktop only. */}
+          <br className={styles.desktopBreak} />
+          {/* Part 3 — "on autopilot" */}
+          {part3Words.map((w, i) => (
+            <Fragment key={`p3-${w}-${i}`}>
+              <span
+                className={styles.h1Word}
+                style={
+                  {
+                    animationDelay: `${
+                      WORD_BASE_MS +
+                      (part1Words.length + part2Words.length + i) *
+                        WORD_STAGGER_MS
+                    }ms`,
+                  } as React.CSSProperties
+                }
+              >
+                {w}
+              </span>
+              {i < part3Words.length - 1 ? " " : ""}
             </Fragment>
           ))}
         </h1>
