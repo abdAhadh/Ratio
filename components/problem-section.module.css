@@ -286,19 +286,53 @@
     /* Smaller vertical breathing room on mobile so the shader-only
        framing doesn't take up too much screen. */
     padding: 32px 0;
+    /* The desktop's `overflow: hidden` creates a scroll container, which
+       silently breaks `position: sticky` on the card children. On mobile
+       we use sticky-stacking, so allow overflow to flow normally. The
+       inner .shader element clips itself, so the visual containment is
+       still in place. */
+    overflow: visible;
   }
   .cardsRow {
     flex-direction: column;
-    /* Keep the full 1px frame on mobile (cards stack vertically inside). */
+    /* Drop the frame border on mobile — with sticky-stacking each card
+       covers the previous, so a single outer frame would just outline an
+       empty region below the visible top card. */
+    border: none;
+    gap: 32px;
   }
+  /* Sticky-stack the cards on mobile — matching ROI / Product. Each card
+     pins near the top and the next slides over it as the user scrolls. */
   .card {
+    position: sticky;
+    /* Solid background so a stacked card cleanly covers the one beneath
+       it. The desktop's semi-transparent gradient lets the shader through,
+       which would visually mix with the underlying card on mobile. */
+    background: #16181c;
     border-right: none;
-    border-bottom: 1px solid #333;
-    min-height: 280px;
-    padding: 32px 24px;
-  }
-  .card:last-child {
     border-bottom: none;
+    /* Override the desktop space-between layout — on mobile we want the
+       card head + text to sit tight from the top of the card with a
+       single fixed gap between them, not split to opposite edges of a
+       380px tall card. */
+    justify-content: flex-start;
+    gap: 28px;
+    min-height: 280px;
+    padding: 24px 20px;
+  }
+  /* Cancel the auto top-margin that pushes the text to the bottom of the
+     card on desktop. We want it just below the head on mobile. */
+  .cardText {
+    margin-top: 0;
+  }
+  .card:nth-child(1) {
+    top: 120px;
+  }
+  .card:nth-child(2) {
+    top: 130px;
+  }
+  .card:nth-child(3) {
+    top: 140px;
   }
   .cardTitle {
     /* Slightly reduced on mobile so it sits well in narrower stacked

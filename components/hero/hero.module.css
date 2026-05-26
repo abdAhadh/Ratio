@@ -233,7 +233,10 @@
   align-items: center;
   justify-content: center;
   height: 48px;
-  padding: 14px 18px;
+  /* Match the primary CTA's 164px width so the two buttons read as a
+     visually balanced pair instead of one wider than the other. */
+  width: 164px;
+  padding: 14px;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 0;
@@ -313,11 +316,12 @@
 }
 
 /* ───── Mobile (≤768px) ─────
-   Desktop pins eyebrow / h1 / sub / cta absolutely at left:max(72px, …).
-   On a phone the 558–560px text blocks overflow, so we re-pin to a 20px
-   gutter, cap widths to the viewport, and shrink the 56px serif H1. The
-   absolute tops are kept (they're viewport-relative via calc) so the stack
-   still reads top-to-bottom; offsets are tightened for the smaller type. */
+   Desktop pins each child of .content absolutely with hand-tuned tops.
+   That works on the desktop layout because content widths and line counts
+   are fixed. On mobile the sub paragraph wraps to a different number of
+   lines per viewport width, so absolute tops cause overlaps. Switch the
+   mobile layout to a flex column so each element flows below the previous
+   regardless of wrap count. */
 @media (max-width: 768px) {
   .section {
     min-height: 640px;
@@ -330,83 +334,74 @@
     bottom: 88px;
   }
 
-  /* Mobile hero is centre-aligned, matching the Closor template. Every
-     element is absolutely positioned: the eyebrow pill centres via
-     translateX; the CTA centres via margin-auto (it runs a fade-up
-     animation that owns `transform`, so translateX would be overwritten);
-     the h1 + sub span full width and centre their text. Font sizes match
-     the template: 40px / 52px serif H1. */
-  .eyebrow {
-    left: 50%;
-    transform: translateX(-50%);
+  /* Stack hero contents centered. Padding leaves room for the nav above
+     and the trusted-by strip below. */
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 88px 20px 120px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  /* All previously-absolutely-positioned children switch to static flow. */
+  .eyebrow,
+  .h1,
+  .sub,
+  .subLine2,
+  .ctaRow {
+    position: static;
+    left: auto;
+    right: auto;
+    top: auto;
   }
 
   .eyebrow {
-    /* Override desktop base 482 → mobile uses same shifted base. */
-    top: calc((100% - 482px) / 2);
+    margin-bottom: 24px;
   }
 
   .h1 {
-    left: 0;
-    right: 0;
     width: auto;
     max-width: none;
-    padding: 0 20px;
-    box-sizing: border-box;
-    text-align: center;
-    /* Reduced by 15% from 44/56/-2.2 → 37/48/-1.87. */
-    font-size: 37px;
-    line-height: 48px;
-    letter-spacing: -1.87px;
-    top: calc((100% - 482px) / 2 + 75px);
+    /* Sized to fit "Recover retail deductions" on one line at typical
+       iPhone widths (393–430px) so the headline reads as 2 clean lines
+       instead of wrapping to 3. clamp() scales the type up on wider phones
+       while staying tight enough at narrow widths. */
+    font-size: clamp(28px, 8vw, 38px);
+    line-height: 1.15;
+    letter-spacing: -1.5px;
+    margin-bottom: 20px;
   }
 
   .sub {
-    left: 0;
-    right: 0;
-    width: auto;
+    width: 100%;
     max-width: none;
-    padding: 0 20px;
-    box-sizing: border-box;
-    text-align: center;
-    /* 16/24/-0.48 to match the sub size used in product, roi, integrations
-       and faq sections. */
+    /* 16/24/-0.48 matches the sub size used in product / roi / integrations
+       / faq sections. */
     font-size: 16px;
     line-height: 24px;
     letter-spacing: -0.48px;
-    /* eyebrow:33 + gap:42 + h1(37/48, ~3 lines = 144) + gap:20 = +239 */
-    top: calc((100% - 482px) / 2 + 239px);
   }
 
   .subLine2 {
-    left: 0;
-    right: 0;
-    width: auto;
+    width: 100%;
     max-width: none;
-    padding: 0 20px;
-    box-sizing: border-box;
-    text-align: center;
     font-size: 16px;
     line-height: 24px;
     letter-spacing: -0.48px;
-    /* sub top (239) + sub height (3 lines × 24 = 72) + 0 gap = +311 */
-    top: calc((100% - 482px) / 2 + 311px);
+    margin-bottom: 28px;
   }
 
-  /* Centre the two-button row on mobile. The row itself runs the fade-up
-     animation, which owns `transform`, so we centre via margin-auto rather
-     than translateX. Stack the two buttons vertically on phones (side-by-
-     side they'd be tight at 360px). */
+  /* Stack the two buttons vertically (side-by-side they'd be tight at the
+     iPhone SE 320px width). Margin-auto centers via the parent flex; we
+     centre via flex alignment rather than translateX because the row owns
+     its own translateY fade-up animation. */
   .ctaRow {
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
     flex-direction: column;
     align-items: center;
     gap: 12px;
     width: max-content;
-    /* subLine2 top (311) + height (24) + gap (46) = +381 */
-    top: calc((100% - 482px) / 2 + 381px);
   }
 }

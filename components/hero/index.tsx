@@ -21,14 +21,14 @@ import styles from "./hero.module.css";
  * animations with per-word `animation-delay`.
  */
 // Hero H1 is forced onto two lines:
-//   Line 1: "Recover retail deductions,"
-//   Line 2: "on autopilot."
+//   Line 1: "Recover retail deductions"
+//   Line 2: "on autopilot"
 // We render each line's words in its own span loop with a <br /> between
 // so the break is preserved at every viewport. Animation delays are kept
 // continuous across both lines so the per-word stagger reads as one
 // gesture, not two separate stacks.
-const H1_LINE_1 = "Recover retail deductions,";
-const H1_LINE_2 = "on autopilot.";
+const H1_LINE_1 = "Recover retail deductions";
+const H1_LINE_2 = "on autopilot";
 // Subhead is rendered as two visual paragraphs (first the mechanism, then
 // the outcome on its own line). The full string is kept here for SEO /
 // metadata reuse; the JSX below renders the two halves.

@@ -164,7 +164,10 @@
   align-items: center;
   justify-content: center;
   height: 49px;
-  padding: 14px 18px;
+  /* Match the primary CTA's 177px width so the two buttons read as a
+     visually balanced pair instead of one wider than the other. */
+  width: 177px;
+  padding: 14px;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 0;

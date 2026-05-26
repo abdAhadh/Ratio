@@ -200,11 +200,14 @@
 
 /* sliderArea is the same height as the slider input so the visible track,
    centered within it, sits exactly under the thumb. The tick labels live
-   outside sliderArea as a sibling so they don't shift the track. */
+   outside sliderArea as a sibling so they don't shift the track. Height
+   is 44px so the input matches Apple's recommended minimum touch target
+   on mobile — anything smaller and a tap below the visible thumb gets
+   read as "click here" and the thumb jumps backward to the finger. */
 .sliderArea {
   position: relative;
   width: 100%;
-  height: 28px;
+  height: 44px;
 }
 
 .sliderTrack {
@@ -238,10 +241,17 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  height: 28px;
+  /* 44px hit target so the thumb is comfortable to grab on touch devices.
+     The visible track is still 4px tall and centered within this area, so
+     the increase is purely touch padding above and below the track. */
+  height: 44px;
   margin: 0;
   background: transparent;
   cursor: pointer;
+  /* Only horizontal pans are slider gestures; vertical scrolling passes
+     through to the page. Prevents the iOS "jumpy thumb" feeling. */
+  touch-action: pan-x;
+  -webkit-tap-highlight-color: transparent;
   /* Re-enable focus ring via thumb shadow only. */
   outline: none;
 }
