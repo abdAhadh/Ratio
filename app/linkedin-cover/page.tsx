@@ -7,7 +7,8 @@ import styles from "./linkedin-cover.module.css";
  * /linkedin-cover — preview of the 1128x191 LinkedIn company-cover PNG.
  * Screenshot the .card element at exact pixel size to produce the asset.
  * Same shader as the landing hero, left-aligned text over a dark scrim
- * so the headline reads cleanly. AR-only positioning (no payables).
+ * so the headline reads cleanly. Positions the brand for retail deduction
+ * recovery (CPG).
  */
 export default function LinkedinCoverPage() {
   return (
@@ -20,10 +21,10 @@ export default function LinkedinCoverPage() {
 
         <div className={styles.content}>
           <div className={styles.text}>
-            <h1 className={styles.h1}>Your AI coworker to automate AR.</h1>
+            <h1 className={styles.h1}>Recover retail deductions on autopilot.</h1>
             <p className={styles.sub}>
-              AI agents that run collections, cash applications,
-              deductions, and disputes, end-to-end.
+              AI agents that recover invalid retailer deductions for CPG
+              brands.
             </p>
           </div>
           <div className={styles.url}>tryratio.io</div>
