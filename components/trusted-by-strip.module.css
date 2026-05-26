@@ -95,14 +95,27 @@
 }
 
 .logo {
-  height: 22px;
+  /* Default height is set per-logo via data-h below. width: auto lets the
+     browser compute each logo's natural width from its viewBox aspect ratio
+     at the fixed render height — uniform cap-height across the strip. */
+  width: auto;
+  max-width: 140px;
   display: block;
   flex: 0 0 auto;
   object-fit: contain;
   opacity: 0.85;
-  /* Default filter — collapse coloured wordmarks to a white silhouette,
-     matching 8098. */
+  /* Default filter — collapse coloured wordmarks to a white silhouette. */
   filter: brightness(0) invert(1);
+}
+
+.logo[data-h="md"] {
+  height: 22px;
+}
+
+/* Portrait-leaning logos (Target, mostly) get extra height so their visual
+   weight matches the wider wordmarks rendered next to them. */
+.logo[data-h="lg"] {
+  height: 28px;
 }
 
 /* Logos with internal detail (QuickBooks, Salesforce) use a softer filter

@@ -22,20 +22,38 @@ import styles from "./trusted-by-strip.module.css";
 type LogoSpec = {
   src: string;
   alt: string;
-  width: number;
-  filter: "flat" | "preserve";
+  /* "lg" gives a slightly taller render — used for logos whose viewBox is
+     portrait (Target's bullseye + wordmark) so they read at similar visual
+     weight as the wider wordmarks. */
+  h?: "lg";
+  filter?: "preserve";
 };
 
-// Order matches 8098's strip exactly. Note that the original Framer SVG file
-// names retain alt text from the Closor template; the actual file contents
-// are the integration partner logos.
+/* Same 18-logo set as the integrations marquee, rendered shorter (height
+   22px on desktop / ~18px on mobile) and faster-scrolling. Order alternates
+   retailers / ERPs / distributors so the strip reads as a varied mix.
+   All logos render with `width: auto` so the browser computes each width
+   from its native aspect ratio at the fixed CSS height — uniform cap-height
+   across the strip. */
 const LOGOS: LogoSpec[] = [
-  { src: "/jAvS7i3euzhzs9QG47ZCnKWs.svg",    alt: "Oracle NetSuite",        width: 65,  filter: "flat" },
-  { src: "/fsJ1gOVplaJe3c8baYuNmLdRk.svg",   alt: "SAP",                    width: 83,  filter: "flat" },
-  { src: "/iWxq7l9uiHCpn3rJ20znALDue2I.png", alt: "Microsoft Dynamics 365", width: 104, filter: "flat" },
-  { src: "/NnTn4flsDXQe6LWvltXVlRps.svg",    alt: "Sage",                   width: 79,  filter: "flat" },
-  { src: "/A7BEzgODSPL3agNIiD6fYHUiweE.svg", alt: "QuickBooks",             width: 73,  filter: "preserve" },
-  { src: "/ZVex0Mw39oLEoCDbZKzESs2WMU.svg",  alt: "Salesforce",             width: 82,  filter: "preserve" },
+  { src: "/ratio-integrations/retailer-walmart.svg",    alt: "Walmart" },
+  { src: "/ratio-integrations/erp-netsuite.svg",        alt: "Oracle NetSuite" },
+  { src: "/ratio-integrations/retailer-target.svg",     alt: "Target", h: "lg" },
+  { src: "/ratio-integrations/retailer-tesco.svg",      alt: "Tesco" },
+  { src: "/ratio-integrations/erp-sap.svg",             alt: "SAP" },
+  { src: "/ratio-integrations/retailer-costco.svg",     alt: "Costco" },
+  { src: "/ratio-integrations/retailer-sainsburys.svg", alt: "Sainsbury's" },
+  { src: "/ratio-integrations/erp-dynamics365.png",     alt: "Microsoft Dynamics 365" },
+  { src: "/ratio-integrations/retailer-kroger.svg",     alt: "Kroger" },
+  { src: "/ratio-integrations/retailer-asda.svg",       alt: "ASDA" },
+  { src: "/ratio-integrations/distributor-kehe.svg",    alt: "KeHE Distributors" },
+  { src: "/ratio-integrations/retailer-amazon.svg",     alt: "Amazon" },
+  { src: "/ratio-integrations/retailer-morrisons.svg",  alt: "Morrisons" },
+  { src: "/ratio-integrations/erp-sage.svg",            alt: "Sage" },
+  { src: "/ratio-integrations/retailer-waitrose.svg",   alt: "Waitrose" },
+  { src: "/ratio-integrations/distributor-unfi.svg",    alt: "UNFI" },
+  { src: "/ratio-integrations/icon-quickbooks.svg",     alt: "QuickBooks", filter: "preserve" },
+  { src: "/ratio-integrations/distributor-brakes.svg",  alt: "Brakes" },
 ];
 
 // Pixel-per-second scroll rate — tuned to feel like 8098's JS ticker.
@@ -116,10 +134,8 @@ export function TrustedByStrip() {
         <img
           src={logo.src}
           alt={logo.alt}
-          width={logo.width}
-          height={22}
           className={styles.logo}
-          style={{ width: `${logo.width}px` }}
+          data-h={logo.h ?? "md"}
         />
       </li>
     ));

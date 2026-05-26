@@ -9,17 +9,31 @@ import styles from "./integrations-section.module.css";
  *  - Full-viewport strip with the diagonal stripe PNG as background and a
  *    fade gradient on each side; logos drift across the strip in a loop.
  */
+/* Logos rendered as a continuous marquee. Order alternates retailers /
+   distributors / ERPs so the loop reads as a varied mix rather than a category
+   dump. Almost all logos render at "md" height (32px desktop / 26px mobile)
+   for symmetry. Target uses "lg" because its viewBox is portrait — the
+   bullseye + wordmark needs a touch more vertical room to read at the same
+   visual weight as the others. */
 const LOGOS: Array<{ src: string; alt: string; h: "lg" | "md" | "sm" }> = [
-  { src: "/ratio-integrations/icon-chase.svg", alt: "Chase", h: "sm" },
-  { src: "/ratio-integrations/icon-bankofamerica.svg", alt: "Bank of America", h: "sm" },
-  { src: "/ratio-integrations/icon-slack.svg", alt: "Slack", h: "md" },
-  { src: "/ratio-integrations/erp-netsuite.svg", alt: "Oracle NetSuite", h: "lg" },
+  { src: "/ratio-integrations/retailer-walmart.svg", alt: "Walmart", h: "md" },
+  { src: "/ratio-integrations/erp-netsuite.svg", alt: "Oracle NetSuite", h: "md" },
+  { src: "/ratio-integrations/retailer-target.svg", alt: "Target", h: "lg" },
+  { src: "/ratio-integrations/retailer-tesco.svg", alt: "Tesco", h: "md" },
   { src: "/ratio-integrations/erp-sap.svg", alt: "SAP", h: "md" },
+  { src: "/ratio-integrations/retailer-costco.svg", alt: "Costco", h: "md" },
+  { src: "/ratio-integrations/retailer-sainsburys.svg", alt: "Sainsbury's", h: "md" },
   { src: "/ratio-integrations/erp-dynamics365.png", alt: "Microsoft Dynamics 365", h: "md" },
+  { src: "/ratio-integrations/retailer-kroger.svg", alt: "Kroger", h: "md" },
+  { src: "/ratio-integrations/retailer-asda.svg", alt: "ASDA", h: "md" },
+  { src: "/ratio-integrations/distributor-kehe.svg", alt: "KeHE Distributors", h: "md" },
+  { src: "/ratio-integrations/retailer-amazon.svg", alt: "Amazon", h: "md" },
+  { src: "/ratio-integrations/retailer-morrisons.svg", alt: "Morrisons", h: "md" },
   { src: "/ratio-integrations/erp-sage.svg", alt: "Sage", h: "md" },
-  { src: "/ratio-integrations/icon-quickbooks.svg", alt: "QuickBooks", h: "lg" },
-  { src: "/ratio-integrations/icon-salesforce.svg", alt: "Salesforce", h: "md" },
-  { src: "/ratio-integrations/icon-plaid.svg", alt: "Plaid", h: "md" },
+  { src: "/ratio-integrations/retailer-waitrose.svg", alt: "Waitrose", h: "md" },
+  { src: "/ratio-integrations/distributor-unfi.svg", alt: "UNFI", h: "md" },
+  { src: "/ratio-integrations/icon-quickbooks.svg", alt: "QuickBooks", h: "md" },
+  { src: "/ratio-integrations/distributor-brakes.svg", alt: "Brakes", h: "md" },
 ];
 
 export function IntegrationsSection() {
