@@ -154,14 +154,23 @@
 .logo[data-h="md"] { height: 32px; }
 .logo[data-h="sm"] { height: 28px; }
 
-/* Salesforce and QuickBooks are icon logos: a coloured shape (blue cloud /
-   green circle) with WHITE text inside. The flat brightness(0) invert(1)
-   above turns the whole icon white, so the white wordmark disappears.
-   grayscale keeps the shape a mid-grey instead of white, so the white
-   text stays readable against it. Applies on desktop and mobile. */
-.logo[src*="salesforce"],
+/* QuickBooks is an icon logo: a coloured shape (green circle) with WHITE
+   text inside. The flat brightness(0) invert(1) above turns the whole icon
+   white, so the white wordmark disappears. grayscale keeps the shape a
+   mid-grey instead of white, so the white text stays readable against it. */
 .logo[src*="quickbooks"] {
   filter: grayscale(1);
+}
+
+/* ───── Per-logo size compensation ─────
+   Some source SVGs are icon-only (no wordmark), so at the same render height
+   they look visually lighter than wider wordmark logos sitting next to them.
+   Bump those specifically so the visual weight matches. */
+.logo[src*="erp-sap"] {
+  /* The SAP file is a 24x24 streamline icon, not a wordmark. At 32px it
+     reads as a tiny square. Boost to 40px so it sits at a similar visual
+     weight to NetSuite / Sage / Dynamics next to it. */
+  height: 40px;
 }
 
 /* Note line below the strip — mirrors 8098's .ri-note (16px / muted /

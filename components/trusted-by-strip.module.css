@@ -118,6 +118,13 @@
   height: 28px;
 }
 
+/* The SAP file is a 24x24 streamline icon, not a wordmark. At 22px it
+   reads as a tiny square next to the wider wordmark logos. Boost so it
+   sits at a similar visual weight. */
+.logo[src*="erp-sap"] {
+  height: 28px;
+}
+
 /* Logos with internal detail (QuickBooks, Salesforce) use a softer filter
    so the wordmark/text inside the icon stays readable, matching 8098. */
 .tickerItemPreserve .logo {

@@ -38,7 +38,7 @@ type LogoSpec = {
 const LOGOS: LogoSpec[] = [
   { src: "/ratio-integrations/retailer-walmart.svg",    alt: "Walmart" },
   { src: "/ratio-integrations/erp-netsuite.svg",        alt: "Oracle NetSuite" },
-  { src: "/ratio-integrations/retailer-target.svg",     alt: "Target", h: "lg" },
+  { src: "/ratio-integrations/retailer-target.svg",     alt: "Target" },
   { src: "/ratio-integrations/retailer-tesco.svg",      alt: "Tesco" },
   { src: "/ratio-integrations/erp-sap.svg",             alt: "SAP" },
   { src: "/ratio-integrations/retailer-costco.svg",     alt: "Costco" },

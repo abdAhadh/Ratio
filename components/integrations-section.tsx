@@ -18,7 +18,7 @@ import styles from "./integrations-section.module.css";
 const LOGOS: Array<{ src: string; alt: string; h: "lg" | "md" | "sm" }> = [
   { src: "/ratio-integrations/retailer-walmart.svg", alt: "Walmart", h: "md" },
   { src: "/ratio-integrations/erp-netsuite.svg", alt: "Oracle NetSuite", h: "md" },
-  { src: "/ratio-integrations/retailer-target.svg", alt: "Target", h: "lg" },
+  { src: "/ratio-integrations/retailer-target.svg", alt: "Target", h: "md" },
   { src: "/ratio-integrations/retailer-tesco.svg", alt: "Tesco", h: "md" },
   { src: "/ratio-integrations/erp-sap.svg", alt: "SAP", h: "md" },
   { src: "/ratio-integrations/retailer-costco.svg", alt: "Costco", h: "md" },
