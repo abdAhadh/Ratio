@@ -233,6 +233,9 @@
   );
   border-radius: 2px;
   transition: width 0.12s ease-out;
+  /* Defensive: ensure the fill bar never intercepts touches even if the
+     parent's pointer-events: none stops applying for some reason. */
+  pointer-events: none;
 }
 
 .slider {
@@ -248,10 +251,16 @@
   margin: 0;
   background: transparent;
   cursor: pointer;
-  /* Only horizontal pans are slider gestures; vertical scrolling passes
-     through to the page. Prevents the iOS "jumpy thumb" feeling. */
-  touch-action: pan-x;
+  /* IMPORTANT: `pan-y` (not `pan-x` or `none`). This means the browser
+     handles VERTICAL scroll gestures, while horizontal touches are routed
+     to the slider for drag tracking. `pan-x` was wrong — that told the
+     browser to consume horizontal pans as scrolls, which broke the drag.
+     `none` works too but disables all gestures (including the page's
+     vertical scroll), which feels worse around the input. */
+  touch-action: pan-y;
   -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
   /* Re-enable focus ring via thumb shadow only. */
   outline: none;
 }
