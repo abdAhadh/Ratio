@@ -16,39 +16,38 @@
   box-sizing: border-box;
 }
 
-/* Static dark gradient — mimics the V1 shader look (cyan-to-pink
-   horizontal blend with subtle vertical scan lines) but renders purely
-   via CSS so the LinkedIn DP is a still image, not an animation. Tones
-   are darker than the live shader so the mark + wordmark stay crisp
-   against it without needing a heavy scrim. */
+/* Background = a frozen frame of the actual hero UnicornShader, baked
+   to /public/linkedin/shader-bg.png. This way the DP's texture (the
+   soft horizontal banding) matches the cover photo exactly — same
+   source, just captured statically so the DP doesn't animate. A dark
+   overlay on top darkens the bright shader so the mark + wordmark stay
+   readable, and a corner vignette focuses the eye on the centre. */
 .bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  background:
-    /* Vertical scan lines — thicker (2px) and slightly higher contrast
-       so they read at LinkedIn-render scale, matching the hero shader's
-       pinstripe visual instead of disappearing into the gradient. */
-    repeating-linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0.06) 0px,
-      rgba(255, 255, 255, 0.06) 2px,
-      transparent 2px,
-      transparent 4px
-    ),
-    /* corner vignettes — darken edges so the mark stands out */
+  background-image:
+    /* Corner vignette so the wordmark stays crisp against the edges. */
     radial-gradient(
-      ellipse 80% 70% at 50% 50%,
-      transparent 30%,
-      rgba(0, 0, 0, 0.35) 100%
+      ellipse 90% 80% at 50% 50%,
+      transparent 35%,
+      rgba(0, 0, 0, 0.5) 100%
     ),
-    /* base horizontal cyan→pink, darker than the shader version */
+    /* Darken overlay — heavier on the left so that side reads as deeply
+       dark, lighter on the right so the shader's warm hits still bleed
+       through there. Gives the DP a subtle left-to-right warmth arc
+       like the cover photo. */
     linear-gradient(
-      105deg,
-      rgba(15, 55, 80, 1) 0%,
-      rgba(25, 38, 60, 1) 50%,
-      rgba(60, 28, 50, 1) 100%
-    );
+      90deg,
+      rgba(0, 0, 0, 0.68) 0%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0.32) 100%
+    ),
+    /* Static shader frame — provides the actual soft horizontal banding
+       texture from the live hero shader. */
+    url("/linkedin/shader-bg.png");
+  background-size: cover;
+  background-position: center;
 }
 
 .inner {
