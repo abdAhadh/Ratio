@@ -26,7 +26,9 @@ import styles from "./hero.module.css";
 // We render each line's words in its own span loop with a <br /> between
 // so the break is preserved at every viewport. Animation delays are kept
 // continuous across both lines so the per-word stagger reads as one
-// gesture, not two separate stacks.
+// gesture, not two separate stacks. On mobile the <br /> is hidden via
+// CSS (display:none) so the headline can use a bigger font and break
+// naturally at a shorter word boundary instead.
 const H1_LINE_1 = "Recover retail deductions";
 const H1_LINE_2 = "on autopilot";
 // Subhead is rendered as two visual paragraphs (first the mechanism, then
@@ -81,10 +83,13 @@ export function Hero() {
               >
                 {w}
               </span>
-              {i < line1Words.length - 1 ? " " : ""}
+              {/* Always include a trailing space so when the desktop <br />
+                  is hidden on mobile (display:none), the words still flow
+                  with proper spacing between line 1 and line 2. */}
+              {" "}
             </Fragment>
           ))}
-          <br />
+          <br className={styles.h1Break} />
           {line2Words.map((w, i) => (
             <Fragment key={`l2-${w}-${i}`}>
               <span

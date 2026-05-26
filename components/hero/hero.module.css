@@ -365,14 +365,23 @@
   .h1 {
     width: auto;
     max-width: none;
-    /* Sized to fit "Recover retail deductions" on one line at typical
-       iPhone widths (393–430px) so the headline reads as 2 clean lines
-       instead of wrapping to 3. clamp() scales the type up on wider phones
-       while staying tight enough at narrow widths. */
-    font-size: clamp(28px, 8vw, 38px);
+    /* Tracks closor.framer.website's mobile H1 spec (40px Gelasio, line
+       height ~130%, letter-spacing -0.05em). Clamped to fit the longer
+       of the natural-wrap lines ("deductions on autopilot", 23 chars) on
+       typical phone widths — at 375px viewport this resolves to ~36px,
+       at 430px to 38px. Pure natural wrap (no text-wrap: balance) gives
+       the desired 2-line break "Recover retail" / "deductions on
+       autopilot", since balance preferred 3 balanced lines. */
+    font-size: clamp(30px, 9.5vw, 38px);
     line-height: 1.15;
-    letter-spacing: -1.5px;
+    letter-spacing: -0.05em;
     margin-bottom: 20px;
+  }
+
+  /* Hide the desktop's forced line break on mobile so the H1 can pick a
+     natural wrap that supports the larger closor-matching font size. */
+  .h1Break {
+    display: none;
   }
 
   .sub {
