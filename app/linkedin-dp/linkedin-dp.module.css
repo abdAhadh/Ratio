@@ -26,13 +26,15 @@
   inset: 0;
   z-index: 0;
   background:
-    /* subtle vertical scan lines (~1px every 3px, very low contrast) */
+    /* Vertical scan lines — thicker (2px) and slightly higher contrast
+       so they read at LinkedIn-render scale, matching the hero shader's
+       pinstripe visual instead of disappearing into the gradient. */
     repeating-linear-gradient(
       to right,
-      rgba(255, 255, 255, 0.035) 0px,
-      rgba(255, 255, 255, 0.035) 1px,
-      transparent 1px,
-      transparent 3px
+      rgba(255, 255, 255, 0.06) 0px,
+      rgba(255, 255, 255, 0.06) 2px,
+      transparent 2px,
+      transparent 4px
     ),
     /* corner vignettes — darken edges so the mark stands out */
     radial-gradient(
