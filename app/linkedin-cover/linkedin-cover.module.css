@@ -20,12 +20,21 @@
   box-sizing: border-box;
 }
 
+/* Background = frozen frame of the hero UnicornShader, baked to
+   /public/linkedin/shader-bg.png. Same source image as the DP and the
+   employee cover so all three LinkedIn assets share the same soft
+   horizontal-banding texture. background-size: cover crops the square
+   image to fill this cover's 5.9:1 aspect — the centred horizontal
+   slice keeps the bands visible. */
 .shaderLayer {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  background-image: url("/linkedin/shader-bg.png");
+  background-size: cover;
+  background-position: center;
 }
 
 /* Dark gradient overlay — heavier on the left where the headline sits,
