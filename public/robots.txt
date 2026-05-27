@@ -1,0 +1,124 @@
+# robots.txt for tryratio.io
+# Last updated: 2026-05-27
+#
+# Ratio is an AI agent that recovers invalid retailer deductions for
+# CPG brands. We want this site indexed by search engines and surfaced
+# in AI answers about retail deductions, chargebacks, OTIF fines,
+# FBA reimbursements and adjacent topics. All AI/LLM crawlers are
+# welcome on every public page.
+
+
+# ─────────────────────────────────────────────────────────────────────
+# Default — applies to every crawler not listed below
+# ─────────────────────────────────────────────────────────────────────
+User-agent: *
+Allow: /
+
+# Internal preview routes (LinkedIn assets, OG image renderer, API).
+# These are not user-facing pages, so we keep them out of the index.
+Disallow: /api/
+Disallow: /og
+Disallow: /linkedin-dp
+Disallow: /linkedin-cover
+Disallow: /linkedin-cover-employee
+
+
+# ─────────────────────────────────────────────────────────────────────
+# AI / LLM crawlers — explicitly welcomed
+# Listed individually so it is obvious we are opting in, not just
+# falling through the default rule.
+# ─────────────────────────────────────────────────────────────────────
+
+# OpenAI (ChatGPT training, ChatGPT browsing, OpenAI search)
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /api/
+Disallow: /og
+Disallow: /linkedin-dp
+Disallow: /linkedin-cover
+Disallow: /linkedin-cover-employee
+
+# Anthropic (Claude training and retrieval)
+User-agent: ClaudeBot
+User-agent: Claude-Web
+User-agent: Claude-SearchBot
+User-agent: anthropic-ai
+Allow: /
+Disallow: /api/
+Disallow: /og
+Disallow: /linkedin-dp
+Disallow: /linkedin-cover
+Disallow: /linkedin-cover-employee
+
+# Google (Gemini, AI Overviews)
+User-agent: Google-Extended
+Allow: /
+Disallow: /api/
+Disallow: /og
+Disallow: /linkedin-dp
+Disallow: /linkedin-cover
+Disallow: /linkedin-cover-employee
+
+# Perplexity (search + answer engine)
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+Allow: /
+Disallow: /api/
+Disallow: /og
+Disallow: /linkedin-dp
+Disallow: /linkedin-cover
+Disallow: /linkedin-cover-employee
+
+# Apple (Apple Intelligence)
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /api/
+Disallow: /og
+Disallow: /linkedin-dp
+Disallow: /linkedin-cover
+Disallow: /linkedin-cover-employee
+
+# Meta (Meta AI assistant)
+User-agent: Meta-ExternalAgent
+User-agent: Meta-ExternalFetcher
+Allow: /
+Disallow: /api/
+Disallow: /og
+Disallow: /linkedin-dp
+Disallow: /linkedin-cover
+Disallow: /linkedin-cover-employee
+
+# Common Crawl (corpus used by many LLMs)
+User-agent: CCBot
+Allow: /
+Disallow: /api/
+Disallow: /og
+Disallow: /linkedin-dp
+Disallow: /linkedin-cover
+Disallow: /linkedin-cover-employee
+
+# Other AI engines (DeepSeek, Mistral, Cohere, ByteDance, You.com, Kagi)
+User-agent: DeepSeekBot
+User-agent: MistralAI-User
+User-agent: cohere-ai
+User-agent: Bytespider
+User-agent: YouBot
+User-agent: KagiBot
+Allow: /
+Disallow: /api/
+Disallow: /og
+Disallow: /linkedin-dp
+Disallow: /linkedin-cover
+Disallow: /linkedin-cover-employee
+
+
+# ─────────────────────────────────────────────────────────────────────
+# Sitemap + structured AI content
+# ─────────────────────────────────────────────────────────────────────
+Sitemap: https://tryratio.io/sitemap.xml
+
+# llms.txt is a markdown summary of the site, optimised for LLM
+# ingestion. See https://llmstxt.org for the convention.
+# Located at: https://tryratio.io/llms.txt
