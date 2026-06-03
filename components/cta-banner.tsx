@@ -49,11 +49,12 @@ export function CTABanner() {
             />
             <div className={styles.content}>
               <h2 className={styles.h2}>
-                Run a free audit of last year&apos;s deductions.
+                Try Ratio free for 1 month.
               </h2>
               <p className={styles.sub}>
-                We will run a free 12-month audit of your retailer
-                deductions and show you what is recoverable.
+                See how much we recover from your retailer deductions in 30 days.
+                <br />
+                No commitment.
               </p>
               <div className={styles.ctaRow}>
                 <a href="/contact" className={styles.cta}>
@@ -78,7 +79,7 @@ export function CTABanner() {
                       className={styles.ctaChevron}
                     />
                   </span>
-                  <span className={styles.ctaLabel}>GET A FREE AUDIT</span>
+                  <span className={styles.ctaLabel}>START FREE TRIAL</span>
                 </a>
                 <a href="/contact" className={styles.ctaSecondary}>
                   <span className={styles.ctaSecondaryLabel}>REQUEST DEMO</span>

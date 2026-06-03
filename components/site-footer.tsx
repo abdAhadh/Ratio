@@ -1,6 +1,7 @@
 "use client";
 
 import { UnicornShader } from "./hero/unicorn-shader";
+import { OPEN_BANNER_EVENT } from "@/lib/consent";
 import styles from "./site-footer.module.css";
 
 /**
@@ -42,12 +43,24 @@ const NAV_COMPANY = [
     href: "https://www.linkedin.com/company/try-ratio/",
     external: true,
   },
+  { label: "Case Study", href: "/case-studies/dr-water" },
   { label: "Request Demo", href: "/contact" },
 ];
 const NAV_LEGAL = [
   { label: "Terms of Use", href: "/terms" },
   { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Manage cookies", href: "#manage-cookies" },
 ];
+
+function handleSpecialNav(
+  e: React.MouseEvent<HTMLAnchorElement>,
+  href: string
+) {
+  if (href === "#manage-cookies") {
+    e.preventDefault();
+    window.dispatchEvent(new CustomEvent(OPEN_BANNER_EVENT));
+  }
+}
 
 function Column({
   title,
@@ -100,6 +113,7 @@ function FooterLink({
     <a
       href={href}
       className={styles.colLink}
+      onClick={(e) => handleSpecialNav(e, href)}
       {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
     >
       <span className={styles.colLinkTrack}>
@@ -220,7 +234,11 @@ export function SiteFooter() {
             <ul className={styles.mList}>
               {NAV_LEGAL.map((it) => (
                 <li key={it.label}>
-                  <a href={it.href} className={styles.mLink}>
+                  <a
+                    href={it.href}
+                    className={styles.mLink}
+                    onClick={(e) => handleSpecialNav(e, it.href)}
+                  >
                     {it.label}
                   </a>
                 </li>

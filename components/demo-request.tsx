@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import posthog from "posthog-js";
 import styles from "./demo-request.module.css";
 
 /* The Cal.com embed is a client-only interactive widget. Loading it with
@@ -24,7 +25,7 @@ const COUNTRY_CODES = [
 const EXPECT = [
   "Quick read on your retailer mix and roughly how much you write off each year.",
   "Walk-through of how Ratio's AI agents pull, verify and dispute deductions.",
-  "Scope a free 12-month audit you can start within a week.",
+  "Set up a free 1-month trial you can start within a week.",
 ];
 
 function CheckIcon() {
@@ -71,6 +72,21 @@ export function DemoRequest() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fullPhone = `${dial} ${phone}`.trim();
+    // Tag the visitor with their email so session recordings and future
+    // events are linked to a known identity, then fire a custom event so
+    // demo signups can be counted directly in PostHog (without needing to
+    // parse autocaptured form-submit events).
+    try {
+      if (email) posthog.identify(email, { name, email, phone: fullPhone });
+      posthog.capture("demo_form_submitted", {
+        name,
+        email,
+        phone: fullPhone,
+        has_message: Boolean(message),
+      });
+    } catch {
+      /* PostHog may not be initialised in SSR / dev — never block the form */
+    }
     // Fire-and-forget: notify Slack server-side; the calendar opens either way.
     fetch("/api/demo-submission", {
       method: "POST",
@@ -107,7 +123,7 @@ export function DemoRequest() {
             </p>
             <p className={`${styles.lead} ${styles.leadLast}`}>
               In one call, we&apos;ll walk through your retailer mix and
-              scope a free 12-month audit of what is recoverable.
+              scope a free 1-month trial of Ratio.
             </p>
             <p className={styles.expectHeading}>What to expect in this call?</p>
             <ul className={styles.expectList}>
@@ -132,7 +148,7 @@ export function DemoRequest() {
                     </div>
                     <h2 className={styles.cardTitle}>Pick a time</h2>
                     <p className={styles.calNote}>
-                      Choose a slot that works for you — we&apos;ll send a
+                      Choose a slot that works for you. We&apos;ll send a
                       calendar invite and see you then.
                     </p>
                     <CalEmbed name={name} email={email} notes={message} />

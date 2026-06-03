@@ -182,7 +182,7 @@ export function Hero() {
             <span className={styles.ctaLabel}>REQUEST DEMO</span>
           </a>
           <a href="/contact" className={styles.ctaSecondary}>
-            <span className={styles.ctaSecondaryLabel}>GET A FREE AUDIT</span>
+            <span className={styles.ctaSecondaryLabel}>START FREE TRIAL</span>
           </a>
         </div>
       </div>

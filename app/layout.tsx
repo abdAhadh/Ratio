@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Gelasio } from "next/font/google";
 import "./globals.css";
+import { PostHogProvider } from "./providers/posthog";
+import { CookieBanner } from "@/components/cookie-banner";
 
 const geist = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +42,7 @@ export const metadata: Metadata = {
         url: "/og-image-v2.png",
         width: 1200,
         height: 630,
-        alt: "Ratio — AI agents that recover invalid retailer deductions and FBA reimbursement leakage",
+        alt: "Ratio: AI agents that recover invalid retailer deductions and FBA reimbursement leakage",
       },
     ],
   },
@@ -101,7 +103,12 @@ export default function RootLayout({
             fires, which can be a full second after first paint on slow links. */}
         <script src="/unicornStudio.umd.js" async data-ratio-unicorn="1" />
       </head>
-      <body>{children}</body>
+      <body>
+        <PostHogProvider>
+          {children}
+          <CookieBanner />
+        </PostHogProvider>
+      </body>
     </html>
   );
 }

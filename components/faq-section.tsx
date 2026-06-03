@@ -17,15 +17,15 @@ const FAQS: Array<{ q: string; a: string }> = [
   },
   {
     q: "Can you recover deductions we already wrote off?",
-    a: "Usually yes. Most retailers allow disputes within a 6 to 24 month window, so our audit reaches back through that period.",
+    a: "It depends on the retailer. Walmart's APDP window is 30 days, Target POL is 30 to 60 days, Costco is 60 days. Kroger and KeHE allow up to 180 days. Amazon cut its Vendor Central window from 5 years to 24 months. Within those windows, Ratio recovers every deduction across all your retailers.",
   },
   {
-    q: "What does the free audit involve from our side?",
-    a: "We need read-only access to your retailer portals, recent remittances, invoice and shipment records, and contracts with retailers. We run the audit in our environment and come back with a report showing recoverable dollars by retailer.",
+    q: "What does the free trial involve from our side?",
+    a: "We need read-only access to your retailer portals, recent remittances, invoice and shipment records, and contracts with retailers. We set Ratio up on your stack and run it live for 30 days. You see deductions recovered before paying anything.",
   },
   {
     q: "How is Ratio priced?",
-    a: "A small monthly subscription plus a commission on what we recover. The commission rate scales with your deduction volume, so larger brands pay a lower rate. We start with a free audit of the last 12 months, so you see the value before committing.",
+    a: "A small monthly subscription plus a commission on what we recover. The commission rate scales with your deduction volume, so larger brands pay a lower rate. We start with a free 1-month trial, so you see the value before committing.",
   },
   {
     q: "How is data handled and is it secure?",

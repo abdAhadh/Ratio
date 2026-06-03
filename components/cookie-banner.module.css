@@ -1,0 +1,121 @@
+/* Compact cookie banner — fixed bottom, single row on desktop. */
+
+.wrap {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  width: min(640px, calc(100vw - 24px));
+  z-index: 1000;
+  background: #0e0e10;
+  border: 1px solid #2a2a2e;
+  border-radius: 12px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 18px 36px rgba(0, 0, 0, 0.55);
+  padding: 12px 16px;
+  color: #eaeaea;
+  font-family: var(--font-geist-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: ratio-cookie-slide-up 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes ratio-cookie-slide-up {
+  from {
+    transform: translateX(-50%) translateY(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.body {
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #cdced2;
+}
+
+.body a {
+  color: #6db8e8;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(109, 184, 232, 0.4);
+}
+
+.body a:hover {
+  border-bottom-color: rgba(109, 184, 232, 0.9);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 7px;
+  padding: 7px 14px;
+  border: 1px solid transparent;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease;
+  white-space: nowrap;
+  font-size: 12.5px;
+  font-weight: 500;
+}
+
+.btnPrimary {
+  background: #fafafa;
+  color: #0e0e10;
+  border-color: #fafafa;
+  font-weight: 600;
+}
+
+.btnPrimary:hover {
+  background: #ffffff;
+}
+
+.btnSecondary {
+  background: transparent;
+  color: #cdced2;
+  border-color: #3a3a40;
+}
+
+.btnSecondary:hover {
+  border-color: #6db8e8;
+  color: #ffffff;
+}
+
+/* Required for the wrap's transform-based animation: keep centering on the
+   left/right while transitioning the Y axis. */
+.wrap {
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 560px) {
+  .wrap {
+    bottom: 12px;
+    width: calc(100vw - 16px);
+    padding: 12px 14px;
+    gap: 10px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .actions .btn {
+    flex: 1 1 50%;
+    padding: 9px 12px;
+  }
+}
