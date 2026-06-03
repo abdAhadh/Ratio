@@ -13,19 +13,12 @@
   box-sizing: border-box;
 }
 
-/* At 1280–1535 viewport widths, the single-line H2 (~1050px at 40px
-   Gelasio) does not fit inside the default 120px side padding. Tighten
-   the padding so it stays on one line. */
-@media (max-width: 1535px) and (min-width: 1280px) {
-  .section {
-    padding: 0 80px;
-  }
-}
-
-/* Below 1280px, single-line is no longer achievable at 40px font without
-   shrinking the type. Allow the H2 to wrap normally and reapply the
-   header-friendly max-width so it wraps inside the header box. */
-@media (max-width: 1279px) and (min-width: 769px) {
+/* At 1535px viewport and below, the single-line H2 (~1050px at 40px
+   Gelasio) cannot fit inside 120px side padding without breaking rail
+   alignment with sibling sections. Allow the H2 to wrap normally so the
+   section padding stays at 120px and the L/R rails stay aligned with
+   Product/ROI/Footer above and below. */
+@media (max-width: 1535px) and (min-width: 769px) {
   .h2 {
     white-space: normal;
     max-width: 720px;
