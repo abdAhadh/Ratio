@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ChatWidget } from "@/components/chat-widget";
+import { UnicornShader } from "@/components/hero/unicorn-shader";
 import styles from "./signup.module.css";
 
 /**
@@ -152,6 +153,17 @@ export default function McpSignupPage() {
       </header>
 
       <main className={styles.main}>
+        {/* Left half — WebGL shader, same project as the home page hero
+            so the auth flow shares a visual language with marketing.
+            Hidden on small viewports (see signup.module.css). */}
+        <div className={styles.shaderHalf} aria-hidden="true">
+          <div className={styles.shaderInner}>
+            <UnicornShader project="hNoUYN2AHKFq4LxKJyNV" eager />
+          </div>
+        </div>
+
+        {/* Right half — signup card. */}
+        <div className={styles.formHalf}>
         <div className={styles.card}>
           <header className={styles.cardHeader}>
             <h1 className={styles.h1}>Create your account</h1>
@@ -265,6 +277,7 @@ export default function McpSignupPage() {
               Sign in
             </Link>
           </footer>
+        </div>
         </div>
       </main>
 

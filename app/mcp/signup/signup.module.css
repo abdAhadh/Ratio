@@ -58,9 +58,46 @@
   flex: 0 0 auto;
 }
 
-/* ─── Centered signup card ─── */
+/* ─── Two-column main: shader on the left, signup card on the right.
+   Hero-on-left + form-on-right is a common auth pattern; here it also
+   ties the auth flow visually to the marketing site's hero (same
+   UnicornStudio shader project). On narrow viewports the shader half
+   collapses (see media query below) and the card centres full-width. */
 .main {
   flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 70px);
+  box-sizing: border-box;
+}
+
+/* Left column — bordered container that hosts the WebGL shader.
+   The 1px #333 right border picks up the same hairline language the
+   section rails use throughout the marketing site. */
+.shaderHalf {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    rgb(8, 12, 22) 0%,
+    rgb(20, 50, 95) 22%,
+    rgb(50, 130, 195) 45%,
+    rgb(220, 145, 155) 72%,
+    rgb(230, 105, 95) 100%
+  );
+  border-right: 1px solid #333;
+}
+
+/* Shader needs an explicit-size box to render into. The inner
+   absolute-positioned wrapper gives UnicornShader 100% of the column. */
+.shaderInner {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Right column — vertically + horizontally centres the signup card. */
+.formHalf {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -302,12 +339,25 @@
   border-bottom-color: var(--color-fg);
 }
 
+/* Below 900px the two-column split would squeeze the signup card too
+   narrow. Collapse to a single full-width form column with the shader
+   hidden — the marketing site uses the same shader on the home page
+   hero anyway, so this isn't a brand-recognition loss. */
+@media (max-width: 900px) {
+  .main {
+    grid-template-columns: 1fr;
+  }
+  .shaderHalf {
+    display: none;
+  }
+}
+
 /* ─── Mobile ─── */
 @media (max-width: 520px) {
   .appNavInner {
     padding: 12px 20px;
   }
-  .main {
+  .formHalf {
     padding: 32px 16px;
   }
   .card {
