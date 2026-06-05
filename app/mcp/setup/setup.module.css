@@ -1,0 +1,579 @@
+/* /mcp/setup — Walmart MCP onboarding page (dark theme).
+   App-style layout (no marketing nav, no footer): slim top bar with
+   brand + signed-in user pill, then a centered max-720 column with
+   the hero, "before you start" callout, two numbered steps with a
+   connecting rail, and a sample-questions card. */
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  color: var(--color-fg);
+}
+
+/* ───────── Slim app nav ───────── */
+.appNav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  background: rgba(1, 1, 1, 0.85);
+  backdrop-filter: blur(15.55px);
+  -webkit-backdrop-filter: blur(15.55px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.appNavInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.logoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.logoIcon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  flex: 0 0 auto;
+  transition: transform 1s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.logoLink:hover .logoIcon {
+  transform: rotate(90deg);
+}
+
+.logoImg {
+  width: 85.33px;
+  height: 24px;
+  display: block;
+  flex: 0 0 auto;
+}
+
+.userPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+}
+
+.userAvatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgb(110, 90, 220) 0%,
+    rgb(70, 50, 180) 100%
+  );
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  flex: 0 0 auto;
+}
+
+.userEmail {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-fg-muted);
+  letter-spacing: -0.1px;
+}
+
+/* ───────── Main content ───────── */
+.main {
+  flex: 1 1 auto;
+  width: 100%;
+  padding: 64px 24px 120px;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ─── Top intro line ─── */
+.introLine {
+  margin: 0 0 56px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-fg-muted);
+}
+
+/* Numbered list inside Step 1 that explains how to get the Walmart
+   credentials. Sits between the step lead and the form card so the
+   user sees the instructions immediately before pasting the values. */
+.howToList {
+  margin: 0 0 20px;
+  padding: 0 0 0 20px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--color-fg);
+}
+
+.howToList li {
+  margin-bottom: 4px;
+}
+
+.howToList li::marker {
+  color: var(--color-fg-muted);
+}
+
+/* ─── Step (number rail + body) ─── */
+.step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 20px;
+  margin-bottom: 48px;
+}
+
+.stepRail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.stepBadge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  border: 1px solid #333;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--color-fg);
+  flex: 0 0 auto;
+}
+
+/* Vertical line connecting one step number to the next so the
+   onboarding reads as a single sequence, not three disconnected cards. */
+.stepLine {
+  width: 1px;
+  flex: 1 1 auto;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.16),
+    rgba(255, 255, 255, 0)
+  );
+  min-height: 32px;
+}
+
+.stepBody {
+  min-width: 0;
+}
+
+.stepTitle {
+  margin: 4px 0 8px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--color-fg);
+}
+
+.stepLead {
+  margin: 0 0 20px;
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--color-fg-muted);
+}
+
+/* ─── Card (form / connector URL block) ─── */
+.card {
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+
+/* ─── Form field ─── */
+.field {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.field:last-of-type {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+.input {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--color-fg);
+  box-sizing: border-box;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.28);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Secret input + visibility toggle */
+.secretWrap {
+  position: relative;
+}
+
+.secretWrap .input {
+  padding-right: 44px;
+}
+
+.secretToggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: var(--color-fg-muted);
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.secretToggle:hover {
+  color: var(--color-fg);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Submit button — white pill, matches the rest of the site's primary CTA. */
+.submit {
+  width: 100%;
+  padding: 13px 20px;
+  background: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.14px;
+  color: rgb(26, 26, 26);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.submit:hover:not(:disabled) {
+  background: rgb(240, 240, 240);
+}
+
+.submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Helper paragraph inside the form card, sitting under the submit
+   button. Used for short security / behaviour notes. */
+.cardHelper {
+  margin: 12px 0 0;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-fg-muted);
+  text-align: center;
+}
+
+/* ─── Connector URL block ─── */
+.fieldHeading {
+  margin: 0 0 10px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+
+/* Whole URL row reads as one unified white pill — the URL field and
+   Copy button share the same white background and dark text. Matches
+   the Connect Walmart button's primary-CTA treatment so the connector
+   URL block clearly signals "this is the thing you copy". A subtle
+   1px divider separates the two halves so the Copy area still feels
+   clickable. */
+.urlRow {
+  display: flex;
+  align-items: stretch;
+  background: #ffffff;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.url {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 11px 14px;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: rgb(26, 26, 26);
+  background: transparent;
+  border: none;
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.copyBtn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 20px;
+  background: transparent;
+  border: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: rgb(26, 26, 26);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.copyBtn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.copyBtn:active {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.copyBtn svg {
+  flex: 0 0 auto;
+}
+
+/* Privacy note under the URL. Uses the same subtle card treatment as
+   the rest of the page (no off-brand amber/yellow). The lock icon
+   carries the "this is sensitive" signal without a coloured highlight. */
+.warnRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-fg);
+}
+
+.warnRow svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: var(--color-fg-muted);
+}
+
+/* Numbered instruction list. Reused in step 1 (above the form) and
+   step 2 (inside the connector-URL card, above the helper text). */
+.instructionList {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Add breathing room when the instruction list sits directly above the
+   form card in step 1. The sibling combinator means this only kicks in
+   for that specific pairing, not inside step 2 where the list lives
+   inside the card. */
+.instructionList + .card {
+  margin-top: 20px;
+}
+
+.instructionList li {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 12px;
+  align-items: start;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-fg);
+}
+
+.liNum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-fg);
+  margin-top: 1px;
+  flex: 0 0 auto;
+}
+
+/* Helper / footer text inside cards. */
+.helperText {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-fg-muted);
+}
+
+/* Inline code chip (like a small badge for "Settings, Connectors"). */
+.codeChip {
+  display: inline-block;
+  padding: 2px 7px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.9em;
+  color: var(--color-fg);
+  white-space: nowrap;
+}
+
+/* Inline link in body copy. */
+.inlineLink {
+  color: var(--color-accent-blue);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(94, 174, 232, 0.4);
+  transition: border-color 0.15s ease;
+}
+
+.inlineLink:hover {
+  border-bottom-color: rgba(94, 174, 232, 1);
+}
+
+/* ─── Sample question list (step 3) ─── */
+.questionList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.questionItem {
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--color-fg);
+}
+
+/* ─── Mobile (≤640px) ─── */
+@media (max-width: 640px) {
+  .appNavInner {
+    padding: 12px 20px;
+  }
+  .userEmail {
+    display: none;
+  }
+  .userPill {
+    padding: 6px;
+  }
+  .main {
+    padding: 40px 20px 80px;
+  }
+  .intro {
+    margin-bottom: 40px;
+  }
+  .precheck {
+    padding: 16px 18px;
+    margin-bottom: 40px;
+  }
+  .step {
+    grid-template-columns: 36px 1fr;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+  .stepBadge {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+  .stepTitle {
+    font-size: 20px;
+  }
+  .card {
+    padding: 18px;
+  }
+  .urlRow {
+    flex-direction: column;
+  }
+  .copyBtn {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 10px 14px;
+    justify-content: center;
+  }
+}
