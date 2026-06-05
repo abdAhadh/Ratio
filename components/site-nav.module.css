@@ -40,8 +40,52 @@
 .links {
   justify-self: center;
 }
-.cta {
+/* When a page has no centre nav (e.g. /mcp), this empty placeholder
+   sits in column 2 so the right cluster stays pinned to column 3. */
+.linksPlaceholder {
+  display: block;
+  width: 0;
+  height: 0;
+}
+/* Right cluster — wraps the optional secondary action (text link) and
+   the primary CTA pill so they always sit together on the right edge
+   of the nav. */
+.rightCluster {
   justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+}
+/* Secondary action pill — same anatomy as the hero's transparent
+   outline CTA so the SIGN IN button reads as a clear sibling of the
+   primary GET STARTED FOR FREE pill, not a stray text link. */
+.secondaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  min-width: 100px;
+  padding: 14px 22px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 0;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.14px;
+  color: var(--color-fg);
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-sizing: border-box;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+.secondaryAction:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.45);
 }
 
 .logoLink {
@@ -126,8 +170,11 @@
   justify-content: center;
   gap: 10px;
   height: 48px;
-  width: 164px;
-  padding: 14px;
+  /* min-width keeps the default "REQUEST DEMO" pill at 164px (matches
+     8098), and lets longer labels (e.g. "GET STARTED FOR FREE" on /mcp)
+     grow naturally via the horizontal padding. */
+  min-width: 164px;
+  padding: 14px 20px;
   background: #ffffff;
   border-radius: 0; /* sharp corners — verified against live 8098 */
   text-decoration: none;

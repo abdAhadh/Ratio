@@ -5,19 +5,43 @@ import { useState } from "react";
 import styles from "./site-nav.module.css";
 
 /**
- * Top nav — pixel-matched against localhost:8098 on desktop. On mobile the
- * centre links + CTA collapse into a hamburger dropdown (the Closor template
- * does the same). All mobile-only elements are display:none on desktop.
+ * Top nav — pixel-matched against localhost:8098 on desktop. Logo on
+ * left, optional centre links, optional secondary action + primary CTA
+ * clustered on the right. On mobile the centre links + CTAs collapse
+ * into a hamburger dropdown.
+ *
+ * Reused by sibling landing pages (e.g. /mcp) that want a slimmed-down
+ * nav: pass `navItems={[]}` to hide the centre cluster, `secondaryCta`
+ * to add a text link before the primary CTA, and `cta` to override the
+ * primary CTA label/href.
  */
-const NAV_LINKS: Array<{ label: string; href: string }> = [
+type NavLink = { label: string; href: string };
+type CtaSpec = { href: string; label: string };
+
+const DEFAULT_NAV_LINKS: NavLink[] = [
   { label: "PRODUCT", href: "/#how-it-works" },
   { label: "ROI", href: "/#the-problem" },
   { label: "INTEGRATIONS", href: "/#integrations" },
   { label: "FAQ", href: "/#faq" },
 ];
 
-export function SiteNav() {
+const DEFAULT_CTA: CtaSpec = { href: "/contact", label: "REQUEST DEMO" };
+
+type SiteNavProps = {
+  navItems?: NavLink[];
+  cta?: CtaSpec;
+  /** Optional text-link action that sits to the LEFT of the primary CTA
+   *  in the right cluster. Used by /mcp for the Sign In link. */
+  secondaryCta?: CtaSpec;
+};
+
+export function SiteNav({
+  navItems = DEFAULT_NAV_LINKS,
+  cta = DEFAULT_CTA,
+  secondaryCta,
+}: SiteNavProps = {}) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const showLinks = navItems.length > 0;
 
   return (
     <nav className={styles.nav} aria-label="Primary">
@@ -42,83 +66,110 @@ export function SiteNav() {
           />
         </Link>
 
-        <ul className={styles.links}>
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <a href={link.href} className={styles.link}>
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        {showLinks ? (
+          <ul className={styles.links}>
+            {navItems.map((link) => (
+              <li key={link.href}>
+                <a href={link.href} className={styles.link}>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          /* Placeholder keeps the right cluster pinned in grid column 3
+             even when the centre nav is empty (e.g. on /mcp). */
+          <span className={styles.linksPlaceholder} aria-hidden="true" />
+        )}
 
-        <a href="/contact" className={styles.cta}>
-          <span className={styles.ctaIconBg} aria-hidden="true">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
-              alt=""
-              width={20}
-              height={20}
-              className={styles.ctaChevron}
-            />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
-              alt=""
-              width={20}
-              height={20}
-              className={styles.ctaChevron}
-            />
-          </span>
-          <span className={styles.ctaLabel}>REQUEST DEMO</span>
-        </a>
+        <div className={styles.rightCluster}>
+          {secondaryCta ? (
+            <a href={secondaryCta.href} className={styles.secondaryAction}>
+              {secondaryCta.label}
+            </a>
+          ) : null}
+          <a href={cta.href} className={styles.cta}>
+            <span className={styles.ctaIconBg} aria-hidden="true">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
+                alt=""
+                width={20}
+                height={20}
+                className={styles.ctaChevron}
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
+                alt=""
+                width={20}
+                height={20}
+                className={styles.ctaChevron}
+              />
+            </span>
+            <span className={styles.ctaLabel}>{cta.label}</span>
+          </a>
+        </div>
 
-        {/* Mobile-only hamburger toggle */}
-        <button
-          type="button"
-          className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ""}`}
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((o) => !o)}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+        {/* Mobile hamburger — only renders when there are centre links
+            to collapse. Pages with no centre nav skip the toggle so the
+            CTA stays on the bar at every viewport size. */}
+        {showLinks ? (
+          <button
+            type="button"
+            className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ""}`}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        ) : null}
       </div>
 
-      {/* Mobile-only dropdown menu */}
-      <div
-        className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}
-      >
-        {NAV_LINKS.map((link) => (
+      {showLinks ? (
+        <div
+          className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}
+        >
+          {navItems.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className={styles.mobileLink}
+              onClick={() => setMenuOpen(false)}
+            >
+              {link.label}
+            </a>
+          ))}
+          {secondaryCta ? (
+            <a
+              href={secondaryCta.href}
+              className={styles.mobileLink}
+              onClick={() => setMenuOpen(false)}
+            >
+              {secondaryCta.label}
+            </a>
+          ) : null}
           <a
-            key={link.href}
-            href={link.href}
-            className={styles.mobileLink}
+            href={cta.href}
+            className={styles.mobileCta}
             onClick={() => setMenuOpen(false)}
           >
-            {link.label}
+            <span className={styles.mobileCtaIconBg} aria-hidden="true">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
+                alt=""
+                width={20}
+                height={20}
+              />
+            </span>
+            <span>{cta.label}</span>
           </a>
-        ))}
-        <a
-          href="/contact"
-          className={styles.mobileCta}
-          onClick={() => setMenuOpen(false)}
-        >
-          <span className={styles.mobileCtaIconBg} aria-hidden="true">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
-              alt=""
-              width={20}
-              height={20}
-            />
-          </span>
-          <span>REQUEST DEMO</span>
-        </a>
-      </div>
+        </div>
+      ) : null}
     </nav>
   );
 }

@@ -19,7 +19,7 @@ import styles from "./trusted-by-strip.module.css";
  *       `grayscale(1) brightness(1.3) contrast(1.05)`  (preserve internal text)
  */
 
-type LogoSpec = {
+export type LogoSpec = {
   src: string;
   alt: string;
   /* "lg" gives a slightly taller render — used for logos whose viewBox is
@@ -59,7 +59,20 @@ const LOGOS: LogoSpec[] = [
 // Pixel-per-second scroll rate — tuned to feel like 8098's JS ticker.
 const TICKER_PX_PER_SEC = 50;
 
-export function TrustedByStrip() {
+type TrustedByStripProps = {
+  /** Top line of the 2-line left-side label. Defaults to "Integrations". */
+  labelLine1?: string;
+  /** Bottom line of the 2-line left-side label. Defaults to "with". */
+  labelLine2?: string;
+  /** Logo set to scroll in the ticker. Defaults to the home page mix. */
+  logos?: LogoSpec[];
+};
+
+export function TrustedByStrip({
+  labelLine1 = "Integrations",
+  labelLine2 = "with",
+  logos = LOGOS,
+}: TrustedByStripProps = {}) {
   const ulRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
@@ -74,7 +87,7 @@ export function TrustedByStrip() {
 
     const measureStride = () => {
       const a0 = ul.children[0] as HTMLElement | undefined;
-      const b0 = ul.children[LOGOS.length] as HTMLElement | undefined;
+      const b0 = ul.children[logos.length] as HTMLElement | undefined;
       if (!a0 || !b0) return 0;
       return b0.offsetLeft - a0.offsetLeft;
     };
@@ -125,7 +138,7 @@ export function TrustedByStrip() {
    // visible across the entire ticker during the scroll → no gap on wrap.
   const COPIES = 5;
   const renderLogos = (keyPrefix: string) =>
-    LOGOS.map((logo, i) => (
+    logos.map((logo, i) => (
       <li
         key={`${keyPrefix}-${i}`}
         className={`${styles.tickerItem} ${logo.filter === "preserve" ? styles.tickerItemPreserve : ""}`}
@@ -141,10 +154,13 @@ export function TrustedByStrip() {
     ));
 
   return (
-    <section className={styles.section} aria-label="Integrations">
+    <section
+      className={styles.section}
+      aria-label={`${labelLine1} ${labelLine2}`}
+    >
       <div className={styles.subheading}>
-        <p className={styles.label}>Integrations</p>
-        <p className={styles.label}>with</p>
+        <p className={styles.label}>{labelLine1}</p>
+        <p className={styles.label}>{labelLine2}</p>
       </div>
 
       <div className={styles.ticker}>

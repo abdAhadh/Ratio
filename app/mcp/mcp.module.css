@@ -1,0 +1,50 @@
+/* /mcp — Ratio MCP servers for retailers.
+   Almost all visual styling is inherited from the shared Hero,
+   SiteNav and TrustedByStrip components. This file only carries the
+   page-specific tweaks: the brand-inline logo+wordmark sizing inside
+   the hero H1 (Walmart / Claude / ChatGPT). */
+
+.page {
+  position: relative;
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Inline brand glyph wrapper used in the hero H1. Each group ("Walmart"
+   / "Claude" / "ChatGPT") sits in a .brandInline span. SVGs are
+   currentColor so a single text colour drives both glyph and adjacent
+   wordmark and they read as one continuous typographic unit. */
+.brandInline {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.18em;
+  white-space: nowrap;
+  color: var(--color-fg);
+}
+
+.brandInline svg {
+  width: 0.78em;
+  height: 0.78em;
+  position: relative;
+  top: 0.08em;
+  flex: 0 0 auto;
+}
+
+/* The Walmart spark is more compact than the Claude / ChatGPT marks
+   once collapsed to currentColor — give it a touch more room so the
+   three glyphs read at similar optical weight in the headline.
+
+   The original SVG has 5–6 units of empty padding inside its viewBox
+   on each side. That paddng makes the visual gap between the spark
+   and the adjacent "Walmart" text read wider than the gap on Claude
+   and ChatGPT, whose paths fill their viewBox almost edge-to-edge.
+   Pull the wordmark in with a negative margin-right to cancel out
+   the extra viewBox padding and match the other two. */
+.brandInline svg[viewBox^="-149 631"] {
+  width: 0.92em;
+  height: 0.92em;
+  top: 0.12em;
+  margin-right: -0.18em;
+}

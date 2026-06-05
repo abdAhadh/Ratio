@@ -14,7 +14,15 @@
 
 /* Unicorn shader fills the hero except the bottom 112px (where the
    trusted-by strip overlays). Use absolute positioning with bottom:112 so
-   it scales with the section's responsive height. */
+   it scales with the section's responsive height.
+
+   Background gradient acts as a static poster that approximates the
+   WebGL shader's horizontal blue → cyan → pink → red sweep. It paints
+   instantly on page render (no JS, no network) so the hero never shows
+   a black void while UnicornStudio's runtime is downloading + compiling
+   the WebGL canvas. Once the canvas mounts as a child it covers this
+   gradient. If WebGL fails or is disabled in the user's browser, the
+   gradient stays visible as a graceful fallback. */
 .shaderLayer {
   position: absolute;
   left: 0;
@@ -23,6 +31,21 @@
   bottom: 112px;
   z-index: 0;
   pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgb(8, 12, 22) 0%,
+    rgb(20, 50, 95) 22%,
+    rgb(50, 130, 195) 45%,
+    rgb(220, 145, 155) 72%,
+    rgb(230, 105, 95) 100%
+  );
+}
+
+/* Variant — used by landing pages that don't render a TrustedByStrip
+   below the hero (e.g. /mcp). The shader fills the section all the way
+   to the bottom so there's no 112px blackbar at the hero's foot. */
+.shaderFullBleed {
+  bottom: 0;
 }
 
 /* Content stack — responsive layout matching 8098:
@@ -207,7 +230,8 @@
   position: absolute;
   left: max(72px, calc((100vw - 1570px) / 2));
   /* subLine2 top (311) + subLine2 height (24) + gap (54, was 64, reduced
-     by ~15%) = +389 */
+     by ~15%) = +389. Pages that render no subLine2 (e.g. /mcp) get
+     .ctaRowCompact below which tightens this up to +325. */
   top: calc((100% - 482px) / 2 + 389px);
   display: inline-flex;
   align-items: center;
@@ -217,6 +241,13 @@
   animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Compact CTA position — used by pages that render no subLine2
+   (e.g. /mcp), so the gap between the subhead and the CTA row
+   doesn't read as an empty hole where the second sub line would be. */
+.ctaRowCompact {
+  top: calc((100% - 482px) / 2 + 325px);
+}
+
 /* ───── Primary CTA pill ───── */
 .cta {
   display: inline-flex;
@@ -224,8 +255,8 @@
   justify-content: center;
   gap: 10px;
   height: 48px;
-  width: 164px;
-  padding: 14px;
+  min-width: 164px;
+  padding: 14px 20px;
   background: #ffffff;
   border-radius: 0;
   text-decoration: none;
@@ -246,10 +277,11 @@
   align-items: center;
   justify-content: center;
   height: 48px;
-  /* Match the primary CTA's 164px width so the two buttons read as a
-     visually balanced pair instead of one wider than the other. */
-  width: 164px;
-  padding: 14px;
+  /* Match the primary CTA's min-width so the two buttons read as a
+     visually balanced pair when their labels are similar length;
+     either can grow with longer labels via padding. */
+  min-width: 164px;
+  padding: 14px 20px;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 0;
