@@ -102,6 +102,42 @@ export default function RootLayout({
             only starts executing once the first shader's IntersectionObserver
             fires, which can be a full second after first paint on slow links. */}
         <script src="/unicornStudio.umd.js" async data-ratio-unicorn="1" />
+
+        {/* WebGL recovery on browser back-navigation.
+            On localhost dev (Next.js 16 + Turbopack) React occasionally
+            does not run its useEffects after a cross-origin back nav,
+            leaving the shader's <canvas> blank. This inline script lives
+            OUTSIDE the React lifecycle: it listens for `pageshow` and,
+            if our localizer flag (set inside the shader's useEffect)
+            hasn't been raised after a short delay, forces a fresh
+            navigation so the shader re-initializes from scratch.
+            Production builds don't exhibit the bug, so the reload only
+            fires when the bug is actually present.
+            sessionStorage gate prevents reload loops on the rare path
+            where the reload itself fails to hydrate. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(){
+                var KEY='__ratio_reload_attempt__';
+                window.addEventListener('pageshow', function(){
+                  setTimeout(function(){
+                    var hasShader = document.querySelector('[data-us-project]');
+                    if (!hasShader) return;
+                    if (window.__ratioUsLocalized) {
+                      sessionStorage.removeItem(KEY);
+                      return;
+                    }
+                    var count = parseInt(sessionStorage.getItem(KEY) || '0', 10);
+                    if (count >= 1) return;
+                    sessionStorage.setItem(KEY, String(count + 1));
+                    location.reload();
+                  }, 1200);
+                });
+              })();
+            `,
+          }}
+        />
       </head>
       <body>
         <PostHogProvider>

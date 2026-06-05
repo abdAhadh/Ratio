@@ -13,6 +13,11 @@ import { useEffect, useRef, useState } from "react";
 type Props = {
   project: string;
   className?: string;
+  /** When true, skip the IntersectionObserver gate and initialise the
+   *  scene immediately on mount. Use on always-visible shaders (e.g.
+   *  the hero) so back-navigation doesn't show the static poster
+   *  while we wait for the IO to fire. */
+  eager?: boolean;
 };
 
 declare global {
@@ -36,6 +41,40 @@ function installLocalizer() {
   if (typeof window === "undefined") return;
   if (window.__ratioUsLocalized) return;
   window.__ratioUsLocalized = true;
+
+  /* BFCache (back/forward cache) recovery — when the user navigates
+   * away (e.g. clicks the Get Started CTA which goes to a separate
+   * origin) and then hits the browser back button, the browser may
+   * restore this page from its back/forward cache. Restored pages
+   * keep their DOM and JS state, but WebGL contexts created before
+   * the navigation are commonly suspended or lost, leaving the
+   * shader's <canvas> blank. Detect the BFCache restore via the
+   * `persisted` flag on the pageshow event and rebuild every scene
+   * from scratch by calling UnicornStudio.destroy() + init().
+   */
+  window.addEventListener("pageshow", (e) => {
+    if (!e.persisted) return;
+    if (!window.UnicornStudio) return;
+    try {
+      window.UnicornStudio.destroy?.();
+    } catch (err) {
+      console.warn("[unicorn-studio] BFCache destroy warning:", err);
+    }
+    // Strip data-us-initialized so init() will pick the elements back
+    // up (UnicornStudio's init filters out elements already marked
+    // initialized; destroy() doesn't clear that flag).
+    document
+      .querySelectorAll("[data-us-initialized]")
+      .forEach((el) => el.removeAttribute("data-us-initialized"));
+    // Allow a tick for DOM teardown to settle before re-init.
+    setTimeout(() => {
+      try {
+        window.UnicornStudio?.init?.();
+      } catch (err) {
+        console.warn("[unicorn-studio] BFCache reinit warning:", err);
+      }
+    }, 50);
+  });
 
   const redirect = (url: string): string | null => {
     const u = String(url);
@@ -127,14 +166,16 @@ function loadUnicornStudio(): Promise<void> {
   });
 }
 
-export function UnicornShader({ project, className }: Props) {
+export function UnicornShader({ project, className, eager = false }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
+  // When `eager` is true (e.g. the hero), start initialised so the scene
+  // begins loading on first paint. Otherwise gate behind the
+  // IntersectionObserver below so below-the-fold shaders defer their
+  // WebGL context creation until the user scrolls toward them.
+  const [inView, setInView] = useState(eager);
 
-  // Only initialise the WebGL scene when the element is near the viewport.
-  // Four shaders running simultaneously was the perf killer — IntersectionObserver
-  // lets each one start lazily.
   useEffect(() => {
+    if (eager) return;
     const el = ref.current;
     if (!el) return;
     if (typeof IntersectionObserver === "undefined") {
@@ -155,7 +196,7 @@ export function UnicornShader({ project, className }: Props) {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [eager]);
 
   useEffect(() => {
     if (!inView) return;
