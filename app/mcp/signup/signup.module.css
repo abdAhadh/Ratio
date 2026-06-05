@@ -11,22 +11,29 @@
   color: var(--color-fg);
 }
 
-/* ─── Slim app nav (logo only, matches /mcp/setup) ─── */
+/* Top nav — same surface, backdrop blur and bottom hairline as the
+   marketing site's home-page nav (components/site-nav.module.css), but
+   slimmer (60px tall instead of 80px) and stripped of every nav link
+   and CTA so the signup page reads as a minimal auth-only surface.
+   Logo sits at the same left edge formula the home nav uses so the
+   wordmark aligns vertically with the hero content edge across the
+   site. */
 .appNav {
   position: sticky;
   top: 0;
   z-index: 50;
   width: 100%;
-  background: rgba(1, 1, 1, 0.85);
+  height: 60px;
+  padding: 0 max(72px, calc((100vw - 1570px) / 2));
+  background: rgb(1, 1, 1);
   backdrop-filter: blur(15.55px);
   -webkit-backdrop-filter: blur(15.55px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  box-sizing: border-box;
 }
 
 .appNavInner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 14px 32px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -67,7 +74,7 @@
   flex: 1 1 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 70px);
+  min-height: calc(100vh - 60px);
   box-sizing: border-box;
 }
 
