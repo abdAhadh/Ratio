@@ -179,7 +179,8 @@ export default function McpSetupPage() {
       <main className={styles.main}>
         <div className={styles.container}>
           <p className={styles.introLine}>
-            Two quick steps to get Claude querying your Walmart data.
+            3 quick steps to get Claude querying your Walmart and Amazon
+            data.
           </p>
 
           {/* ─── Step 1 ─── */}
@@ -300,8 +301,8 @@ export default function McpSetupPage() {
               <h2 className={styles.stepTitle}>Connect Amazon</h2>
               <p className={styles.stepLead}>
                 Paste your Amazon SP-API LWA credentials and a
-                seller-authorized refresh token. Optional. Skip if you only
-                sell on Walmart.
+                seller-authorized refresh token. Skip if you only sell on
+                Walmart.
               </p>
 
               <ol className={styles.instructionList}>
@@ -353,6 +354,40 @@ export default function McpSetupPage() {
                   </span>
                 </li>
               </ol>
+
+              <details className={styles.devAccountToggle}>
+                <summary>
+                  Don&apos;t have a developer account yet? Set one up
+                  first.
+                </summary>
+                <ol className={styles.toggleList}>
+                  <li>
+                    Log into Seller Central with your main owner account.
+                  </li>
+                  <li>
+                    Open{" "}
+                    <span className={styles.codeChip}>
+                      Apps and Services
+                    </span>
+                    {" → "}
+                    <span className={styles.codeChip}>Develop Apps</span>{" "}
+                    and register as a developer.
+                  </li>
+                  <li>
+                    For developer type, choose{" "}
+                    <span className={styles.codeChip}>
+                      Private Developer
+                    </span>{" "}
+                    (apps for your own company). Accept the agreements
+                    and submit.
+                  </li>
+                  <li>
+                    Amazon reviews it. Usually a day or two. If they ask
+                    follow-up questions, reply within 5 days or the case
+                    closes. Once approved, come back to step 1 above.
+                  </li>
+                </ol>
+              </details>
 
               <form
                 className={styles.card}
@@ -462,42 +497,6 @@ export default function McpSetupPage() {
                   the secrets encrypted at rest.
                 </p>
               </form>
-
-              <details className={styles.devAccountToggle}>
-                <summary>
-                  Don&apos;t have a developer account yet? Set one up
-                  first.
-                </summary>
-                <ol className={styles.toggleList}>
-                  <li>
-                    Log into Seller Central with your main owner account.
-                  </li>
-                  <li>
-                    Open{" "}
-                    <span className={styles.codeChip}>
-                      Apps and Services
-                    </span>
-                    {" → "}
-                    <span className={styles.codeChip}>
-                      Develop Apps
-                    </span>{" "}
-                    and register as a developer.
-                  </li>
-                  <li>
-                    For developer type, choose{" "}
-                    <span className={styles.codeChip}>
-                      Private Developer
-                    </span>{" "}
-                    (apps for your own company). Accept the agreements
-                    and submit.
-                  </li>
-                  <li>
-                    Amazon reviews it. Usually a day or two. If they ask
-                    follow-up questions, reply within 5 days or the case
-                    closes. Once approved, come back to step 1 above.
-                  </li>
-                </ol>
-              </details>
             </div>
           </section>
 
