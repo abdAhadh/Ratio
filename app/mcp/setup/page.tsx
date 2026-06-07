@@ -126,6 +126,14 @@ export default function McpSetupPage() {
   const [showSecret, setShowSecret] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // Step 02 — Amazon SP-API credentials.
+  const [amzClientId, setAmzClientId] = useState("");
+  const [amzClientSecret, setAmzClientSecret] = useState("");
+  const [amzRefreshToken, setAmzRefreshToken] = useState("");
+  const [amzMerchantToken, setAmzMerchantToken] = useState("");
+  const [showAmzSecret, setShowAmzSecret] = useState(false);
+  const [showAmzRefresh, setShowAmzRefresh] = useState(false);
+
   async function copyUrl() {
     try {
       await navigator.clipboard.writeText(MOCK_CONNECTOR_URL);
@@ -282,10 +290,221 @@ export default function McpSetupPage() {
             </div>
           </section>
 
-          {/* ─── Step 2 ─── */}
+          {/* ─── Step 2 — Amazon (optional) ─── */}
           <section className={styles.step}>
             <div className={styles.stepRail} aria-hidden="true">
               <span className={styles.stepBadge}>02</span>
+              <span className={styles.stepLine} />
+            </div>
+            <div className={styles.stepBody}>
+              <h2 className={styles.stepTitle}>Connect Amazon</h2>
+              <p className={styles.stepLead}>
+                Paste your Amazon SP-API LWA credentials and a
+                seller-authorized refresh token. Optional. Skip if you only
+                sell on Walmart.
+              </p>
+
+              <ol className={styles.instructionList}>
+                <li>
+                  <span className={styles.liNum}>1</span>
+                  <span>
+                    Sign in to Seller Central. Open{" "}
+                    <span className={styles.codeChip}>
+                      Apps and Services
+                    </span>
+                    {" → "}
+                    <span className={styles.codeChip}>Develop Apps</span>.
+                  </span>
+                </li>
+                <li>
+                  <span className={styles.liNum}>2</span>
+                  <span>
+                    Click{" "}
+                    <span className={styles.codeChip}>
+                      Add new app client
+                    </span>
+                    . Set type to{" "}
+                    <span className={styles.codeChip}>Sellers</span> and
+                    give it any name (e.g. &ldquo;Ratio Reporting&rdquo;).
+                  </span>
+                </li>
+                <li>
+                  <span className={styles.liNum}>3</span>
+                  <span>
+                    For roles and permissions, select all. Recommended for
+                    the breadth of use cases Ratio MCP supports. If not,
+                    pick only the entities you want Claude to read.
+                  </span>
+                </li>
+                <li>
+                  <span className={styles.liNum}>4</span>
+                  <span>
+                    Open the app. Copy the{" "}
+                    <span className={styles.codeChip}>LWA Client ID</span>{" "}
+                    and{" "}
+                    <span className={styles.codeChip}>
+                      LWA Client Secret
+                    </span>
+                    . Click{" "}
+                    <span className={styles.codeChip}>Authorize app</span>{" "}
+                    to generate a{" "}
+                    <span className={styles.codeChip}>Refresh Token</span>.
+                    Copy that too.
+                  </span>
+                </li>
+              </ol>
+
+              <form
+                className={styles.card}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  /* Mock submit. Production app posts to its own backend. */
+                }}
+              >
+                <label className={styles.field}>
+                  <span className={styles.label}>LWA Client ID</span>
+                  <input
+                    type="text"
+                    className={styles.input}
+                    placeholder="amzn1.application-oa2-client.…"
+                    value={amzClientId}
+                    onChange={(e) => setAmzClientId(e.target.value)}
+                    autoComplete="off"
+                    spellCheck={false}
+                  />
+                </label>
+
+                <label className={styles.field}>
+                  <span className={styles.label}>LWA Client Secret</span>
+                  <div className={styles.secretWrap}>
+                    <input
+                      type={showAmzSecret ? "text" : "password"}
+                      className={styles.input}
+                      placeholder="amzn1.oa2-cs.v1.…"
+                      value={amzClientSecret}
+                      onChange={(e) => setAmzClientSecret(e.target.value)}
+                      autoComplete="off"
+                      spellCheck={false}
+                    />
+                    <button
+                      type="button"
+                      className={styles.secretToggle}
+                      onClick={() => setShowAmzSecret((s) => !s)}
+                      aria-label={
+                        showAmzSecret
+                          ? "Hide LWA client secret"
+                          : "Show LWA client secret"
+                      }
+                    >
+                      <EyeIcon open={showAmzSecret} />
+                    </button>
+                  </div>
+                </label>
+
+                <label className={styles.field}>
+                  <span className={styles.label}>Refresh Token</span>
+                  <div className={styles.secretWrap}>
+                    <input
+                      type={showAmzRefresh ? "text" : "password"}
+                      className={styles.input}
+                      placeholder="Atzr|…"
+                      value={amzRefreshToken}
+                      onChange={(e) => setAmzRefreshToken(e.target.value)}
+                      autoComplete="off"
+                      spellCheck={false}
+                    />
+                    <button
+                      type="button"
+                      className={styles.secretToggle}
+                      onClick={() => setShowAmzRefresh((s) => !s)}
+                      aria-label={
+                        showAmzRefresh
+                          ? "Hide refresh token"
+                          : "Show refresh token"
+                      }
+                    >
+                      <EyeIcon open={showAmzRefresh} />
+                    </button>
+                  </div>
+                </label>
+
+                <label className={styles.field}>
+                  <span className={styles.labelRow}>
+                    <span className={styles.label}>Merchant Token</span>
+                    <span className={styles.optionalHint}>
+                      Optional · enables Listings
+                    </span>
+                  </span>
+                  <input
+                    type="text"
+                    className={styles.input}
+                    placeholder="A1B2C3D4E5F6G7"
+                    value={amzMerchantToken}
+                    onChange={(e) => setAmzMerchantToken(e.target.value)}
+                    autoComplete="off"
+                    spellCheck={false}
+                  />
+                </label>
+
+                <button
+                  type="submit"
+                  className={styles.submit}
+                  disabled={
+                    !amzClientId ||
+                    !amzClientSecret ||
+                    !amzRefreshToken
+                  }
+                >
+                  Connect Amazon
+                </button>
+                <p className={styles.cardHelper}>
+                  We run a live LWA + orders check on submit and store
+                  the secrets encrypted at rest.
+                </p>
+              </form>
+
+              <details className={styles.devAccountToggle}>
+                <summary>
+                  Don&apos;t have a developer account yet? Set one up
+                  first.
+                </summary>
+                <ol className={styles.toggleList}>
+                  <li>
+                    Log into Seller Central with your main owner account.
+                  </li>
+                  <li>
+                    Open{" "}
+                    <span className={styles.codeChip}>
+                      Apps and Services
+                    </span>
+                    {" → "}
+                    <span className={styles.codeChip}>
+                      Develop Apps
+                    </span>{" "}
+                    and register as a developer.
+                  </li>
+                  <li>
+                    For developer type, choose{" "}
+                    <span className={styles.codeChip}>
+                      Private Developer
+                    </span>{" "}
+                    (apps for your own company). Accept the agreements
+                    and submit.
+                  </li>
+                  <li>
+                    Amazon reviews it. Usually a day or two. If they ask
+                    follow-up questions, reply within 5 days or the case
+                    closes. Once approved, come back to step 1 above.
+                  </li>
+                </ol>
+              </details>
+            </div>
+          </section>
+
+          {/* ─── Step 3 — Connect Claude ─── */}
+          <section className={styles.step}>
+            <div className={styles.stepRail} aria-hidden="true">
+              <span className={styles.stepBadge}>03</span>
               <span className={styles.stepLine} />
             </div>
             <div className={styles.stepBody}>
@@ -361,7 +580,7 @@ export default function McpSetupPage() {
           {/* ─── Step 3 (try it) ─── */}
           <section className={styles.step}>
             <div className={styles.stepRail} aria-hidden="true">
-              <span className={styles.stepBadge}>03</span>
+              <span className={styles.stepBadge}>04</span>
             </div>
             <div className={styles.stepBody}>
               <h2 className={styles.stepTitle}>Try a question</h2>

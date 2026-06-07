@@ -323,6 +323,93 @@
   cursor: not-allowed;
 }
 
+/* Label + inline hint row — used when a field needs a small qualifier
+   on the right (e.g. "Optional · enables Listings" next to the
+   Merchant Token field on the Amazon form). Mirrors the same pattern
+   the signup page uses for "Optional" on first/last name. */
+.labelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.labelRow .label {
+  margin-bottom: 0;
+}
+
+.optionalHint {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-fg-muted);
+}
+
+/* Subtle collapsible section that sits BELOW a step's main flow, for
+   secondary info (e.g. "Don't have a developer account yet? Set one
+   up first."). The summary is just a chevron + text; opening reveals
+   a numbered sub-list rendered with browser-native list markers. */
+.devAccountToggle {
+  margin-top: 16px;
+  font-family: var(--font-sans);
+  color: var(--color-fg-muted);
+}
+
+.devAccountToggle summary {
+  cursor: pointer;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 13.5px;
+  color: var(--color-fg-muted);
+  transition: color 0.15s ease;
+}
+
+.devAccountToggle summary::-webkit-details-marker {
+  display: none;
+}
+
+.devAccountToggle summary::before {
+  content: "›";
+  display: inline-block;
+  width: 12px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--color-fg-muted);
+  transition: transform 0.15s ease;
+}
+
+.devAccountToggle[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.devAccountToggle summary:hover {
+  color: var(--color-fg);
+}
+
+.toggleList {
+  margin: 6px 0 0;
+  padding: 0 0 0 32px;
+  list-style: decimal;
+  color: var(--color-fg);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.toggleList li {
+  margin-bottom: 8px;
+}
+
+.toggleList li::marker {
+  color: var(--color-fg-muted);
+}
+
 /* Helper paragraph inside the form card, sitting under the submit
    button. Used for short security / behaviour notes. */
 .cardHelper {
