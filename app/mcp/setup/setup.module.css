@@ -354,6 +354,11 @@
    a numbered sub-list rendered with browser-native list markers. */
 .devAccountToggle {
   margin-top: 16px;
+  /* Breathing room before the form card below — the toggle sits between
+     the numbered instruction list and the inputs, and the visitor needs
+     a clear visual break between "here's how to get credentials" and
+     "now paste them here". */
+  margin-bottom: 28px;
   font-family: var(--font-sans);
   color: var(--color-fg-muted);
 }
