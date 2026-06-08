@@ -3,6 +3,7 @@ import { Geist, Gelasio } from "next/font/google";
 import "./globals.css";
 import { PostHogProvider } from "./providers/posthog";
 import { CookieBanner } from "@/components/cookie-banner";
+import { ChatWidget } from "@/components/chat-widget";
 
 const geist = Geist({
   variable: "--font-geist-sans",
@@ -143,6 +144,13 @@ export default function RootLayout({
         <PostHogProvider>
           {children}
           <CookieBanner />
+          {/* Site-wide floating chat bubble (bottom-right, desktop only).
+              Mounted at the root layout so it's present on every route
+              (home, contact, case studies, /mcp, etc.) without each page
+              needing to opt in. POSTs the conversation to /api/chat which
+              forwards it to Slack via SLACK_WEBHOOK_URL (same env var the
+              demo form uses). */}
+          <ChatWidget />
         </PostHogProvider>
       </body>
     </html>

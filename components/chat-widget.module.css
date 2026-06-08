@@ -1,0 +1,465 @@
+/* ChatWidget — dark-theme floating chat.
+   Visual language matches the rest of the site:
+   - 1px hairline borders (rgba white-alpha) instead of soft drop shadows
+   - 6px / 4px border-radii — same scale as the setup page's form inputs
+     and URL row, not the bigger 12-14px common in standalone chat UIs
+   - User bubble uses the brand's white-pill treatment so it reads as
+     the same "active action" colour as the Connect Walmart submit
+   - Bot bubble uses the same rgba(255,255,255,0.04) + hairline border
+     as cards and inputs elsewhere on the page */
+
+/* ─── Floating bubble (desktop only) ─── */
+.bubbleWrap {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 60;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .bubbleWrap {
+    display: block;
+  }
+}
+
+.bubble {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  transition:
+    transform 0.2s ease-out,
+    border-color 0.2s ease-out;
+}
+
+.bubble:hover {
+  transform: scale(1.04);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.bubble:active {
+  transform: scale(1);
+}
+
+.bubbleAvatarWrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.bubbleOnline {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px var(--color-bg);
+}
+
+/* Hover tooltip — two-line card with the host's name (+ online dot)
+   on the top row and the role line beneath. Same subtle white-alpha
+   bg + 1px hairline border as the inline `codeChip` on the setup
+   page so the chip feels like part of the same surface family. */
+.bubbleTooltip {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  margin-right: 12px;
+  transform: translate(6px, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.2s ease-out;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 8px 12px;
+  background: rgba(20, 20, 22, 0.96);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.bubbleWrap:hover .bubbleTooltip {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.tooltipNameRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tooltipName {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-fg);
+}
+
+.tooltipTitle {
+  font-size: 11.5px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--color-fg-muted);
+  letter-spacing: 0;
+}
+
+.tooltipDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex: 0 0 auto;
+}
+
+/* ─── Avatar ─── */
+.avatarImg {
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  flex: 0 0 auto;
+}
+
+.avatarFallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+/* ─── Chat panel ─── */
+.panel {
+  position: fixed;
+  bottom: 96px;
+  right: 24px;
+  z-index: 60;
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  height: 540px;
+  max-height: calc(100vh - 7rem);
+  background: var(--color-bg);
+  /* 1px #333 hairline matches the section rails the entire site uses. */
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+  font-family: var(--font-sans);
+  color: var(--color-fg);
+}
+
+@media (min-width: 768px) {
+  .panel {
+    display: flex;
+  }
+}
+
+/* ─── Header ─── */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.025);
+  border-bottom: 1px solid #333;
+}
+
+.headerAvatarWrap {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.headerOnline {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px var(--color-bg);
+}
+
+.headerText {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.headerName {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-fg);
+  letter-spacing: -0.01em;
+}
+
+.headerStatus {
+  margin: 3px 0 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--color-fg-muted);
+}
+
+.closeBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: var(--color-fg-muted);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.closeBtn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-fg);
+}
+
+/* ─── Messages ─── */
+.scroll {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--color-bg);
+  scrollbar-width: thin;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+
+/* User bubble — white pill, matches the Connect Walmart button + Copy
+   pill on the same page. The asymmetric corner on the tail side keeps
+   the conventional chat affordance without going over-rounded. */
+.userRow {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.userBubble {
+  background: #ffffff;
+  color: rgb(26, 26, 26);
+  padding: 9px 13px;
+  border-radius: 6px 6px 2px 6px;
+  max-width: 82%;
+}
+
+/* Bot bubble — same rgba surface + hairline border the form inputs
+   and warning row use, so the chat reads as part of the same dark
+   surface family. */
+.botRow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.botAvatar {
+  margin-top: 2px;
+  flex: 0 0 auto;
+}
+
+.botBubble {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-fg);
+  padding: 9px 13px;
+  border-radius: 6px 6px 6px 2px;
+  max-width: 82%;
+}
+
+.msgText {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ─── Typing dots ─── */
+.typingBubble {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 11px 13px;
+  border-radius: 6px 6px 6px 2px;
+}
+
+.typingDots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  animation: chatDot 1.2s ease-in-out infinite;
+}
+
+@keyframes chatDot {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-3px);
+    opacity: 0.9;
+  }
+}
+
+/* ─── Composer ─── */
+.composer {
+  border-top: 1px solid #333;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.composerHint {
+  margin: 0 0 8px;
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  text-align: center;
+  color: var(--color-fg-muted);
+  letter-spacing: 0.01em;
+}
+
+.composerRow {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+
+/* Input matches the setup page's form input pixel-for-pixel
+   (var(--font-mono) for monospace was specific to ID/Secret fields; here
+   we use --font-sans since the user types prose). */
+.composerInput {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--color-fg);
+  resize: none;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.composerInput::placeholder {
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.composerInput:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Send button — small white square, same colour family as the rest of
+   the site's primary actions (the form submit, the Copy pill). 6px
+   radius matches the input it sits next to. */
+.sendBtn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: auto;
+  background: #ffffff;
+  border: none;
+  border-radius: 6px;
+  color: rgb(26, 26, 26);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.sendBtn:hover:not(:disabled) {
+  background: rgb(240, 240, 240);
+}
+
+.sendBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.errorText {
+  margin: 8px 0 0;
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  color: rgb(252, 165, 165);
+}
+
+.savedNote {
+  margin: 8px 0 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--color-fg-muted);
+}
+
+.savedEmail {
+  color: var(--color-fg);
+  font-weight: 500;
+}
+
+.notYouBtn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--color-fg-muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.notYouBtn:hover {
+  color: var(--color-fg);
+}
