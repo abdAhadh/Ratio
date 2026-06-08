@@ -111,65 +111,65 @@ export function SiteNav({
           </a>
         </div>
 
-        {/* Mobile hamburger — only renders when there are centre links
-            to collapse. Pages with no centre nav skip the toggle so the
-            CTA stays on the bar at every viewport size. */}
-        {showLinks ? (
-          <button
-            type="button"
-            className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ""}`}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((o) => !o)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-        ) : null}
+        {/* Mobile hamburger — ALWAYS rendered (CSS hides it on desktop).
+            Even pages with no centre links (e.g. /mcp) need it on mobile
+            so their CTAs collapse into the dropdown instead of overflowing
+            the bar. */}
+        <button
+          type="button"
+          className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ""}`}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((o) => !o)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
       </div>
 
-      {showLinks ? (
-        <div
-          className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}
-        >
-          {navItems.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={styles.mobileLink}
-              onClick={() => setMenuOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
-          {secondaryCta ? (
-            <a
-              href={secondaryCta.href}
-              className={styles.mobileLink}
-              onClick={() => setMenuOpen(false)}
-            >
-              {secondaryCta.label}
-            </a>
-          ) : null}
+      {/* Mobile dropdown — ALWAYS rendered (CSS hides it on desktop).
+          Holds the centre links (if any), then the secondary action, then
+          the primary CTA, so every nav target is reachable on mobile. */}
+      <div
+        className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`}
+      >
+        {navItems.map((link) => (
           <a
-            href={cta.href}
-            className={styles.mobileCta}
+            key={link.href}
+            href={link.href}
+            className={styles.mobileLink}
             onClick={() => setMenuOpen(false)}
           >
-            <span className={styles.mobileCtaIconBg} aria-hidden="true">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
-                alt=""
-                width={20}
-                height={20}
-              />
-            </span>
-            <span>{cta.label}</span>
+            {link.label}
           </a>
-        </div>
-      ) : null}
+        ))}
+        {secondaryCta ? (
+          <a
+            href={secondaryCta.href}
+            className={styles.mobileLink}
+            onClick={() => setMenuOpen(false)}
+          >
+            {secondaryCta.label}
+          </a>
+        ) : null}
+        <a
+          href={cta.href}
+          className={styles.mobileCta}
+          onClick={() => setMenuOpen(false)}
+        >
+          <span className={styles.mobileCtaIconBg} aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/hs5ITvrZLDk3LlGJpQeTaivp4.svg"
+              alt=""
+              width={20}
+              height={20}
+            />
+          </span>
+          <span>{cta.label}</span>
+        </a>
+      </div>
     </nav>
   );
 }

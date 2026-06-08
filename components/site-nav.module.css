@@ -327,13 +327,15 @@
   .nav {
     padding: 16px 20px;
   }
+  /* Only two items on the bar: logo (left) + hamburger (right). Every
+     other grid child is hidden so the hamburger can't get bumped to a
+     second row by an empty/occupied cell. */
   .inner {
     grid-template-columns: 1fr auto;
   }
-  .links {
-    display: none;
-  }
-  .cta {
+  .links,
+  .linksPlaceholder,
+  .rightCluster {
     display: none;
   }
   .hamburger {

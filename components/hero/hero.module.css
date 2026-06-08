@@ -447,17 +447,24 @@
     font-size: 16px;
     line-height: 24px;
     letter-spacing: -0.48px;
-    margin-bottom: 28px;
+    /* Gap-before-CTA moved to .ctaRow's margin-top (below) so it applies
+       whether or not subLine2 is rendered. Pages like /mcp pass an empty
+       subLine2; previously the only gap lived here, so their subhead sat
+       cramped against the CTA. */
+    margin-bottom: 0;
   }
 
   /* Stack the two buttons vertically (side-by-side they'd be tight at the
      iPhone SE 320px width). Margin-auto centers via the parent flex; we
      centre via flex alignment rather than translateX because the row owns
-     its own translateY fade-up animation. */
+     its own translateY fade-up animation. The margin-top is the
+     subhead → CTA gap (formerly on subLine2), so it's consistent across
+     pages regardless of whether a second subhead line exists. */
   .ctaRow {
     flex-direction: column;
     align-items: center;
     gap: 12px;
     width: max-content;
+    margin-top: 32px;
   }
 }
