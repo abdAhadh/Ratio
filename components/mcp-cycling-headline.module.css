@@ -1,0 +1,109 @@
+/* Cycling-word slot.
+
+   Structure:
+     .slot         inline-flex, position:relative, baseline-aligned.
+                   Its WIDTH is set in JS to the current word's measured
+                   width and transitions smoothly, so the trailing text
+                   glides to follow a length change instead of snapping.
+       .measure    off-flow hidden node holding ONLY the current word.
+                   Drives the slot width. Absolute so it contributes
+                   nothing to layout itself.
+       .animLayer  absolute overlay holding the one animated word; the
+                   entering + exiting words cross-dissolve here without
+                   affecting layout. */
+
+/* Mobile-only forced line breaks in the headline. Hidden on desktop
+   (the headline wraps naturally there); shown ≤768px to enforce the
+   3-line shape: "Ask {AI}" / "anything about your" / "{Store} store". */
+.mobileBreak {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobileBreak {
+    display: block;
+  }
+}
+
+.slot {
+  display: inline-block;
+  position: relative;
+  vertical-align: baseline;
+  overflow: visible;
+  white-space: nowrap;
+}
+
+/* Sizer — every option stacked in the same grid cell, in flow but
+   invisible. Locks the slot to the WIDEST option's width + tallest
+   height permanently, and supplies the slot's baseline. Nothing here
+   animates, so the surrounding headline text never shifts. */
+.sizer {
+  display: grid;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.sizerItem {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+
+/* Animated layer — overlays the sizer. Vertical-only clip via clip-path
+   inset (large negative horizontal values keep left/right open) so the
+   rolling words are hidden above / below the line. Grid with the word
+   centered, so in a lane sized to the widest option the shorter word's
+   reserved space splits symmetrically on both sides. */
+.animLayer {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: start center;
+  clip-path: inset(0 -40vw 0 0);
+}
+
+/* Each animated word — stacked in the same grid cell (grid-area 1/1) so
+   the incoming + outgoing words occupy one centered column and tile
+   vertically via the roll. height:100% makes a y:100% translation
+   exactly one line-height, so the two words hand off precisely at the
+   window edges — no gap, no overlap. */
+.animWord {
+  grid-area: 1 / 1;
+  height: 100%;
+  display: inline-flex;
+  align-items: flex-start;
+  justify-content: center;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+/* Brand chip — glyph + wordmark, baseline-aligned. Shared by the sizer
+   and the animated word so they render identically. */
+.brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.18em;
+  white-space: nowrap;
+  color: var(--color-fg);
+}
+
+/* align-self:center keeps the logo OUT of the chip's baseline math —
+   the text remains the only baseline-aligned child, so the chip's
+   reported baseline equals the plain text baseline regardless of which
+   logo (and its size) is showing. This is what keeps the rolling word
+   ("Walmart") vertically aligned with the adjacent static word
+   ("store"); a baseline-aligned logo would drag the text down. */
+.brand svg {
+  width: 0.78em;
+  height: 0.78em;
+  align-self: center;
+  flex: 0 0 auto;
+}
+
+/* Walmart spark carries more internal viewBox whitespace than the
+   Claude / ChatGPT marks, so render it slightly larger and pull the
+   wordmark in to match the others' optical spacing. */
+.brand svg[viewBox^="-149 631"] {
+  width: 0.92em;
+  height: 0.92em;
+  margin-right: -0.18em;
+}
