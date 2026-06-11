@@ -128,6 +128,91 @@
   flex: 0 0 auto;
 }
 
+/* ─── Proactive greeting teaser ───
+   Two message bubbles that reveal in sequence above the bubble. Same dark
+   surface + 1px hairline language as the bot bubble, right-aligned and
+   stacked so they read as a short thread "from Abdul" floating over his
+   avatar. Each bubble is clickable (opens the chat). */
+.teaserStack {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  width: 268px;
+}
+
+.teaserMsg {
+  position: relative;
+  max-width: 100%;
+  padding: 10px 13px;
+  background: rgba(20, 20, 22, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  /* Sharper bottom-right corner nods toward the bubble below. */
+  border-radius: 12px 12px 4px 12px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  text-align: left;
+  transform-origin: bottom right;
+  transition: border-color 0.15s ease;
+}
+
+.teaserMsg:hover {
+  border-color: rgba(255, 255, 255, 0.26);
+}
+
+/* Typing-dots bubble — reuses the in-panel dot keyframes (.typingDots /
+   .dot below); not a clickable message itself. */
+.teaserTyping {
+  padding: 12px 13px;
+  cursor: default;
+}
+
+/* Dismiss — a small circular control that fades in on hover of the stack
+   so it doesn't clutter the resting state. */
+.teaserClose {
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  background: rgba(20, 20, 22, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  color: var(--color-fg-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.teaserStack:hover .teaserClose {
+  opacity: 1;
+}
+
+.teaserClose:hover {
+  background: rgba(40, 40, 44, 0.98);
+  color: var(--color-fg);
+}
+
+.teaserText {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.42;
+  color: var(--color-fg);
+}
+
 /* ─── Avatar ─── */
 .avatarImg {
   border-radius: 50%;

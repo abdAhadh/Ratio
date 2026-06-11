@@ -30,6 +30,15 @@ const BOT_THANK_YOU =
   "Thanks. I've shared your details with the team. We'll be in touch shortly.";
 const BOT_ACK_RETURNING = "Got it. I'll get back to you within 30 mins.";
 
+/* Proactive greeting — surfaced once per session as a teaser above the
+   bubble, and seeded as the first messages when the panel opens. Intro +
+   soft invite to talk, in the host's voice. */
+const GREETING_1 = "Hey, I'm Abdul, co-founder of Ratio 👋";
+const GREETING_2 =
+  "Got questions about recovering your retail deductions? I'm right here, or happy to jump on a quick call.";
+const TEASER_SEEN_KEY = "ratio_chat_teaser_seen";
+const TEASER_DELAY_MS = 4000;
+
 const EMAIL_RE = /[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}/;
 
 type Role = "user" | "bot";
@@ -92,9 +101,16 @@ export function ChatWidget() {
   const [isTyping, setIsTyping] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [savedUser, setSavedUser] = useState<SavedUser | null>(null);
+  // Teaser reveal sequence: hidden → first bubble → typing dots → second
+  // bubble. Each surfaced bubble plays a pop, mirroring the in-panel flow.
+  const [teaserStage, setTeaserStage] = useState<
+    "hidden" | "m1" | "typing" | "m2"
+  >("hidden");
   const firstQueryRef = useRef<string>("");
   const composerRef = useRef<HTMLTextAreaElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const openRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -106,6 +122,73 @@ export function ChatWidget() {
       /* ignore */
     }
   }, []);
+
+  // Keep a ref of `open` so the (run-once) teaser timer can read the
+  // latest value without re-subscribing.
+  useEffect(() => {
+    openRef.current = open;
+  }, [open]);
+
+  // Pre-create + unlock an AudioContext on the first user gesture, so the
+  // notification pop can actually sound when the teaser appears (browsers
+  // block audio until a gesture has occurred).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const AC =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext?: typeof AudioContext })
+        .webkitAudioContext;
+    if (!AC) return;
+    const unlock = () => {
+      if (!audioCtxRef.current) audioCtxRef.current = new AC();
+      if (audioCtxRef.current.state === "suspended") {
+        audioCtxRef.current.resume().catch(() => {});
+      }
+    };
+    const opts: AddEventListenerOptions = { once: true };
+    window.addEventListener("pointerdown", unlock, opts);
+    window.addEventListener("keydown", unlock, opts);
+    window.addEventListener("touchstart", unlock, opts);
+    return () => {
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+      window.removeEventListener("touchstart", unlock);
+    };
+  }, []);
+
+  // Proactive teaser — once per browser session, a few seconds after the
+  // visitor lands: surface the first greeting bubble just above the bubble
+  // (without opening the panel) and play a soft pop.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.sessionStorage.getItem(TEASER_SEEN_KEY)) return;
+    const t = setTimeout(() => {
+      window.sessionStorage.setItem(TEASER_SEEN_KEY, "1");
+      if (openRef.current) return; // already chatting — don't interrupt
+      setTeaserStage("m1");
+      playPop();
+    }, TEASER_DELAY_MS);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Reveal chain: after the first bubble, show a brief "typing" beat, then
+  // the second bubble (with its own pop). Each step's timer is torn down if
+  // the stage changes (e.g. the visitor opens or dismisses the teaser).
+  useEffect(() => {
+    if (teaserStage === "m1") {
+      const t = setTimeout(() => setTeaserStage("typing"), 1100);
+      return () => clearTimeout(t);
+    }
+    if (teaserStage === "typing") {
+      const t = setTimeout(() => {
+        setTeaserStage("m2");
+        playPop();
+      }, 950);
+      return () => clearTimeout(t);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [teaserStage]);
 
   useEffect(() => {
     if (open) {
@@ -132,6 +215,53 @@ export function ChatWidget() {
       body: JSON.stringify(payload),
     });
     if (!res.ok) throw new Error("Submit failed");
+  }
+
+  // Soft "pop" — a short sine blip with a quick pitch drop and fast decay,
+  // synthesised so there's no audio asset to ship. No-op (silent) if the
+  // browser hasn't unlocked audio via a gesture yet.
+  function playPop() {
+    if (typeof window === "undefined") return;
+    const AC =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext?: typeof AudioContext })
+        .webkitAudioContext;
+    if (!AC) return;
+    if (!audioCtxRef.current) audioCtxRef.current = new AC();
+    const ctx = audioCtxRef.current;
+    const fire = () => {
+      const t = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(540, t);
+      osc.frequency.exponentialRampToValueAtTime(300, t + 0.12);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.16, t + 0.012);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.22);
+    };
+    if (ctx.state === "suspended") ctx.resume().then(fire).catch(() => {});
+    else fire();
+  }
+
+  // Open the panel, dismiss the teaser, and (only on a fresh, un-captured
+  // conversation) seed the greeting so the panel opens with the same intro
+  // the teaser showed.
+  function openChat() {
+    setTeaserStage("hidden");
+    setOpen(true);
+    setMessages((m) =>
+      m.length === 0 && !savedUser
+        ? [
+            { role: "bot", content: GREETING_1 },
+            { role: "bot", content: GREETING_2 },
+          ]
+        : m
+    );
   }
 
   async function sayBot(content: string, typingMs = TYPING_DURATION_MS) {
@@ -226,7 +356,117 @@ export function ChatWidget() {
     <>
       {/* Floating bubble — desktop only. */}
       <div className={styles.bubbleWrap}>
-        {!open && (
+        {/* Proactive greeting teaser — two message bubbles that reveal in
+            sequence (first → typing → second) above the bubble. Does not
+            open the panel; clicking a bubble opens the chat. */}
+        <AnimatePresence>
+          {!open && teaserStage !== "hidden" && (
+            <motion.div
+              key="teaserStack"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, transition: { duration: 0.12 } }}
+              className={styles.teaserStack}
+            >
+              <button
+                type="button"
+                aria-label="Dismiss"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setTeaserStage("hidden");
+                }}
+                className={styles.teaserClose}
+              >
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  aria-hidden="true"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+
+              <AnimatePresence initial={false}>
+                <motion.div
+                  key="m1"
+                  layout
+                  initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ type: "spring", stiffness: 520, damping: 26, mass: 0.7 }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Open chat with ${HOST_NAME}`}
+                  onClick={openChat}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      openChat();
+                    }
+                  }}
+                  className={styles.teaserMsg}
+                >
+                  <p className={styles.teaserText}>{GREETING_1}</p>
+                </motion.div>
+
+                {teaserStage === "typing" && (
+                  <motion.div
+                    key="typing"
+                    layout
+                    initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.1 } }}
+                    transition={{ type: "spring", stiffness: 520, damping: 26, mass: 0.7 }}
+                    className={`${styles.teaserMsg} ${styles.teaserTyping}`}
+                    aria-hidden="true"
+                  >
+                    <span className={styles.typingDots}>
+                      <span className={styles.dot} />
+                      <span
+                        className={styles.dot}
+                        style={{ animationDelay: "0.15s" }}
+                      />
+                      <span
+                        className={styles.dot}
+                        style={{ animationDelay: "0.3s" }}
+                      />
+                    </span>
+                  </motion.div>
+                )}
+
+                {teaserStage === "m2" && (
+                  <motion.div
+                    key="m2"
+                    layout
+                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ type: "spring", stiffness: 520, damping: 26, mass: 0.7 }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Open chat with ${HOST_NAME}`}
+                    onClick={openChat}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        openChat();
+                      }
+                    }}
+                    className={styles.teaserMsg}
+                  >
+                    <p className={styles.teaserText}>{GREETING_2}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {!open && teaserStage === "hidden" && (
           <span aria-hidden="true" className={styles.bubbleTooltip}>
             <span className={styles.tooltipNameRow}>
               <span className={styles.tooltipName}>{HOST_NAME}</span>
@@ -239,7 +479,7 @@ export function ChatWidget() {
         )}
         <button
           type="button"
-          onClick={() => setOpen((o) => !o)}
+          onClick={() => (open ? setOpen(false) : openChat())}
           aria-label={open ? "Close chat" : `Open chat with ${HOST_NAME}`}
           className={styles.bubble}
         >
