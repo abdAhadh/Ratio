@@ -44,7 +44,7 @@ const NAV_COMPANY = [
     external: true,
   },
   { label: "Case Study", href: "/case-studies/dr-water" },
-  { label: "Free Walmart MCP", href: "/mcp" },
+  { label: "Free MCP", href: "/mcp" },
   { label: "Request Demo", href: "/contact" },
 ];
 const NAV_LEGAL = [

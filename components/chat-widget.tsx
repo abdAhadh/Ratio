@@ -33,7 +33,7 @@ const BOT_ACK_RETURNING = "Got it. I'll get back to you within 30 mins.";
 /* Proactive greeting — surfaced once per session as a teaser above the
    bubble, and seeded as the first messages when the panel opens. Intro +
    soft invite to talk, in the host's voice. */
-const GREETING_1 = "Hey, I'm Abdul, co-founder of Ratio 👋";
+const GREETING_1 = "Hey, I'm Ahadh, co-founder of Ratio 👋";
 const GREETING_2 =
   "Got questions about recovering your retail deductions? I'm right here, or happy to jump on a quick call.";
 const TEASER_SEEN_KEY = "ratio_chat_teaser_seen";

@@ -56,7 +56,6 @@ export default function McpPage() {
   return (
     <div className={styles.page}>
       <SiteNav
-        navItems={[]}
         secondaryCta={{
           href: "https://app.tryratio.io/sign-in",
           label: "SIGN IN",
