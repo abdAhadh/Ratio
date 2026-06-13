@@ -4,6 +4,11 @@
 > Goal: build software that prepares and **electronically files** Income Tax Returns,
 > using Claude as the document-understanding + reasoning layer and a registered
 > e-Return Intermediary (ERI) channel for the actual filing.
+>
+> **Decisions locked:**
+> - **Scope:** all ITR forms — **ITR-1 through ITR-7** (individuals + business/professional + firms/companies/trusts).
+> - **Filing channel:** **aggregator path** (Path B) — build on a registered ERI's API; do not become an ERI ourselves for v1.
+> - **Primary aggregator:** **Quicko Sandbox** (`sandbox.co.in`) — see §2 for why over Surepass.
 
 ---
 
@@ -52,21 +57,31 @@ This is months of compliance + a security review before the first return can be 
 These are registered ERIs that resell filing as clean REST APIs. You skip the
 ₹1cr / DSC / registration barrier; they own the government relationship.
 
-| Provider | Notes |
-|---|---|
-| **Sandbox (by Quicko)** — `sandbox.co.in` | Most complete dev-facing "Tax API stack" for India: PAN/KYC, tax computation, prepare & file ITR, plus TDS & GST. Built for startups → enterprise. **Primary candidate.** |
-| **Surepass** — `surepass.io` | ITR filing + ITR verification APIs; strong KYC suite. |
-| **Setu / TechDev / others** | KYC + filing wrappers of varying coverage. |
+| Provider | Filing scope | Verdict for "all ITR" |
+|---|---|---|
+| **Quicko Sandbox** — `sandbox.co.in` | Income-Tax **Business APIs** incl. ITR prepare + a **Compliance API** that *files & tracks ITR directly with ITD*, plus a **Report API** that generates the upload-ready ITR JSON. Also PAN/KYC, TDS, GST. | ✅ **Chosen.** Built for business returns, not just salaried — the realistic path to covering ITR-1…7. |
+| **Surepass** — `surepass.io` | ITR APIs are oriented to **read / verify / compliance-check** (read incomes & deductions, ITR verification, AIS/TIS). Strong KYC suite. | ⚠️ Weaker for *full e-filing* of business forms — more a data/verification play. Keep as KYC fallback only. |
+| **Setu / TechDev / others** | KYC + filing wrappers of varying coverage. | Not evaluated; revisit only if Quicko gaps appear. |
 
-**Required access on Path B** is just: business onboarding/KYC with the provider →
-**API key** → call their endpoints. Verify exact endpoint names, scopes, and pricing
-against the provider's live docs at integration time.
+**Why Quicko over Surepass:** for "all ITR forms," the binding constraint is whether
+the provider can actually *e-file business returns* (ITR-3/5/6/7), not just salaried
+ITR-1/4. Quicko's positioning is explicitly business + direct-to-ITD filing with JSON
+report generation; Surepass's ITR surface reads as verification/extraction. Quicko is
+the lower-risk pick for full-form coverage.
+
+> ⚠️ **Confirm in Phase 0:** Quicko's public docs (`docs.api.quicko.com`) currently
+> block automated fetching, so exact **per-form** e-file support (especially ITR-5/6/7
+> for firms/companies/trusts) must be confirmed directly during onboarding. If any form
+> isn't API-fileable, fall back to their **Report API** (generate the ITR JSON, user
+> uploads to the ITD portal) for that form.
+
+**Required access on Path B** is just: business onboarding/KYC with Quicko →
+**API key** → call their endpoints (sandbox first, then live).
 
 ### Recommendation
 
-**Start on Path B (Quicko Sandbox as primary).** Reach a compliant, working filing
-flow in days. Migrate to your own ERI (Path A) later only if volume/economics justify
-owning the channel.
+**Path B with Quicko Sandbox.** Reach a compliant, working filing flow in days.
+Migrate to your own ERI (Path A) later only if volume/economics justify owning the channel.
 
 ---
 
@@ -140,25 +155,35 @@ Treat the LLM output as a *draft to be verified*, never as the final payload.
 app/
   api/
     itr/
-      extract/route.ts     # POST docs → Claude → structured JSON
-      compute/route.ts     # deterministic tax calc + regime compare
-      file/route.ts        # call aggregator prefill/validate/file/e-verify
+      extract/route.ts        # POST docs → Claude → structured JSON
+      compute/route.ts        # deterministic tax calc + regime compare
+      determine-form/route.ts # pick ITR-1..7 from the taxpayer's income profile
+      file/route.ts           # call Quicko prefill/validate/file/e-verify
 lib/
   itr/
-    schema.ts              # ITR JSON schema (shared by Claude output + validation)
+    schema/
+      common.ts            # shared blocks: personal, TDS, deductions, taxes-paid
+      itr1.ts … itr7.ts    # per-form schemas (one module per ITR form)
+      index.ts             # form selector → returns the right schema
     tax-rules.ts           # deterministic computation (slabs, deductions, cess)
     anthropic.ts           # Claude client + prompt + output_config.format
-    eri-client.ts          # aggregator API wrapper (key from env)
+    quicko-client.ts       # Quicko Sandbox API wrapper (key from env)
 ```
 
 Key design choices:
 
-- **One canonical ITR schema** (`lib/itr/schema.ts`) drives both Claude's
-  `output_config.format` *and* backend validation — single source of truth.
+- **Modular per-form schemas.** All-ITR scope means ITR-1…7, which differ a lot
+  (ITR-1 salaried vs ITR-3 business vs ITR-6 company vs ITR-7 trust). Model **shared
+  blocks once** (personal info, TDS, Chapter VI-A deductions, taxes paid) and a
+  **per-form schema module** that composes them. The same schema drives both Claude's
+  `output_config.format` *and* backend validation — single source of truth per form.
+- **Form determination is its own step.** Which ITR form applies is a rules decision
+  (income heads, residential status, turnover, entity type). Claude can *suggest* it;
+  deterministic rules in `determine-form` confirm it before extraction targets a schema.
 - **All third-party calls are server-side.** API keys (`ANTHROPIC_API_KEY`,
-  `ERI_API_KEY`) live only in server env, never shipped to the client.
+  `QUICKO_API_KEY`) live only in server env, never shipped to the client.
 - **Idempotency + audit log** on the `file` step — store every request/response to the
-  ERI for compliance and dispute resolution.
+  aggregator for compliance and dispute resolution.
 
 ---
 
@@ -178,27 +203,36 @@ This handles PAN, income, and bank data — treat it as sensitive financial PII.
 
 ## 7. Phased delivery
 
+All-ITR is too big to build at once. **Sequence the forms by complexity** and ship
+filing form-by-form behind the same pipeline.
+
 | Phase | Scope | Outcome |
 |---|---|---|
-| **0 — Provider onboarding** | Sign up with Quicko Sandbox; complete KYC; get sandbox API key; read their ITR API docs | Confirmed endpoint list + auth model |
-| **1 — AI extraction** | `extract` route: Form-16/26AS/AIS → structured ITR JSON via Claude | Reliable doc → JSON |
-| **2 — Deterministic compute** | `compute` route: tax rules + old/new regime comparison; reconcile vs Claude draft | Trustworthy numbers |
-| **3 — Filing (sandbox)** | `file` route against aggregator **sandbox** env: prefill → validate → file → e-verify | End-to-end test filing |
-| **4 — Production** | Switch to live keys; audit logging; monitoring; DPDP compliance review | Real filings |
-| **5 — (optional) Own ERI** | Pursue Type-2 ERI registration if volume justifies owning the channel | Lower per-filing cost, full control |
+| **0 — Provider onboarding** | Sign up with Quicko Sandbox; KYC; sandbox API key; **confirm per-form e-file coverage (esp. ITR-5/6/7)**; map endpoints | Confirmed endpoint list + auth + form gaps |
+| **1 — Pipeline on ITR-1** | `extract`→`compute`→`determine-form`→`file` end-to-end for **ITR-1** (salaried) in sandbox | Full vertical slice working |
+| **2 — ITR-4, then ITR-2** | Add presumptive (ITR-4) and capital-gains/multi-house (ITR-2) schemas + rules | Covers most individual filers |
+| **3 — ITR-3** | Business/professional income (P&L, balance sheet blocks) | Covers professionals & traders |
+| **4 — ITR-5/6/7** | Firms/LLP, companies, trusts — largest schemas; use **Report API** fallback for any form not API-fileable | Full ITR-1…7 coverage |
+| **5 — Production** | Live keys; audit logging; monitoring; DPDP compliance review | Real filings |
+| **6 — (optional) Own ERI** | Pursue Type-2 ERI registration if volume justifies owning the channel | Lower per-filing cost, full control |
 
 ---
 
-## 8. Open questions to resolve before Phase 1
+## 8. Open questions
 
-1. **Target users** — individuals (ITR-1/2), or also business/professional (ITR-3/4)?
-   This decides schema complexity.
-2. **Aggregator choice** — confirm Quicko Sandbox vs Surepass after reviewing pricing
-   + ITR-form coverage for your target users.
-3. **Document set** — which docs will users actually upload? (Form-16 only, or full
-   AIS/26AS/broker statements?)
-4. **Regime default** — auto-recommend old vs new, or let user choose?
-5. **e-Verification UX** — Aadhaar OTP vs net-banking vs DSC — driven by aggregator support.
+**Resolved**
+- ✅ **Target users / scope** — all forms, **ITR-1…7**.
+- ✅ **Aggregator** — **Quicko Sandbox** (Path B); Surepass kept only as KYC fallback.
+
+**Still to resolve before Phase 1**
+1. **Per-form coverage confirmation** — verify with Quicko which of ITR-5/6/7 are
+   directly API-fileable vs Report-API-only (Phase 0 deliverable).
+2. **Document set** — which docs will users upload per form? (Form-16, AIS/26AS,
+   broker P&L, books of accounts for ITR-3/5/6) — drives the `extract` prompts.
+3. **Regime default** — auto-recommend old vs new, or let user choose?
+4. **e-Verification UX** — Aadhaar OTP vs net-banking vs DSC — driven by Quicko support
+   (DSC is effectively mandatory for companies/audited ITR-6).
+5. **Pricing model** — Quicko per-API/per-filing cost vs your end-user pricing.
 
 ---
 
@@ -212,5 +246,6 @@ This handles PAN, income, and bank data — treat it as sensitive financial PII.
   [ERI API Specification v1.1 (PDF)](https://www.incometax.gov.in/iec/foportal/sites/default/files/2021-11/ERI%20API%20Specification_v1.1.pdf)
 - Aggregator / tax-API providers:
   [Sandbox by Quicko](https://sandbox.co.in/) ·
+  [Quicko Sandbox — Income-Tax Business / ITR API docs](https://docs.api.quicko.com/income-tax-apis/income-tax-business-apis/itr) ·
   [Surepass ITR API](https://surepass.io/income-tax-return/) ·
   [ITR Submission API overview (digiqt)](https://digiqt.com/api-details/india/accounting-tax/itr-submission-api-income-tax-of-india/)
