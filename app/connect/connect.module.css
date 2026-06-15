@@ -1,0 +1,239 @@
+/* Connect-your-Amazon-account page. Reuses the site design tokens
+   (globals.css): Gelasio serif heading, Geist sans body, 1px #333
+   hairlines, accent-blue links. Intended to be served at a Ratio
+   subdomain (e.g. connect.tryratio.io) as the credential-setup guide
+   we link from outreach emails. */
+.page {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 48px 48px 80px;
+}
+
+.header {
+  margin-bottom: 48px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logoIcon {
+  width: 26px;
+  height: 26px;
+  display: block;
+}
+
+.logoText {
+  font-family: var(--font-sans);
+  font-size: 23px;
+  font-weight: 500;
+  color: var(--color-fg-bright);
+  letter-spacing: -0.6px;
+}
+
+.h1 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 46px;
+  line-height: 1.06;
+  letter-spacing: -1.6px;
+  color: var(--color-fg-bright);
+  margin: 0 0 18px;
+}
+
+.sub {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--color-fg-muted);
+  max-width: 640px;
+  margin: 0 0 40px;
+}
+
+.console {
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 20px 22px;
+  margin-bottom: 44px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.consoleLabel {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  color: var(--color-fg-dim);
+  margin: 0 0 14px;
+}
+
+.consoleLink {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  color: var(--color-accent-blue);
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  text-decoration: none;
+  margin: 7px 0;
+  word-break: break-all;
+}
+.consoleLink:hover {
+  text-decoration: underline;
+}
+.consoleLink b {
+  color: var(--color-fg-muted);
+  font-weight: 500;
+  min-width: 54px;
+  font-size: 13px;
+  flex: 0 0 auto;
+}
+
+.consoleAlt {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #333;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--color-fg-muted);
+}
+
+.section {
+  margin-bottom: 42px;
+}
+
+.sectionTitle {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 1.6px;
+  color: var(--color-fg-bright);
+  font-weight: 600;
+  margin: 0 0 22px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid #333;
+}
+
+.step {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.num {
+  flex: 0 0 auto;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  border: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-fg-muted);
+}
+
+.stepText {
+  font-family: var(--font-sans);
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--color-fg);
+  margin: 0;
+  padding-top: 3px;
+}
+
+.chip {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 2px 7px;
+  color: var(--color-fg-bright);
+  white-space: nowrap;
+}
+
+.creds {
+  border: 1px solid rgba(44, 198, 255, 0.4);
+  border-radius: 8px;
+  padding: 20px 22px;
+  background: rgba(44, 198, 255, 0.06);
+}
+
+.credsLabel {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--color-fg-bright);
+  margin: 0 0 14px;
+  font-weight: 500;
+}
+
+.credsList {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+}
+
+.credsList li {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 6px 11px;
+  color: var(--color-fg-bright);
+}
+
+/* ───── Mobile ───── */
+@media (max-width: 768px) {
+  .wrap {
+    padding: 32px 20px 56px;
+  }
+  .header {
+    margin-bottom: 36px;
+  }
+  .h1 {
+    font-size: 32px;
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+  }
+  .sub {
+    font-size: 15.5px;
+    margin-bottom: 32px;
+  }
+  .console {
+    padding: 16px 16px;
+    margin-bottom: 36px;
+  }
+  /* Stack the region label above the URL so long URLs don't overflow. */
+  .consoleLink {
+    flex-direction: column;
+    gap: 2px;
+    font-size: 13.5px;
+  }
+  .section {
+    margin-bottom: 34px;
+  }
+  .step {
+    gap: 12px;
+  }
+  .stepText {
+    font-size: 15px;
+  }
+  .creds {
+    padding: 16px 16px;
+  }
+}
