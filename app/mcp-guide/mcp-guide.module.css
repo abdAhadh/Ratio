@@ -1,8 +1,7 @@
-/* Connect-your-Amazon-account page. Reuses the site design tokens
-   (globals.css): Gelasio serif heading, Geist sans body, 1px #333
-   hairlines, accent-blue links. Intended to be served at a Ratio
-   subdomain (e.g. connect.tryratio.io) as the credential-setup guide
-   we link from outreach emails. */
+/* Connect-your-Amazon-account page (/mcp-guide). Reuses the site design
+   tokens (globals.css): Gelasio serif heading, Geist sans body, 1px #333
+   hairlines, accent-blue links. The credential-setup guide we link from
+   outreach emails (tryratio.io/mcp-guide). */
 .page {
   min-height: 100vh;
   background: var(--color-bg);

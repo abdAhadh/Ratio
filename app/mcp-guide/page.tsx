@@ -1,10 +1,10 @@
 import Link from "next/link";
-import styles from "./connect.module.css";
+import styles from "./mcp-guide.module.css";
 
 /**
- * /connect — credential-setup guide we link from outreach emails instead
- * of pasting all the steps inline. Designed to be served at a Ratio
- * subdomain (e.g. connect.tryratio.io). Reuses the site design system.
+ * /mcp-guide — credential-setup guide we link from outreach emails instead
+ * of pasting all the steps inline (tryratio.io/mcp-guide). Reuses the site
+ * design system.
  *
  * The Ratio logo links to /mcp (the MCP connector page), not the home
  * page, since this flow belongs to the MCP product.
@@ -15,7 +15,7 @@ export const metadata = {
     "Generate read-only Amazon SP-API credentials in your own Seller Central and send them to Ratio.",
 };
 
-export default function ConnectPage() {
+export default function McpGuidePage() {
   return (
     <main className={styles.page}>
       <div className={styles.wrap}>
