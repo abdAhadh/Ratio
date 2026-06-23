@@ -11,7 +11,7 @@ import styles from "./mcp-cycling-headline.module.css";
 /**
  * Two-track cycling headline for the /mcp hero:
  *
- *   Ask {AI} anything about your {Store} store.
+ *   Turn {AI} into your AI {Store} employee.
  *
  * Design goals (and how they're met):
  *
@@ -262,18 +262,18 @@ function CyclingWord({
 export function MCPCyclingHeadline() {
   return (
     <>
-      Ask <CyclingWord options={AI_OPTIONS} />{" "}
+      Turn <CyclingWord options={AI_OPTIONS} />{" "}
       {/* Mobile-only line breaks force the 3-line shape:
-            Ask {AI}
-            anything about your
-            {Store} store
+            Turn {AI}
+            into your AI
+            {Store} employee
           On desktop these <br>s are display:none, so the headline wraps
           naturally (2 lines) as before. */}
       <br className={styles.mobileBreak} />
-      anything about your{" "}
+      into your AI{" "}
       <br className={styles.mobileBreak} />
       <CyclingWord options={STORE_OPTIONS} offsetMs={STORE_OFFSET_MS} />{" "}
-      store.
+      employee.
     </>
   );
 }
